@@ -59,6 +59,20 @@ sections:
         - Multimodal integration of neuroimaging and physiological signals
 
         My research integrates **clinical trials, EEG, neuroimaging, and physiological measurements** to better understand how biological systems contribute to behavior and clinical outcomes.
+  
+  - block: markdown
+    content:
+      title: Academic Service & Leadership
+      text: |
+        - Steering-group member, Pain in Motion (PIM) international research consortium
+        - Expert panel member, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo
+        - Program & award manager, Pain Science in Motion Conference 2026
+        - Ad hoc grant reviewer, Foundation for Prader–Willi Research
+
+        Member of:
+        - International Association for the Study of Pain (IASP)
+        - International Society for Autism Research (INSAR)
+        - Belgian Association for Psychological Sciences (BAPS)
 
   - block: collection
     id: papers
@@ -95,18 +109,5 @@ sections:
     design:
       view: card
 
-  - block: markdown
-    content:
-      title: Academic Service & Leadership
-      text: |
-        - Steering-group member, Pain in Motion (PIM) international research consortium
-        - Expert panel member, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo
-        - Program & award manager, Pain Science in Motion Conference 2026
-        - Ad hoc grant reviewer, Foundation for Prader–Willi Research
-
-        Member of:
-        - International Association for the Study of Pain (IASP)
-        - International Society for Autism Research (INSAR)
-        - Belgian Association for Psychological Sciences (BAPS)
 
 ---
