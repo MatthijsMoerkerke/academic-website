@@ -1,5 +1,5 @@
 ---
-title: ''
+title: 'Matthijs Moerkerke'
 summary: ''
 date: 2024-01-01
 type: landing
@@ -43,7 +43,6 @@ sections:
         size: medium
         shape: circle
 
-
   - block: markdown
     content:
       title: Research
@@ -61,29 +60,30 @@ sections:
 
         My research integrates **clinical trials, EEG, neuroimaging, and physiological measurements** to better understand how biological systems contribute to behavior and clinical outcomes.
 
-
   - block: collection
     id: papers
     content:
       title: Featured Publications
       filters:
         folders:
-          - publications
+          - publications/journal-article
+          - publications/conference-paper
+          - publications/preprint
         featured_only: true
     design:
       view: article-grid
       columns: 2
-
 
   - block: collection
     content:
       title: Publications
       filters:
         folders:
-          - publications
+          - publications/journal-article
+          - publications/conference-paper
+          - publications/preprint
     design:
       view: citation
-
 
   - block: collection
     id: talks
@@ -94,7 +94,6 @@ sections:
           - events
     design:
       view: card
-
 
   - block: markdown
     content:
@@ -109,6 +108,5 @@ sections:
         - International Association for the Study of Pain (IASP)
         - International Society for Autism Research (INSAR)
         - Belgian Association for Psychological Sciences (BAPS)
-
 
 ---
