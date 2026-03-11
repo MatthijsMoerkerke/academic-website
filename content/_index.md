@@ -8,10 +8,10 @@ design:
   spacing: '6rem'
 
 sections:
-- block: resume-biography-3
-  content:
-    username: "MatthijsMoerkerke"
-    text: |
+  - block: resume-biography-3
+    content:
+      username: "MatthijsMoerkerke"
+      text: |
         I am a **postdoctoral researcher at Ghent University (Department of Rehabilitation Sciences)** and voluntary research fellow at **KU Leuven – Center for Developmental Psychiatry**.
 
         My research focuses on **neurophysiology, pain science, and neuroendocrine mechanisms**, with particular interest in the role of **oxytocin in autism and pain-related processes**.
