@@ -1,5 +1,4 @@
 main:
-
   - name: Additional Training
     url: "#training"
     weight: 10
@@ -18,8 +17,12 @@ main:
 
   - name: Awards
     url: "#awards"
+    weight: 60
+    
+  - name: Presentations
+    url: "#presentations"
     weight: 50
 
   - name: Publications
     url: "#publications"
-    weight: 60
+    weight: 70
