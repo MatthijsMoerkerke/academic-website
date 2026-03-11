@@ -1,5 +1,5 @@
 ---
-title: Matthijs Moerkerke
+title: "Matthijs Moerkerke"
 
 role: Postdoctoral Researcher
 
