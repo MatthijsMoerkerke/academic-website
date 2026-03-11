@@ -1,40 +1,23 @@
 ---
 title: "Matthijs Moerkerke"
-summary: ''
+summary: ""
 date: 2024-01-01
 type: landing
 
 design:
-  spacing: '6rem'
+  spacing: "6rem"
 
 sections:
-  - block: resume-biography-3
+
+  - block: resume-biography
     content:
-      username: "matthijs"
-
-        I am a **postdoctoral researcher at Ghent University (Department of Rehabilitation Sciences)** and voluntary research fellow at **KU Leuven – Center for Developmental Psychiatry**.
-
-        My research focuses on **neurophysiology, pain science, and neuroendocrine mechanisms**, with particular interest in the role of **oxytocin in autism and pain-related processes**.
-
-        I investigate how **stress physiology, neuroendocrine signaling, and brain mechanisms interact with behavior and clinical outcomes**, combining neuroimaging, EEG, physiological recordings, and clinical trial methodologies.
-
-        My work aims to translate neurobiological insights into **improved diagnostics, treatment strategies, and rehabilitation approaches** for neurological and neurodevelopmental conditions.
+      username: matthijs
       button:
         text: Download CV
         url: uploads/resume.pdf
-      headings:
-        about: About
-        education: Education
-        interests: Research Interests
     design:
-      background:
-        gradient_mesh:
-          enable: true
-      name:
-        size: xs
-      avatar:
-        size: medium
-        shape: circle
+      banner:
+        text: ""
 
   - block: markdown
     content:
