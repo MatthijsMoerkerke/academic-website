@@ -3,10 +3,10 @@ title: "Dr. Matthijs Moerkerke"
 role: "Neuroscientist"
 
 organizations:
-  - name: Ghent University
-    url: https://www.ugent.be
-  - name: KU Leuven
-    url: https://www.kuleuven.be
+  - name: "Ghent University"
+    url: "https://www.ugent.be"
+  - name: "KU Leuven"
+    url: "https://www.kuleuven.be"
 
 bio: |
   I am a postdoctoral researcher at Ghent University (Department of Rehabilitation Sciences) and voluntary research fellow at KU Leuven – Center for Developmental Psychiatry.
