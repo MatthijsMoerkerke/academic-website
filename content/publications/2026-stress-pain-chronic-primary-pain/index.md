@@ -17,5 +17,5 @@ doi: "10.1016/j.neubiorev.2026.106604"
 url_pdf: "https://www.sciencedirect.com/science/article/pii/S014976342600059X"
 
 draft: false
-featured: true
+featured: false
 ---
