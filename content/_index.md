@@ -37,18 +37,6 @@ sections:
         size: medium
         shape: circle
 
-  - block: markdown
-    id: education
-    content:
-      title: Education
-      text: |
-        - **PhD Biomedical Sciences**, KU Leuven  
-          *The role of oxytocin in autism – a randomized clinical trial*
-
-        - **Postgraduate Studies in Advanced Medical Imaging**, KU Leuven
-
-        - **Master of Biomedical Sciences**, KU Leuven
-
   - block: collection
     id: publications
     content:
@@ -81,7 +69,7 @@ sections:
         - Backup ombudsman for the *Postgraduate Studies in Advanced Medical Imaging* programme at KU Leuven (2017–2023).
 
   - block: markdown
-    id: outreach
+    id: engagement
     content:
       title: Public Engagement & Science Communication
       text: |
@@ -101,22 +89,74 @@ sections:
   - block: markdown
     id: skills
     content:
-      title: Skills
+      title: Skills & Methods
       text: |
-        **Languages**
-        - Dutch — Native
-        - English — Fluent
-        - French — Basic
-        - Spanish — Basic
+        **🗣️ Languages**
+        - ●●●●● **Dutch** — C2 · Native
+        - ●●●●● **English** — C1 · Fluent
+        - ●●○○○ **French** — A2 · Basic
+        - ●○○○○ **Spanish** — A1 · Basic
 
-        **Research methods and expertise**
-        - Neurophysiology
-        - EEG
-        - Neuroimaging
-        - Physiological recordings
-        - Clinical trial methodology
-        - Pain science
-        - Neuroendocrinology
+        **🧲 Medical imaging proficiencies**
+        - Scanning, pre-processing, and analysis of MRI data
+        - Functional, structural, diffusion-weighted, and multivariate MRI
+        - EEG analysis, including stress physiology measures such as heart rate, respiration rate, and skin conductance
+        - Software: Letswave 6, SPM 8–12, CAT12, FreeSurfer
+
+        **📊 Statistical skills**
+        - Statistical analyses in RStudio, JAMOVI, SPSS, and MATLAB
+
+        **💻 Programming skills**
+        - Programming scripts for fMRI and behavioural experiments in MATLAB and Presentation
+        - Additional computer proficiencies: Microsoft Office, Serial Cloner, internet research, statistical applications, and bioinformatics
+
+        **🧠 Neurocognitive expertise**
+        - Experimental design and development
+        - Cognitive and diagnostic testing
+
+        **🧪 Laboratorial skills**
+        - Animal experiments
+        - Organ dissection
+        - Tissue embedding
+        - Microscopic evaluation
+        - Histological analysis
+
+        **🏥 Clinical skills**
+        - Placing infuses
+        - Drawing blood
+        - Intramuscular injection
+        - Subdermal injection
+        - Performing ECG/EEG
+        - CPR training
+
+  - block: markdown
+    id: training
+    content:
+      title: Additional Training
+      text: |
+        - **Research stay at Stanford University, CA, USA** (2025)  
+          Pediatric pain research lab of Prof. Laura Simons
+
+        - **Research stay at the University of Oslo, Norway** (2023)  
+          Oxytocin research lab of Prof. Daniel Quintana
+
+        - **PhD in Neuroscience Certificate** (2022)
+
+        - **Oxytocin conference and workshop – invited talk** (2022)  
+          Ettore Majorana Foundation, Erice, Sicily, Italy
+
+        - **Regulatory medical writing training programme** (2021)
+
+        - **Freesurfer – MRI analysis tool** (2019)  
+          Martinos Center, MIT-Harvard, Boston, USA
+
+        - **Good Clinical (Research) Practice (GCP) Certificate** (2019)
+
+        - **Spanish language classes** (2017)
+
+        - **Certificate MATLAB and Octave** (2017)
+
+        - **Certificate of laboratory animal science category B (FELASA B)** (2014)
 
   - block: markdown
     id: contact
@@ -130,7 +170,7 @@ sections:
 
         **KU Leuven**  
         Center for Developmental Psychiatry  
-        Department of Neurosciences  
+        Department of Neurosciences
 
         **LinkedIn**  
         https://www.linkedin.com/in/matthijs-moerkerke/
