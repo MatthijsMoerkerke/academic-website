@@ -8,11 +8,9 @@ design:
   spacing: '6rem'
 
 sections:
-
   - block: resume-biography-3
     content:
       username: MatthijsMoerkerke
-
       text: |
         I am a **postdoctoral researcher at Ghent University (Department of Rehabilitation Sciences)** and voluntary research fellow at **KU Leuven – Center for Developmental Psychiatry**.
 
@@ -21,28 +19,22 @@ sections:
         I investigate how **stress physiology, neuroendocrine signaling, and brain mechanisms interact with behavior and clinical outcomes**, combining neuroimaging, EEG, physiological recordings, and clinical trial methodologies.
 
         My work aims to translate neurobiological insights into **improved diagnostics, treatment strategies, and rehabilitation approaches** for neurological and neurodevelopmental conditions.
-
       button:
         text: Download CV
         url: uploads/resume.pdf
-
       headings:
         about: About
         education: Education
         interests: Research Interests
-
     design:
       background:
         gradient_mesh:
           enable: true
-
       name:
         size: md
-
       avatar:
         size: medium
         shape: circle
-
 
   - block: markdown
     content:
@@ -55,7 +47,6 @@ sections:
         - Physiological and neural biomarkers of chronic pain
         - Brain–body interactions in neurological and neurodevelopmental disorders
         - Integration of multimodal neurophysiological methods (EEG, neuroimaging, physiological recordings)
-
 
   - block: markdown
     content:
@@ -97,8 +88,8 @@ sections:
 
         **Science communication and event organization**
         - Freelance contributor at **JABCO (2023–present)**, organizing scientific symposia and webinars and developing communication materials (websites, logos, livestreams) for scientific societies including the Belgian Infection Control Society.
-    
-    - block: collection
+
+  - block: collection
     id: papers
     content:
       title: Publications
@@ -107,5 +98,4 @@ sections:
           - publications
     design:
       view: citation
-
 ---
