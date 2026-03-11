@@ -45,11 +45,12 @@ sections:
 - block: markdown
   id: metrics
   content:
-    title: Research Metrics
+    title: 
     text: |
       ![Citations](https://img.shields.io/badge/dynamic/json?label=Citations&query=%24.citedby&url=https://api.scholarbadge.com/Dv9Rx2MAAAAJ)
 
       ![h-index](https://img.shields.io/badge/dynamic/json?label=h--index&query=%24.hindex&url=https://api.scholarbadge.com/Dv9Rx2MAAAAJ)
+    columns: 2
 
 # ---------------- FEATURED PUBLICATIONS ----------------
 
