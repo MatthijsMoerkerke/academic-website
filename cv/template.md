@@ -1,12 +1,12 @@
 # Matthijs Moerkerke
 
-Postdoctoral Researcher — Ghent University  
-Voluntary Research Fellow — KU Leuven  
+**Neuroscientist**  
+Ghent University — Spine, Head and Pain Research Unit, Department of Rehabilitation Sciences  
+KU Leuven — Center for Developmental Psychiatry, Department of Neurosciences  
 
 Email: matthijs.moerkerke@ugent.be  
 LinkedIn: https://www.linkedin.com/in/matthijs-moerkerke/  
 ORCID: https://orcid.org/0000-0002-7133-8418
-
 ---
 
 ## Profile
