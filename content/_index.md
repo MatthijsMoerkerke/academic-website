@@ -1,5 +1,5 @@
 ---
-title: 'Matthijs Moerkerke'
+title: ''
 summary: ''
 date: 2024-01-01
 type: landing
@@ -43,61 +43,73 @@ sections:
         size: medium
         shape: circle
 
+
   - block: markdown
     content:
-      title: Research
+      title: Research Interests
       text: |
-        My research lies at the intersection of **neuroscience, rehabilitation sciences, and clinical neurophysiology**.
+        My research focuses on the neurobiological and physiological mechanisms underlying behavior, pain, and neurodevelopmental conditions. Current research interests include:
 
-        I study the **neurobiological mechanisms underlying autism, pain, and stress regulation**, with a particular focus on **oxytocin signaling and brain–body interactions**.
+        - Neuroendocrine mechanisms in pain and stress regulation
+        - Oxytocin signaling and its role in autism and social cognition
+        - Physiological and neural biomarkers of chronic pain
+        - Brain–body interactions in neurological and neurodevelopmental disorders
+        - Integration of multimodal neurophysiological methods (EEG, neuroimaging, physiological recordings)
 
-        Current projects examine:
 
-        - Neuroendocrine modulation of pain and stress
-        - Neural mechanisms of autism and social cognition
-        - Physiological biomarkers of chronic pain
-        - Multimodal integration of neuroimaging and physiological signals
-
-        My research integrates **clinical trials, EEG, neuroimaging, and physiological measurements** to better understand how biological systems contribute to behavior and clinical outcomes.
-  
   - block: markdown
     content:
-      title: Academic Service & Leadership
+      title: Teaching & Mentoring
       text: |
-        - Steering-group member, Pain in Motion (PIM) international research consortium
-        - Expert panel member, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo
-        - Program & award manager, Pain Science in Motion Conference 2026
-        - Ad hoc grant reviewer, Foundation for Prader–Willi Research
+        I am actively involved in university teaching, supervision, and mentoring of early-career researchers.
 
-        Member of:
-        - International Association for the Study of Pain (IASP)
-        - International Society for Autism Research (INSAR)
-        - Belgian Association for Psychological Sciences (BAPS)
+        **University teaching**
+        - Lecturer for *Evidence-Based Medicine & Statistics 3* (BA Rehabilitation Sciences, Ghent University), responsible for theoretical lectures and coordination of practical seminars.
+        - Leading curricular reform and supervising **eight PhD teaching assistants**.
+
+        **Graduate and undergraduate supervision**
+        - Co-promoter of **2 PhD projects**.
+        - Promoter of **25 MSc theses** (Rehabilitation Sciences, Biomedical Sciences, and Medicine).
+        - Co-promoter of **12 MSc theses**.
+        - Daily supervisor of **24 bachelor and master students** in clinical and research settings.
+        - Jury member for **10 MSc defenses**.
+        - Jury member for **1 PhD defense**.
+
+        **Mentoring**
+        - Mentor for junior researchers in pain science and stress physiology, supporting interdisciplinary collaboration across neuroscience, psychology, and rehabilitation science.
+        - Backup ombudsman for the *Postgraduate Studies in Advanced Medical Imaging* programme at KU Leuven (2017–2023).
+
+
+  - block: markdown
+    content:
+      title: Public Engagement & Science Communication
+      text: |
+        I actively engage in translating neuroscience research to broader audiences and fostering dialogue between science and society.
+
+        **Scientific outreach in mainstream media**
+        - Interview in **EOS Wetenschap (2024)** discussing translational neuroendocrinology.
+        - Guest on the **ACAMH Papers podcast (2023)** discussing neurobiological mechanisms underlying autism.
+
+        **Public engagement activities**
+        - Annual presenter at the **Day of Science (2017–present)**, delivering hands-on neuroscience workshops for children, families, and the broader public.
+
+        **Outreach teaching**
+        - Tutor in **anatomy and biology (2020–2023)**, supporting first-generation and underrepresented students.
+
+        **Science communication and event organization**
+        - Freelance contributor at **JABCO (2023–present)**, organizing scientific symposia and webinars and developing communication materials (websites, logos, livestreams) for scientific societies including the Belgian Infection Control Society.
+
 
   - block: collection
     id: papers
     content:
-      title: Featured Publications
-      filters:
-        folders:
-          - publications/journal-article
-          - publications/conference-paper
-          - publications/preprint
-        featured_only: true
-    design:
-      view: article-grid
-      columns: 2
-
-  - block: collection
-    content:
       title: Publications
       filters:
         folders:
-          - publications/journal-article
-          - publications/conference-paper
-          - publications/preprint
+          - publications
     design:
       view: citation
+
 
   - block: collection
     id: talks
@@ -108,6 +120,4 @@ sections:
           - events
     design:
       view: card
-
-
 ---
