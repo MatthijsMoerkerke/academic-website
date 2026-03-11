@@ -50,8 +50,32 @@ interests:
   - Physiological and neural biomarkers of chronic pain
   - Brain–body interactions in neurological and neurodevelopmental disorders
   - Multimodal neurophysiology (EEG, neuroimaging, physiological recordings)
-  - PhD Biomedical Sciences, KU Leuven — The role of oxytocin in autism: a randomized clinical trial
-  - Postgraduate Studies in Advanced Medical Imaging, KU Leuven
-  - Master of Biomedical Sciences, KU Leuven
-  - Languages: Dutch (native), English (fluent), French (basic), Spanish (basic)
-  - Multiple research and academic excellence awards during graduate and doctoral training
+
+education:
+  - degree: PhD Biomedical Sciences
+    institution: KU Leuven
+    summary: The role of oxytocin in autism – a randomized clinical trial
+  - degree: Postgraduate Studies in Advanced Medical Imaging
+    institution: KU Leuven
+  - degree: Master of Biomedical Sciences
+    institution: KU Leuven
+
+languages:
+  - name: Dutch
+    level: 5
+    label: Native
+  - name: English
+    level: 5
+    label: Fluent
+  - name: French
+    level: 2
+    label: Basic
+  - name: Spanish
+    level: 1
+    label: Basic
+
+awards:
+  - title: Research and academic excellence awards
+    summary: |
+      Multiple recognitions and competitive academic achievements
+      during graduate and doctoral training.
