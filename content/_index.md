@@ -130,17 +130,25 @@ sections:
     text: |
       **Scientific outreach in mainstream media**
 
-      - **EOS Wetenschap (2024)**  
+      - EOS Wetenschap — Oxytocin nasal spray may improve social bonding in children with autism  
         https://www.eoswetenschap.eu/psyche-brein/oxytocine-neusspray-verbetert-mogelijk-sociale-banden-bij-kinderen-met-autisme
 
-      - **ACAMH Papers Podcast (2023)**  
+      - ACAMH Podcast — Oxytocin administration, neural sensitivity and autism  
         https://acamhlearn.org/Learning/Oxytocin_Administration_Neural_Sensitivity_and_Autism/a843e835-992f-4982-9cdd-4b30738c4f8f
 
-      **Public engagement activities**
+      - KU Leuven Blog — De invloed van oxytocine-neusspray op kinderen met autisme  
+        https://www.kuleuven.be/child-youth/nl/blog/posts/de-invloed-van-oxytocine-neusspray-op-kinderen-met-autisme
 
-      - Annual presenter at the Day of Science (2017–present) delivering hands-on neuroscience workshops for children, families and the broader public.
+      - Pain in Motion Blog — The role of oxytocin in chronic pain  
+        https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain
 
- 
+      **Public science events**
+
+      - Day of Science — public science outreach (yearly neuroscience workshops)
+      - Brain Awareness Week — neuroscience outreach events
+      - Child KU Leuven — workshops for elementary school students
+      - Autisme Beurs — public engagement on autism research
+       
       **Science communication and event organisation**
 
       - Freelance contributor at JABCO (2023–present organising scientific symposia and webinars and developing communication materials for scientific societies including the Belgian Infection Control Society.
@@ -233,7 +241,7 @@ sections:
       Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism, central to my PhD, awarded to Prof. Kaat Alaerts (PhD co-promotor).
 
       **KU Leuven Postdoctoral Research Grant (2023)**
-      Received a Postdoctoral Mandate (PDM) to coninute working on doctoral research for 1 year after PhD defence.
+        Received a Postdoctoral Mandate (PDM) to coninute working on doctoral research for 1 year after PhD defence.
   
 # ---------------- PUBLICATIONS ----------------
 
