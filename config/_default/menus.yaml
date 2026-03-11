@@ -1,18 +1,19 @@
 main:
-  - name: Teaching & Mentoring
-    url: "#teaching"
-    weight: 10
-
-  - name: Public Engagement
-    url: "#engagement"
-    weight: 20
-
-  - name: Skills & Methods
-    url: "#skills"
-    weight: 30
 
   - name: Additional Training
     url: "#training"
+    weight: 10
+
+  - name: Teaching & Mentoring
+    url: "#teaching"
+    weight: 20
+
+  - name: Public Engagement
+    url: "#engagement"
+    weight: 30
+
+  - name: Skills & Methods
+    url: "#skills"
     weight: 40
 
   - name: Awards
