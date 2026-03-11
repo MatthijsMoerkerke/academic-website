@@ -121,13 +121,25 @@ sections:
       - Backup ombudsman for the *Postgraduate Studies in Advanced Medical Imaging* programme at KU Leuven (2017–2023)
 
 
-# ---------------- PUBLIC ENGAGEMENT ----------------
+# ---------------- SCIENTIFIC ENGAGEMENT ----------------
 
 - block: markdown
   id: engagement
   content:
-    title: Public Engagement & Science Communication
+    title: Scientific Engagement & Outreach
     text: |
+      **Scientific collaboration & service**
+
+      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing international networking events (2023–present)
+          https://paininmotion.be/
+  
+      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-science initiatives (2025–present)
+          https://amore-project.org/
+      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)
+          https://www.painscienceinmotion.com/
+
+      - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
+  
       **Scientific outreach in mainstream media**
 
       - EOS Wetenschap — Oxytocin nasal spray may improve social bonding in children with autism  
@@ -148,11 +160,17 @@ sections:
       - Brain Awareness Week — neuroscience outreach events
       - Child KU Leuven — workshops for elementary school students
       - Autisme Beurs — public engagement on autism research
-       
-      **Science communication and event organisation**
 
-      - Freelance contributor at JABCO (2023–present organising scientific symposia and webinars and developing communication materials for scientific societies including the Belgian Infection Control Society.
-        https://jabco.be/
+      **Memberships**
+
+      - International Association for the Study of Pain (IASP)  
+      - International Society for Autism Research (INSAR)  
+      - Belgian Association for Psychological Sciences (BAPS)  
+      - Leuven Brain Institute (LBI)  
+      - KU Leuven Child & Youth Institute  
+      - Leuven Autism Research (LAuRes)  
+      - Alliantieonderzoeksgroep UGent–VUB Motor Mind
+
 
 # ---------------- SKILLS ----------------
 
@@ -161,7 +179,6 @@ sections:
   content:
     title: Skills & Methods
     text: |
-
       **Languages**
 
       ●●●●● **Dutch** — C2 (Native)  
@@ -169,7 +186,7 @@ sections:
       ●●○○○ **French** — A2 (Basic)  
       ●○○○○ **Spanish** — A1 (Basic)
 
-      ### Medical imaging proficiencies
+      **Medical imaging proficiencies**
 
       Scanning, pre-processing and analysis of images taken with **Magnetic Resonance Imaging (MRI)**  
       (functional, structural and diffusion weighted MRI) and **electroencephalography (EEG)** including stress physiology measures (heart rate, respiration rate and skin conductance).
@@ -181,28 +198,26 @@ sections:
       - CAT12
       - FreeSurfer
 
-      ### Statistical skills
+      **Statistical skills**
 
       - RStudio  
       - JAMOVI  
       - SPSS  
       - MATLAB
 
-      ### Programming skills
+      **Programming skills**
 
       Programming scripts for fMRI and behavioural experiments in:
 
       - MATLAB
       - Presentation (Neurobehavioral Systems)
 
-      Computer proficiencies include **Microsoft Office, Serial Cloner, statistical applications, internet research and bioinformatics tools**.
-
-      ### Neurocognitive expertise
+      **Neurocognitive expertise**
 
       - Experimental design and paradigm development
       - Cognitive and diagnostic testing
 
-      ### Laboratory skills
+      **Laboratory skills**
 
       - Animal experiments
       - Organ dissection
@@ -210,7 +225,7 @@ sections:
       - Microscopic evaluation
       - Histological analysis
 
-      ### Clinical skills
+      **Clinical skills**
 
       - Placing infuses
       - Drawing blood
@@ -237,12 +252,13 @@ sections:
       Awarded by the Belgian College of Neuropsychopharmacology and Biological Psychiatry for best PhD thesis.  
       https://www.bcnbp.org/belgiums-got-talent
 
-      **Thérèse Vandereecken, spouse Boes, Adrienne Boes, and Viviane Boes Prize for Clinical Medicine 2023**  
-      Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism, central to my PhD, awarded to Prof. Kaat Alaerts (PhD co-promotor).
+      **Thérèse Vandereecken Prize for Clinical Medicine 2023**  
+      Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism.
 
       **KU Leuven Postdoctoral Research Grant 2023**  
-      Received a Postdoctoral Mandate (PDM) to coninute working on doctoral research for 1 year after PhD defence.
-  
+      Postdoctoral Mandate (PDM) awarded to continue doctoral research for one year after PhD defence.
+
+
 # ---------------- PUBLICATIONS ----------------
 
 - block: collection
