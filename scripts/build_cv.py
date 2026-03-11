@@ -1,12 +1,12 @@
 from pathlib import Path
 import yaml
-import re
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
 INDEX_FILE = ROOT / "content" / "_index.md"
 TEMPLATE_FILE = ROOT / "cv" / "template.md"
 OUTPUT_MD = ROOT / "cv" / "cv_generated.md"
+
 
 def read_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
@@ -17,6 +17,7 @@ def read_front_matter(md_path: Path):
         return None
     return yaml.safe_load(parts[1])
 
+
 def pub_type_label(pub_type: str) -> str:
     mapping = {
         "article-journal": "",
@@ -25,6 +26,7 @@ def pub_type_label(pub_type: str) -> str:
         "thesis": "PhD dissertation.",
     }
     return mapping.get(pub_type, "")
+
 
 def format_publication(front_matter: dict) -> str:
     authors = front_matter.get("authors", [])
@@ -46,6 +48,7 @@ def format_publication(front_matter: dict) -> str:
         line += f" {label}"
     return line
 
+
 def collect_publications():
     entries = []
     if not PUBLICATIONS_DIR.exists():
@@ -65,25 +68,21 @@ def collect_publications():
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
     return entries
 
+
 def extract_presentations_block():
-    text = INDEX_FILE.read_text(encoding="utf-8")
-
-    pattern = r'id:\s*presentations\s+content:\s+title:\s*"Summary of Presentations at Conferences"\s+text:\s*\|\n((?:\s{6,}.*\n)+)'
-    match = re.search(pattern, text)
-
-    if not match:
+    index_fm = read_front_matter(INDEX_FILE)
+    if not index_fm:
         return ""
 
-    block = match.group(1)
-    lines = []
+    sections = index_fm.get("sections", [])
+    for section in sections:
+        if section.get("id") == "presentations":
+            content = section.get("content", {})
+            text = content.get("text", "")
+            return text.strip()
 
-    for line in block.splitlines():
-        if line.startswith("      "):
-            lines.append(line[6:])
-        elif line.startswith("    "):
-            lines.append(line[4:])
+    return ""
 
-    return "\n".join(lines).strip()
 
 def main():
     template = TEMPLATE_FILE.read_text(encoding="utf-8")
@@ -99,6 +98,7 @@ def main():
 
     OUTPUT_MD.write_text(output, encoding="utf-8")
     print(f"Generated {OUTPUT_MD}")
+
 
 if __name__ == "__main__":
     main()
