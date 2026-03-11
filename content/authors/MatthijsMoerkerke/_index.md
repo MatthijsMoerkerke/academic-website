@@ -2,6 +2,9 @@
 title: "Matthijs Moerkerke"
 role: Postdoctoral Researcher
 ---
+
+title: "Matthijs Moerkerke"
+
 organizations:
   - name: Ghent University
     url: https://www.ugent.be
