@@ -145,6 +145,12 @@ My work aims to translate neurobiological insights into improved diagnostics, tr
 
 ---
 
+## Presentations
+
+{{PRESENTATIONS}}
+
+---
+
 ## Publications
 
 - Elise Cnockaert, Mira Meeus, Barbara Cagnie, Marjolein Chys, Carmel Steverlynck, Matthijs Moerkerke, Jessica Van Oosterwijck (2026). *Human assumed central sensitization in interictal migraine: a systematic review and meta-analysis*. Neurological Sciences.
