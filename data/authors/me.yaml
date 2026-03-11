@@ -41,9 +41,16 @@ links:
   - icon: at-symbol
     url: mailto:matthijs.moerkerke@ugent.be
     label: Email
+
   - icon: brands/linkedin
     url: https://www.linkedin.com/in/matthijs-moerkerke/
 
+  - icon: academicons/orcid
+    url: https://orcid.org/0000-0002-7133-8418
+    
+  - icon: academicons/google-scholar
+    url: https://scholar.google.be/citations?user=Dv9Rx2MAAAAJ&hl=en
+    
 interests:
   - Neuroendocrine mechanisms in pain and stress regulation
   - Oxytocin signaling in autism and social cognition
