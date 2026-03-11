@@ -8,7 +8,7 @@ main:
     url: "#teaching"
     weight: 20
 
-  - name: Public Engagement
+  - name: Scientific Engagement
     url: "#engagement"
     weight: 30
 
