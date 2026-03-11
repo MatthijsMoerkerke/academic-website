@@ -238,11 +238,14 @@ sections:
 
 - block: collection
   id: publications
-  content:
-    title: Publications
-    filters:
-      folders:
-        - publications
+content:
+  title: Publications
+  filters:
+    folders:
+      - publications
+  count: 0
+  sort_by: Date
+  sort_ascending: false
   design:
     view: citation
 
