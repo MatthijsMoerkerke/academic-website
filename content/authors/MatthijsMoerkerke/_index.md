@@ -1,4 +1,11 @@
 ---
+name: "Matthijs Moerkerke"
+title: "Matthijs Moerkerke"
+
+first_name: Matthijs
+last_name: Moerkerke
+---
+---
 title: "Matthijs Moerkerke"
 first_name: "Matthijs"
 last_name: "Moerkerke"
