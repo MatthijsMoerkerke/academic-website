@@ -11,7 +11,7 @@ sections:
 
   - block: resume-biography-3
     content:
-      username: matthijs
+      username: admin
       button:
         text: Download CV
         url: uploads/resume.pdf
