@@ -144,6 +144,11 @@ My work aims to translate neurobiological insights into improved diagnostics, tr
 - KU Leuven Postdoctoral Research Grant 2023
 
 ---
+## Presentations
+
+{{PRESENTATIONS}}
+
+---
 
 ## Publications
 
