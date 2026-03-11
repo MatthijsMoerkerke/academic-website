@@ -11,7 +11,7 @@ publication: "PhD Dissertation, KU Leuven"
 
 doi: ""
 
-url_pdf: "https://lirias.kuleuven.be/retrieve/de6c0112-1ce4-43da-94d1-16fb2e100f79"
+url: "https://www.bcnbp.org/images/BelgiumGotTalent/Moerkerke.pdf"
 
 featured: true
 draft: false
