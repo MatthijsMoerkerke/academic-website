@@ -17,7 +17,7 @@ sections:
     username: me
 
     text: |
-      I am a **postdoctoral researcher at Ghent University** (Department of Rehabilitation Sciences) and voluntary research fellow at KU Leuven – Center for Developmental Psychiatry.
+      I am a **postdoctoral researcher at Ghent University** (Belgium) and voluntary research fellow at KU Leuven (Belgium).
 
       My research focuses on **neurophysiology, pain science, and neuroendocrine mechanisms**, with particular interest in the role of **oxytocin**.
 
@@ -55,7 +55,7 @@ sections:
       featured_only: true
   design:
     view: article-grid
-    columns: 2
+    columns: 4
 
 
 # ---------------- ADDITIONAL TRAINING ----------------
