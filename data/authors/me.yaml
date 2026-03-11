@@ -54,28 +54,36 @@ interests:
 education:
   - degree: PhD Biomedical Sciences
     institution: KU Leuven
-    summary: The role of oxytocin in autism – a randomized clinical trial
+    summary: |
+      The role of oxytocin in autism – a randomized clinical trial.
+    button:
+      text: Dissertation
+      url: https://kuleuven.limo.libis.be/discovery/search?query=any,contains,LIRIAS3949602&tab=LIRIAS&search_scope=lirias_profile&vid=32KUL_KUL:Lirias&offset=0
+      icon: hero/arrow-top-right-on-square
   - degree: Postgraduate Studies in Advanced Medical Imaging
     institution: KU Leuven
+    summary: |
+      Postgraduate specialization in advanced medical imaging.
   - degree: Master of Biomedical Sciences
     institution: KU Leuven
+    summary: |
+      Biomedical sciences training with a strong research orientation.
 
 languages:
   - name: Dutch
     level: 5
-    label: Native
+    label: C2 · Native
   - name: English
     level: 5
-    label: Fluent
+    label: C1 · Fluent
   - name: French
     level: 2
-    label: Basic
+    label: A2 · Basic
   - name: Spanish
     level: 1
-    label: Basic
+    label: A1 · Basic
 
 awards:
   - title: Research and academic excellence awards
     summary: |
-      Multiple recognitions and competitive academic achievements
-      during graduate and doctoral training.
+      Multiple recognitions and competitive academic achievements during graduate and doctoral training.
