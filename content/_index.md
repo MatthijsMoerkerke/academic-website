@@ -98,6 +98,15 @@ sections:
 
         **Science communication and event organization**
         - Freelance contributor at **JABCO (2023–present)**, organizing scientific symposia and webinars and developing communication materials (websites, logos, livestreams) for scientific societies including the Belgian Infection Control Society.
-
+    
+    - block: collection
+    id: papers
+    content:
+      title: Publications
+      filters:
+        folders:
+          - publications
+    design:
+      view: citation
 
 ---
