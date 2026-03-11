@@ -52,8 +52,8 @@ interests:
   - Multimodal neurophysiology (EEG, neuroimaging, physiological recordings)
 
 education:
-  - degree: PhD Biomedical Sciences
-    institution: KU Leuven
+  - degree: PhD in Biomedical Sciences (Neuroscience)
+    institution: KU Leuven - 2022
     summary: |
       The role of oxytocin in autism – a randomized clinical trial.
     button:
@@ -61,11 +61,11 @@ education:
       url: https://kuleuven.limo.libis.be/discovery/search?query=any,contains,LIRIAS3949602&tab=LIRIAS&search_scope=lirias_profile&vid=32KUL_KUL:Lirias&offset=0
       icon: hero/arrow-top-right-on-square
   - degree: Postgraduate Studies in Advanced Medical Imaging
-    institution: KU Leuven
+    institution: KU Leuven - 2017
     summary: |
       Postgraduate specialization in advanced medical imaging.
   - degree: Master of Biomedical Sciences
-    institution: KU Leuven
+    institution: KU Leuven - 2016
     summary: |
       Biomedical sciences training with a strong research orientation.
 
