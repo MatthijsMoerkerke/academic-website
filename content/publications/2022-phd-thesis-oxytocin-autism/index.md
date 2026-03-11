@@ -1,5 +1,5 @@
 ---
-title: "The Role of Oxytocin in Autism"
+title: "PhD Thesis: The Role of Oxytocin in Autism"
 
 authors:
   - "Matthijs Moerkerke"
