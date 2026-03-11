@@ -36,7 +36,9 @@ jobs:
         run: |
           mkdir -p static/uploads
           pandoc cv/cv_generated.md \
-            -o static/uploads/Curriculum_Vitae_Matthijs_Moerkerke.pdf \
+            -o static/uploads/CV_Matthijs_Moerkerke.pdf \
+            --standalone \
+            --css=cv/style.css \
             --pdf-engine=wkhtmltopdf
 
       - name: Commit updated PDF
