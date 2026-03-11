@@ -1,8 +1,10 @@
 from pathlib import Path
 import yaml
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
+INDEX_FILE = ROOT / "content" / "_index.md"
 TEMPLATE_FILE = ROOT / "cv" / "template.md"
 OUTPUT_MD = ROOT / "cv" / "cv_generated.md"
 
@@ -63,13 +65,38 @@ def collect_publications():
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
     return entries
 
+def extract_presentations_block():
+    text = INDEX_FILE.read_text(encoding="utf-8")
+
+    pattern = r'id:\s*presentations\s+content:\s+title:\s*"Summary of Presentations at Conferences"\s+text:\s*\|\n((?:\s{6,}.*\n)+)'
+    match = re.search(pattern, text)
+
+    if not match:
+        return ""
+
+    block = match.group(1)
+    lines = []
+
+    for line in block.splitlines():
+        if line.startswith("      "):
+            lines.append(line[6:])
+        elif line.startswith("    "):
+            lines.append(line[4:])
+
+    return "\n".join(lines).strip()
+
 def main():
     template = TEMPLATE_FILE.read_text(encoding="utf-8")
+
     pubs = collect_publications()
     pub_lines = [format_publication(p) for p in pubs]
     pub_block = "\n".join(pub_lines)
 
+    presentations_block = extract_presentations_block()
+
     output = template.replace("{{PUBLICATIONS}}", pub_block)
+    output = output.replace("{{PRESENTATIONS}}", presentations_block)
+
     OUTPUT_MD.write_text(output, encoding="utf-8")
     print(f"Generated {OUTPUT_MD}")
 
