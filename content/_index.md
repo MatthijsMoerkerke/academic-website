@@ -12,6 +12,10 @@ sections:
     content:
       username: "matthijs"
       text: |
+        # Dr. Matthijs Moerkerke
+
+        **Neuroscientist**
+
         I am a **postdoctoral researcher at Ghent University (Department of Rehabilitation Sciences)** and voluntary research fellow at **KU Leuven – Center for Developmental Psychiatry**.
 
         My research focuses on **neurophysiology, pain science, and neuroendocrine mechanisms**, with particular interest in the role of **oxytocin in autism and pain-related processes**.
@@ -31,7 +35,7 @@ sections:
         gradient_mesh:
           enable: true
       name:
-        size: md
+        size: xs
       avatar:
         size: medium
         shape: circle
