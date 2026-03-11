@@ -1,5 +1,5 @@
 ---
-title: 'Matthijs Moerkerke'
+title: "Matthijs Moerkerke"
 summary: ''
 date: 2024-01-01
 type: landing
@@ -78,7 +78,6 @@ sections:
         **Mentoring**
         - Mentor for junior researchers in pain science and stress physiology, supporting interdisciplinary collaboration across neuroscience, psychology, and rehabilitation science.
         - Backup ombudsman for the *Postgraduate Studies in Advanced Medical Imaging* programme at KU Leuven (2017–2023).
-
 
   - block: markdown
     content:
