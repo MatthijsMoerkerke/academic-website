@@ -45,6 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add static/uploads/Curriculum_Vitae_Matthijs_Moerkerke.pdf cv/cv_generated.md
+          git add static/uploads/CV_Matthijs_Moerkerke.pdf cv/cv_generated.md
           git diff --cached --quiet || git commit -m "Auto-update CV PDF"
-          git push
+          git pull --rebase origin main
+          git push origin main
