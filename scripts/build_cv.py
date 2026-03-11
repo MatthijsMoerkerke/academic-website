@@ -74,10 +74,13 @@ def extract_presentations_block():
     if not index_fm:
         return ""
 
-    sections = index_fm.get("sections", [])
+    sections = index_fm.get("sections") or []
+
     for section in sections:
+        if not isinstance(section, dict):
+            continue
         if section.get("id") == "presentations":
-            content = section.get("content", {})
+            content = section.get("content") or {}
             text = content.get("text", "")
             return text.strip()
 
