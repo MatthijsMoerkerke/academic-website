@@ -1,5 +1,4 @@
 ---
-name: "Matthijs Moerkerke"
 title: "Matthijs Moerkerke"
 
 first_name: "Matthijs"
