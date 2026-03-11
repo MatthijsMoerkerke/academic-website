@@ -21,19 +21,7 @@ sections:
 
   - block: markdown
     content:
-      title: Research Interests
-      text: |
-        My research focuses on the neurobiological and physiological mechanisms underlying behavior, pain, and neurodevelopmental conditions. Current research interests include:
-
-        - Neuroendocrine mechanisms in pain and stress regulation
-        - Oxytocin signaling and its role in autism and social cognition
-        - Physiological and neural biomarkers of chronic pain
-        - Brain–body interactions in neurological and neurodevelopmental disorders
-        - Integration of multimodal neurophysiological methods (EEG, neuroimaging, physiological recordings)
-
-  - block: markdown
-    content:
-      title: Teaching & Mentoring
+      title: University Teaching & Mentoring
       text: |
         I am actively involved in university teaching, supervision, and mentoring of early-career researchers.
 
