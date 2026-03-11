@@ -12,6 +12,6 @@ publication_types: ["article-journal"]
 publication: "Neuroscience & Biobehavioral Reviews"
 doi: "10.1016/j.neubiorev.2026.106586"
 
-featured: false
+featured: true
 draft: false
 ---
