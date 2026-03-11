@@ -4,13 +4,16 @@ title: "Matthijs Moerkerke"
 first_name: "Matthijs"
 last_name: "Moerkerke"
 
-role: Postdoctoral Researcher
+role: "Neuroscientist"
 
 organizations:
   - name: Ghent University
     url: https://www.ugent.be
   - name: KU Leuven
     url: https://www.kuleuven.be
+
+superuser: true
+---
 
 bio: |
   Postdoctoral researcher studying neurophysiology, pain, and neuroendocrine mechanisms with a focus on oxytocin.
