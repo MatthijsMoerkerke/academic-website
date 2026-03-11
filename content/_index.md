@@ -27,7 +27,7 @@ sections:
 
     button:
       text: Download CV
-      url: uploads/resume.pdf
+      url: uploads/Curriculum_Vitae_Matthijs_Moerkerke.pdf
 
     headings:
       about: About
