@@ -21,7 +21,7 @@ sections:
 
       My research focuses on **neurophysiology, pain science, and neuroendocrine mechanisms**, with particular interest in the role of **oxytocin**.
 
-      I investigate how stress physiology, neuroendocrine signaling, and brain mechanisms interact with behavior and clinical outcomes, combining neuroimaging, EEG, physiological recordings, and clinical trial methodologies.
+      I investigate how stress physiology, neuroendocrine signaling, and brain mechanisms interact with behavior and clinical outcomes, combining neuroimaging, physiological recordings, and clinical trial methodologies.
 
       My work aims to translate neurobiological insights into improved diagnostics, treatment strategies, and rehabilitation approaches for neurological and neurodevelopmental conditions.
 
