@@ -55,7 +55,7 @@ sections:
       featured_only: true
   design:
     view: article-grid
-    columns: 4
+    columns: 2
 
 
 # ---------------- ADDITIONAL TRAINING ----------------
