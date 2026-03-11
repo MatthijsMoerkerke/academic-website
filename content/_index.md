@@ -9,9 +9,10 @@ design:
 
 sections:
   - block: resume-biography-3
-    content:
-      username: "MatthijsMoerkerke"
-      name: "Dr. Matthijs Moerkerke"
+  content:
+    username: "MatthijsMoerkerke"
+    name: "Dr. Matthijs Moerkerke"
+    summary: "Neuroscientist"
       text: |
         I am a **postdoctoral researcher at Ghent University (Department of Rehabilitation Sciences)** and voluntary research fellow at **KU Leuven – Center for Developmental Psychiatry**.
 
