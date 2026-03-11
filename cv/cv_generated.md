@@ -147,7 +147,7 @@ My work aims to translate neurobiological insights into improved diagnostics, tr
 
 ## Presentations
 
-{{PRESENTATIONS}}
+
 
 ---
 
