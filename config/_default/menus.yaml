@@ -17,11 +17,11 @@ main:
 
   - name: Awards
     url: "#awards"
-    weight: 60
+    weight: 50
     
   - name: Presentations
     url: "#presentations"
-    weight: 50
+    weight: 60
 
   - name: Publications
     url: "#publications"
