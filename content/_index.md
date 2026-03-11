@@ -233,7 +233,8 @@ sections:
       Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism, central to my PhD, awarded to Prof. Kaat Alaerts (PhD co-promotor).
 
       **KU Leuven Postdoctoral Research Grant (2023)**
-
+      Received a Postdoctoral Mandate (PDM) to coninute working on doctoral research for 1 year after PhD defence.
+  
 # ---------------- PUBLICATIONS ----------------
 
 - block: collection
