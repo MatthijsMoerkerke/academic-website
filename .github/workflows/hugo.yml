@@ -77,7 +77,11 @@ jobs:
 
       - name: Install Node.js dependencies
         run: |
-          [[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Configure Git
         run: git config core.quotepath false
