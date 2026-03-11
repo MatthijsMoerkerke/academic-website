@@ -1,28 +1,24 @@
 main:
-  - name: Bio
-    url: "#bio"
-    weight: 10
-
-  - name: Publications
-    url: "#publications"
-    weight: 20
-
   - name: Teaching & Mentoring
     url: "#teaching"
-    weight: 30
+    weight: 10
 
   - name: Public Engagement
     url: "#engagement"
-    weight: 40
+    weight: 20
 
   - name: Skills & Methods
     url: "#skills"
-    weight: 50
+    weight: 30
 
   - name: Additional Training
     url: "#training"
-    weight: 60
+    weight: 40
 
-  - name: Contact
-    url: "#contact"
-    weight: 70
+  - name: Awards
+    url: "#awards"
+    weight: 50
+
+  - name: Publications
+    url: "#publications"
+    weight: 60
