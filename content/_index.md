@@ -162,7 +162,7 @@ sections:
     title: Skills & Methods
     text: |
 
-      ### Languages
+      **Languages**
 
       ●●●●● **Dutch** — C2 (Native)  
       ●●●●● **English** — C1 (Fluent)  
