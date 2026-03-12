@@ -50,6 +50,19 @@ sections:
     text: |
       {{< scholar-metrics >}}
 
+# ---------------- FEATURED PUBLICATIONS ----------------
+
+- block: collection
+  id: featured-publications
+  content:
+    title: Featured Publications
+    filters:
+      folders:
+        - publications
+      featured_only: true
+  design:
+    view: article-grid
+    columns: 2
 # ---------------- ADDITIONAL TRAINING ----------------
 
 - block: markdown
