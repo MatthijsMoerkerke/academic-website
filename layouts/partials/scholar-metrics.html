@@ -1,0 +1,8 @@
+{{ with site.Data.scholar }}
+  <div class="mt-4 text-sm text-center text-gray-600 dark:text-gray-300">
+    <div>📈 <strong>{{ .citations }}</strong> citations · <strong>h-index {{ .h_index }}</strong></div>
+    <div class="mt-1">
+      <a href="{{ .profile }}" target="_blank" rel="noopener">Google Scholar</a>
+    </div>
+  </div>
+{{ end }}
