@@ -43,13 +43,6 @@ sections:
       shape: circle
 
   
-- block: markdown
-  id: metrics
-  content:
-    title: ""
-    text: |
-      {{< scholar-metrics >}}
-
 # ---------------- FEATURED PUBLICATIONS ----------------
 
 - block: collection
@@ -293,7 +286,13 @@ sections:
       - **Moerkerke, M., Daniels, N., Stuer-Jespers, A., Steyaert, J., Alaerts, K., Boets, B.** (2018). In search for an innovative neural marker and intervention for socio-communicative difficulties in children with and without autism spectrum disorders. *Understanding the Neuroregulatory Actions of Oxytocin and its Potential Clinical Applications*, Erice, Sicily, Italy. **(poster presentation)**
 
 # ---------------- PUBLICATIONS ----------------
-
+- block: markdown
+  id: metrics
+  content:
+    title: ""
+    text: |
+      {{< scholar-metrics >}}
+  
 - block: collection
   id: publications
   content:
