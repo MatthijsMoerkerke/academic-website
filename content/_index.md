@@ -297,7 +297,8 @@ sections:
   id: publications
   content:
     title: Publications
-   {{< scholar-metrics >}}
+    text: |
+     {{< scholar-metrics >}}
     filters:
       folders:
         - publications
