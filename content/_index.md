@@ -42,7 +42,16 @@ sections:
       size: medium
       shape: circle
   
-# ---------------- FEATURED PUBLICATIONS ----------------
+# ---------------- RESEARCH METRICS ----------------
+
+- block: markdown
+  id: metrics
+  content:
+    title: "📊 Research Metrics"
+    text: |
+      - **Citations:** 0  
+      - **h-index:** 0  
+      - [Google Scholar Profile](https://scholar.google.com/citations?user=Dv9Rx2MAAAAJ)# ---------------- FEATURED PUBLICATIONS ----------------
 
 - block: collection
   id: featured-publications
