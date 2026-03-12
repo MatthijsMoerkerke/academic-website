@@ -48,10 +48,7 @@ sections:
   content:
     title: ""
     text: |
-      <div style="margin-top:-2rem; font-size:0.95rem; color:#6b7280;">
-      📈 <strong>142</strong> citations · <strong>h-index 7</strong> ·
-      <a href="https://scholar.google.com/citations?user=Dv9Rx2MAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
-      </div>
+      {{< scholar-metrics >}}
 
 # ---------------- ADDITIONAL TRAINING ----------------
 
