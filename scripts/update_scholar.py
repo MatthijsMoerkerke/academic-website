@@ -1,27 +1,18 @@
-import requests
-import re
-from pathlib import Path
+from scholarly import scholarly
+import yaml
 
 SCHOLAR_ID = "Dv9Rx2MAAAAJ"
-URL = f"https://scholar.google.com/citations?user={SCHOLAR_ID}&hl=en"
 
-headers = {
-    "User-Agent": "Mozilla/5.0"
+author = scholarly.search_author_id(SCHOLAR_ID)
+author = scholarly.fill(author)
+
+data = {
+    "citations": author.get("citedby", 0),
+    "h_index": author.get("hindex", 0),
+    "profile": f"https://scholar.google.com/citations?user={SCHOLAR_ID}",
 }
 
-html = requests.get(URL, headers=headers).text
+with open("data/scholar.yaml", "w", encoding="utf-8") as f:
+    yaml.dump(data, f, sort_keys=False, allow_unicode=True)
 
-citations = re.search(r'Cited by</a></td><td class="gsc_rsb_std">(\d+)', html)
-hindex = re.search(r'h-index</a></td><td class="gsc_rsb_std">(\d+)', html)
-
-citations = citations.group(1) if citations else "0"
-hindex = hindex.group(1) if hindex else "0"
-
-data = f"""citations: {citations}
-h_index: {hindex}
-profile: https://scholar.google.com/citations?user={SCHOLAR_ID}
-"""
-
-Path("data/scholar.yaml").write_text(data)
-
-print("Scholar metrics updated.")
+print("Scholar metrics updated")
