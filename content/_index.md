@@ -103,7 +103,7 @@ sections:
       **University teaching**
 
       - Lecturer for *Evidence-Based Medicine & Statistics 3* (BA Rehabilitation Sciences, Ghent University) — responsible for theoretical lectures and coordination of practical seminars.
-      - Leading curricular reform and supervising **eight PhD teaching assistants**.
+      - Leading curricular reform and supervising eight PhD teaching assistants.
 
       **Graduate and undergraduate supervision**
 
@@ -129,28 +129,28 @@ sections:
     text: |
       **Scientific collaboration & service**
 
-      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing international networking events (2023–present)
+      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing                 international networking events (2023–present)
           https://paininmotion.be/
   
-      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-science initiatives (2025–present)
+      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-            science initiatives (2025–present)
           https://amore-project.org/
-      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)
+      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and              global participant engagement (2025–present)
           https://www.painscienceinmotion.com/
 
       - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
   
       **Scientific outreach in mainstream media**
 
-      - EOS Wetenschap — Oxytocin nasal spray may improve social bonding in children with autism  
+      - **EOS Wetenschap** — Oxytocin nasal spray may improve social bonding in children with autism  
         https://www.eoswetenschap.eu/psyche-brein/oxytocine-neusspray-verbetert-mogelijk-sociale-banden-bij-kinderen-met-autisme
 
-      - ACAMH Podcast — Oxytocin administration, neural sensitivity and autism  
+      - **ACAMH Podcast** — Oxytocin administration, neural sensitivity and autism  
         https://acamhlearn.org/Learning/Oxytocin_Administration_Neural_Sensitivity_and_Autism/a843e835-992f-4982-9cdd-4b30738c4f8f
 
-      - KU Leuven Blog — De invloed van oxytocine-neusspray op kinderen met autisme  
+      - **KU Leuven Blog** — De invloed van oxytocine-neusspray op kinderen met autisme  
         https://www.kuleuven.be/child-youth/nl/blog/posts/de-invloed-van-oxytocine-neusspray-op-kinderen-met-autisme
 
-      - Pain in Motion Blog — The role of oxytocin in chronic pain  
+      - **Pain in Motion Blog** — The role of oxytocin in chronic pain  
         https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain
 
       **Public science events**
@@ -166,7 +166,7 @@ sections:
       - International Society for Autism Research (INSAR)  
       - Belgian Association for Psychological Sciences (BAPS)  
       - Leuven Brain Institute (LBI)  
-      - KU Leuven Child & Youth Institute  
+      - KU Leuven Child & Youth Institute (L-C&Y)  
       - Leuven Autism Research (LAuRes)  
       - Alliantieonderzoeksgroep UGent–VUB Motor Mind
 
@@ -188,10 +188,8 @@ sections:
       **Medical imaging proficiencies**
 
       Scanning, pre-processing and analysis of images taken with **Magnetic Resonance Imaging (MRI)**  
-      (functional, structural and diffusion weighted MRI) and **electroencephalography (EEG)** including stress physiology measures (heart rate, respiration rate and skin conductance).
-
+      (functional, structural and diffusion weighted MRI) and **electroencephalography (EEG)** including stress physiology measures (heart rate, respiration rate         and skin conductance).
       Software experience includes:
-
       - Letswave 6
       - SPM 8–12
       - CAT12
@@ -241,7 +239,7 @@ sections:
     title: Awards & Grants
     text: |
       **Fulbright Postdoctoral Research Award Nominee 2026 (Belgium–USA)**  
-      Nominated for a research stay at Stanford University to develop predictive modelling and machine-learning approaches for multimodal physiological data in chronic pain research.
+      Nominated for a research stay at Stanford University to develop predictive modelling and machine-learning approaches for multimodal physiological data in          chronic pain research.
 
       **PhD Dissertation Award 2024**  
       Awarded by the International Society for Autism Research (INSAR), presented at the Annual Meeting in Melbourne, Australia.  
@@ -252,7 +250,7 @@ sections:
       https://www.bcnbp.org/belgiums-got-talent
 
       **Thérèse Vandereecken Prize for Clinical Medicine 2023**  
-      Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism.
+      Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism, awared to Prof.         Alaerts (PhD copromotor)
 
       **KU Leuven Postdoctoral Research Grant 2023**  
       Postdoctoral Mandate (PDM) awarded to continue doctoral research for one year after PhD defence.
