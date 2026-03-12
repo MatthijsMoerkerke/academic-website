@@ -1,9 +1,9 @@
 {{ $pubs := len (where site.RegularPages "Section" "publications") }}
 {{ with site.Data.scholar }}
 <div style="margin-top:-2rem; font-size:0.95rem; color:#6b7280;">
+  📚 Publications: <strong>{{ $pubs }}</strong> ·
   📈 Citations: <strong>{{ .citations }}</strong> ·
   📊 h-index: <strong>{{ .h_index }}</strong> ·
-  📚 Publications: <strong>{{ $pubs }}</strong> ·
-  <a href="{{ .profile }}" target="_blank" rel="noopener">Google Scholar</a>
+    <a href="{{ .profile }}" target="_blank" rel="noopener">Google Scholar</a>
 </div>
 {{ end }}
