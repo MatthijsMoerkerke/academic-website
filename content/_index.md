@@ -41,29 +41,6 @@ sections:
     avatar:
       size: medium
       shape: circle
-  
-# ---------------- RESEARCH METRICS ----------------
-
-- block: markdown
-  id: metrics
-  content:
-    title: "📊 Research Metrics"
-    text: |
-      - **Citations:** 0  
-      - **h-index:** 0  
-      - [Google Scholar Profile](https://scholar.google.com/citations?user=Dv9Rx2MAAAAJ)# ---------------- FEATURED PUBLICATIONS ----------------
-
-- block: collection
-  id: featured-publications
-  content:
-    title: Featured Publications
-    filters:
-      folders:
-        - publications
-      featured_only: true
-  design:
-    view: article-grid
-    columns: 2
 
 
 # ---------------- ADDITIONAL TRAINING ----------------
