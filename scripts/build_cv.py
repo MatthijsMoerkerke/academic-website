@@ -16,13 +16,26 @@ STYLE_FILE = ROOT / "cv" / "style.css"
 OUTPUT_HTML = ROOT / "cv" / "cv_generated.html"
 
 
-def read_text_file(path: Path) -> str:
+def read_front_matter(path: Path) -> dict:
     if not path.exists():
         raise FileNotFoundError(f"Missing file: {path}")
-    return path.read_text(encoding="utf-8")
+
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---"):
+        raise RuntimeError(f"{path} does not start with YAML front matter")
+
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        raise RuntimeError(f"Could not parse front matter in {path}")
+
+    data = yaml.safe_load(parts[1]) or {}
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Front matter in {path} is not a mapping")
+
+    return data
 
 
-def read_yaml_file(path: Path) -> dict:
+def read_yaml(path: Path) -> dict:
     if not path.exists():
         return {}
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -34,14 +47,13 @@ def clean_markdown_block(text: str) -> str:
         return ""
 
     text = text.replace("\r\n", "\n")
-
-    cleaned_lines = []
+    lines = []
     for line in text.split("\n"):
         line = line.rstrip()
         line = re.sub(r"[ \t]{2,}", " ", line)
-        cleaned_lines.append(line)
+        lines.append(line)
 
-    text = "\n".join(cleaned_lines).strip()
+    text = "\n".join(lines).strip()
 
     # bare URLs clickable
     text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
@@ -53,19 +65,22 @@ def strip_cv_button_from_bio(text: str) -> str:
     if not text:
         return ""
 
-    # Remove full HTML button paragraph
+    # Remove full HTML button paragraph / anchor
     text = re.sub(
-        r'(?is)<p[^>]*>\s*<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>\s*</p>',
+        r'(?is)<p[^>]*>.*?<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>.*?</p>',
         "",
         text,
     )
 
-    # Remove markdown fallback if ever present
+    # Remove standalone anchor if present
     text = re.sub(
-        r'(?im)^\[Download CV\]\([^)]+CV_Matthijs_Moerkerke\.pdf[^)]*\)\s*$',
+        r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>',
         "",
         text,
     )
+
+    # Remove literal "Download CV" line if it survived
+    text = re.sub(r"(?im)^\s*Download CV\s*$", "", text)
 
     return text.strip()
 
@@ -81,124 +96,33 @@ def md_to_html(text: str) -> str:
     )
 
 
-def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
-    pattern = (
-        rf"(?ms)^-\s*block:.*?\n"
-        rf"\s+id:\s*{re.escape(block_id)}\s*\n"
-        rf".*?"
-        rf"^\s+content:\s*\n"
-        rf".*?"
-        rf"^\s+title:\s*\"?(.*?)\"?\s*$"
-    )
-    match = re.search(pattern, site_text)
-    if not match:
-        return fallback
-    title = match.group(1).strip()
-    return title if title else fallback
+def get_homepage_sections() -> dict:
+    fm = read_front_matter(SITE_INDEX)
+    sections = fm.get("sections", [])
+    if not isinstance(sections, list):
+        raise RuntimeError(f"'sections' in {SITE_INDEX} is not a list")
 
-
-def extract_text_block(site_text: str, block_id: str) -> str:
-    """
-    Extract only the lines that belong to:
-      text: |
-        ...
-    and stop before sibling keys like button:, headings:, design:, etc.
-    """
-    lines = site_text.splitlines()
-
-    block_start = None
-    for i, line in enumerate(lines):
-        if re.match(rf"^\s+id:\s*{re.escape(block_id)}\s*$", line):
-            block_start = i
-            break
-
-    if block_start is None:
-        return ""
-
-    text_line_index = None
-    text_indent = None
-    for i in range(block_start, len(lines)):
-        line = lines[i]
-        m = re.match(r"^(\s+)text:\s*\|\s*$", line)
-        if m:
-            text_line_index = i
-            text_indent = len(m.group(1))
-            break
-        if i > block_start and re.match(r"^\s*-\s*block:", line):
-            break
-
-    if text_line_index is None:
-        return ""
-
-    collected = []
-    for i in range(text_line_index + 1, len(lines)):
-        line = lines[i]
-
-        if line.strip() == "":
-            collected.append("")
+    out = {}
+    for sec in sections:
+        if not isinstance(sec, dict):
             continue
+        sec_id = sec.get("id", "")
+        content = sec.get("content", {}) or {}
+        out[sec_id] = {
+            "title": content.get("title", ""),
+            "text": content.get("text", "") or "",
+            "raw": sec,
+        }
 
-        indent = len(line) - len(line.lstrip(" "))
+    # remove download button HTML from bio
+    if "bio" in out:
+        out["bio"]["text"] = strip_cv_button_from_bio(out["bio"].get("text", ""))
 
-        if indent <= text_indent:
-            break
-
-        collected.append(line)
-
-    if not collected:
-        return ""
-
-    nonempty = [ln for ln in collected if ln.strip()]
-    min_indent = min(len(ln) - len(ln.lstrip(" ")) for ln in nonempty) if nonempty else 0
-    normalized = [ln[min_indent:] if len(ln) >= min_indent else ln.lstrip() for ln in collected]
-
-    return clean_markdown_block("\n".join(normalized).strip())
-
-
-def get_site_sections():
-    site_text = read_text_file(SITE_INDEX)
-
-    bio_text = extract_text_block(site_text, "bio")
-    bio_text = strip_cv_button_from_bio(bio_text)
-
-    return {
-        "bio": {
-            "title": "About",
-            "text": bio_text,
-        },
-        "training": {
-            "title": extract_block_title(site_text, "training", "Additional Training"),
-            "text": extract_text_block(site_text, "training"),
-        },
-        "teaching": {
-            "title": extract_block_title(site_text, "teaching", "Teaching & Mentoring"),
-            "text": extract_text_block(site_text, "teaching"),
-        },
-        "engagement": {
-            "title": extract_block_title(site_text, "engagement", "Scientific Engagement & Outreach"),
-            "text": extract_text_block(site_text, "engagement"),
-        },
-        "skills": {
-            "title": extract_block_title(site_text, "skills", "Skills & Methods"),
-            "text": extract_text_block(site_text, "skills"),
-        },
-        "awards": {
-            "title": extract_block_title(site_text, "awards", "Awards & Grants"),
-            "text": extract_text_block(site_text, "awards"),
-        },
-        "presentations": {
-            "title": extract_block_title(site_text, "presentations", "Summary of Presentations at Conferences"),
-            "text": extract_text_block(site_text, "presentations"),
-        },
-    }
-
-
-def read_author_data():
-    return read_yaml_file(AUTHOR_DATA)
+    return out
 
 
 def read_scholar_metrics():
-    data = read_yaml_file(SCHOLAR_FILE)
+    data = read_yaml(SCHOLAR_FILE)
     return {
         "citations": data.get("citations", 0),
         "h_index": data.get("h_index", 0),
@@ -210,11 +134,9 @@ def read_publication_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return None
-
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
-
     return yaml.safe_load(parts[1])
 
 
@@ -266,15 +188,12 @@ def collect_publications():
     for folder in PUBLICATIONS_DIR.iterdir():
         if not folder.is_dir():
             continue
-
         index_file = folder / "index.md"
         if not index_file.exists():
             continue
-
         fm = read_publication_front_matter(index_file)
         if not fm:
             continue
-
         entries.append(fm)
 
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
@@ -318,7 +237,10 @@ def build_bio_block(sections, author_data):
     role = author_data.get("role", "Neuroscientist")
 
     affiliations = author_data.get("affiliations", [])
-    affiliation_html = "<br>".join(a.get("name", "") for a in affiliations if isinstance(a, dict) and a.get("name"))
+    affiliation_html = "<br>".join(
+        a.get("name", "") for a in affiliations
+        if isinstance(a, dict) and a.get("name")
+    )
 
     email = "matthijs.moerkerke@ugent.be"
     linkedin = "https://www.linkedin.com/in/matthijs-moerkerke/"
@@ -329,8 +251,6 @@ def build_bio_block(sections, author_data):
         if not isinstance(link, dict):
             continue
         url = link.get("url", "")
-        label = link.get("label", "")
-
         if url.startswith("mailto:"):
             email = url.replace("mailto:", "")
         elif "linkedin.com" in url:
@@ -352,9 +272,7 @@ def build_bio_block(sections, author_data):
       <div class="hero-heading">
         <h1>{display_name}</h1>
         <div class="hero-subtitle">{role}</div>
-        <div class="hero-affiliation">
-          {affiliation_html}
-        </div>
+        <div class="hero-affiliation">{affiliation_html}</div>
       </div>
     </div>
 
@@ -373,16 +291,33 @@ def build_bio_block(sections, author_data):
 """.strip()
 
 
+def build_markdown_section(sections, sec_id: str, fallback_title: str) -> str:
+    sec = sections.get(sec_id, {})
+    title = sec.get("title", fallback_title)
+    body = md_to_html(sec.get("text", ""))
+
+    if not body:
+        return ""
+
+    return f"""
+<section class="cv-section">
+  <h2>{title}</h2>
+  <div class="section-body">
+    {body}
+  </div>
+</section>
+""".strip()
+
+
 def build_card_section(title: str, cards: list[str]) -> str:
     if not cards:
         return ""
 
-    cards_html = "\n".join(cards)
     return f"""
 <section class="cv-section">
   <h2>{title}</h2>
   <div class="card-grid">
-    {cards_html}
+    {"".join(cards)}
   </div>
 </section>
 """.strip()
@@ -400,9 +335,7 @@ def build_education_section(author_data):
         button = item.get("button", {}) or {}
         url = button.get("url", "")
 
-        link_html = ""
-        if url:
-            link_html = f'<div class="card-link"><a href="{url}">Dissertation link</a></div>'
+        link_html = f'<div class="card-link"><a href="{url}">Dissertation link</a></div>' if url else ""
 
         cards.append(f"""
 <div class="info-card">
@@ -421,7 +354,7 @@ def build_interests_section(author_data):
     if not interests:
         return ""
 
-    pills = "\n".join(f'<span class="interest-pill">{item}</span>' for item in interests)
+    pills = "".join(f'<span class="interest-pill">{item}</span>' for item in interests)
     return f"""
 <section class="cv-section">
   <h2>Interests</h2>
@@ -434,10 +367,8 @@ def build_interests_section(author_data):
 
 def build_languages_section(author_data):
     languages = author_data.get("languages", [])
-    if not languages:
-        return ""
-
     cards = []
+
     for item in languages:
         if not isinstance(item, dict):
             continue
@@ -451,24 +382,6 @@ def build_languages_section(author_data):
 """.strip())
 
     return build_card_section("Languages", cards)
-
-
-def build_markdown_section(sections, sec_id: str, fallback_title: str) -> str:
-    sec = sections.get(sec_id, {})
-    title = sec.get("title", fallback_title)
-    body = md_to_html(sec.get("text", ""))
-
-    if not body:
-        return ""
-
-    return f"""
-<section class="cv-section">
-  <h2>{title}</h2>
-  <div class="section-body">
-    {body}
-  </div>
-</section>
-""".strip()
 
 
 def build_publications_section():
@@ -503,8 +416,8 @@ def build_publications_section():
 
 
 def main():
-    sections = get_site_sections()
-    author_data = read_author_data()
+    sections = get_homepage_sections()
+    author_data = read_yaml(AUTHOR_DATA)
     template = TEMPLATE_FILE.read_text(encoding="utf-8")
     style = STYLE_FILE.read_text(encoding="utf-8")
 
@@ -528,9 +441,6 @@ def main():
         output = output.replace(key, value)
 
     OUTPUT_HTML.write_text(output, encoding="utf-8")
-    print(f"Using homepage source: {SITE_INDEX}")
-    print(f"Using author data: {AUTHOR_DATA}")
-    print(f"Using avatar directory: {AUTHOR_DIR}")
     print(f"Generated {OUTPUT_HTML}")
 
 
