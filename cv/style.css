@@ -325,6 +325,21 @@ hr {
   margin-bottom: 10px;
   font-size: 9.3pt;
 }
+.hero-right h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 11pt;
+  color: #10213a;
+}
+
+.contact-line {
+  margin-bottom: 10px;
+  font-size: 9.3pt;
+}
+
+.contact-line strong {
+  color: #10213a;
+}
 
 .contact-line strong {
   color: #10213a;
