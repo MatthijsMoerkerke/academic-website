@@ -5,7 +5,9 @@ import yaml
 import markdown
 
 ROOT = Path(__file__).resolve().parents[1]
+
 SITE_INDEX = ROOT / "content" / "_index.md"
+AUTHOR_DATA = ROOT / "data" / "authors" / "me.yaml"
 AUTHOR_DIR = ROOT / "content" / "authors" / "matthijs"
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
 SCHOLAR_FILE = ROOT / "data" / "scholar.yaml"
@@ -18,6 +20,13 @@ def read_text_file(path: Path) -> str:
     if not path.exists():
         raise FileNotFoundError(f"Missing file: {path}")
     return path.read_text(encoding="utf-8")
+
+
+def read_yaml_file(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    return data if isinstance(data, dict) else {}
 
 
 def clean_markdown_block(text: str) -> str:
@@ -34,10 +43,31 @@ def clean_markdown_block(text: str) -> str:
 
     text = "\n".join(cleaned_lines).strip()
 
-    # Convert bare URL lines into clickable links
+    # bare URLs clickable
     text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
 
     return text
+
+
+def strip_cv_button_from_bio(text: str) -> str:
+    if not text:
+        return ""
+
+    # Remove full HTML button paragraph
+    text = re.sub(
+        r'(?is)<p[^>]*>\s*<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>\s*</p>',
+        "",
+        text,
+    )
+
+    # Remove markdown fallback if ever present
+    text = re.sub(
+        r'(?im)^\[Download CV\]\([^)]+CV_Matthijs_Moerkerke\.pdf[^)]*\)\s*$',
+        "",
+        text,
+    )
+
+    return text.strip()
 
 
 def md_to_html(text: str) -> str:
@@ -76,7 +106,6 @@ def extract_text_block(site_text: str, block_id: str) -> str:
     """
     lines = site_text.splitlines()
 
-    # Find the block with id: <block_id>
     block_start = None
     for i, line in enumerate(lines):
         if re.match(rf"^\s+id:\s*{re.escape(block_id)}\s*$", line):
@@ -86,7 +115,6 @@ def extract_text_block(site_text: str, block_id: str) -> str:
     if block_start is None:
         return ""
 
-    # Find the "text: |" line after block_start
     text_line_index = None
     text_indent = None
     for i in range(block_start, len(lines)):
@@ -96,27 +124,22 @@ def extract_text_block(site_text: str, block_id: str) -> str:
             text_line_index = i
             text_indent = len(m.group(1))
             break
-
-        # stop if next top-level block starts before text was found
         if i > block_start and re.match(r"^\s*-\s*block:", line):
             break
 
     if text_line_index is None:
         return ""
 
-    # Collect only lines indented more than the text: line
     collected = []
     for i in range(text_line_index + 1, len(lines)):
         line = lines[i]
 
-        # blank lines belong to the text block
         if line.strip() == "":
             collected.append("")
             continue
 
         indent = len(line) - len(line.lstrip(" "))
 
-        # text block content must be more indented than the text: line itself
         if indent <= text_indent:
             break
 
@@ -125,7 +148,6 @@ def extract_text_block(site_text: str, block_id: str) -> str:
     if not collected:
         return ""
 
-    # remove common leading indentation
     nonempty = [ln for ln in collected if ln.strip()]
     min_indent = min(len(ln) - len(ln.lstrip(" ")) for ln in nonempty) if nonempty else 0
     normalized = [ln[min_indent:] if len(ln) >= min_indent else ln.lstrip() for ln in collected]
@@ -136,10 +158,13 @@ def extract_text_block(site_text: str, block_id: str) -> str:
 def get_site_sections():
     site_text = read_text_file(SITE_INDEX)
 
+    bio_text = extract_text_block(site_text, "bio")
+    bio_text = strip_cv_button_from_bio(bio_text)
+
     return {
         "bio": {
             "title": "About",
-            "text": extract_text_block(site_text, "bio"),
+            "text": bio_text,
         },
         "training": {
             "title": extract_block_title(site_text, "training", "Additional Training"),
@@ -168,11 +193,12 @@ def get_site_sections():
     }
 
 
-def read_scholar_metrics():
-    if not SCHOLAR_FILE.exists():
-        return {"citations": 0, "h_index": 0, "profile": ""}
+def read_author_data():
+    return read_yaml_file(AUTHOR_DATA)
 
-    data = yaml.safe_load(SCHOLAR_FILE.read_text(encoding="utf-8")) or {}
+
+def read_scholar_metrics():
+    data = read_yaml_file(SCHOLAR_FILE)
     return {
         "citations": data.get("citations", 0),
         "h_index": data.get("h_index", 0),
@@ -259,7 +285,6 @@ def find_avatar_data_uri():
     if not AUTHOR_DIR.exists():
         return ""
 
-    # Prefer exact avatar filename first
     preferred = [
         AUTHOR_DIR / "avatar.jpg",
         AUTHOR_DIR / "avatar.jpeg",
@@ -285,13 +310,37 @@ def find_avatar_data_uri():
     return ""
 
 
-def build_bio_block(sections):
+def build_bio_block(sections, author_data):
     bio_text = md_to_html(sections.get("bio", {}).get("text", ""))
     avatar_src = find_avatar_data_uri()
 
+    display_name = author_data.get("name", {}).get("display", "Matthijs Moerkerke")
+    role = author_data.get("role", "Neuroscientist")
+
+    affiliations = author_data.get("affiliations", [])
+    affiliation_html = "<br>".join(a.get("name", "") for a in affiliations if isinstance(a, dict) and a.get("name"))
+
+    email = "matthijs.moerkerke@ugent.be"
+    linkedin = "https://www.linkedin.com/in/matthijs-moerkerke/"
+    orcid = "https://orcid.org/0000-0002-7133-8418"
+    website = "https://matthijsmoerkerke.com"
+
+    for link in author_data.get("links", []):
+        if not isinstance(link, dict):
+            continue
+        url = link.get("url", "")
+        label = link.get("label", "")
+
+        if url.startswith("mailto:"):
+            email = url.replace("mailto:", "")
+        elif "linkedin.com" in url:
+            linkedin = url
+        elif "orcid.org" in url:
+            orcid = url
+
     avatar_html = ""
     if avatar_src:
-        avatar_html = f'<img class="hero-avatar" src="{avatar_src}" alt="Matthijs Moerkerke">'
+        avatar_html = f'<img class="hero-avatar" src="{avatar_src}" alt="{display_name}">'
 
     return f"""
 <div class="hero">
@@ -301,11 +350,10 @@ def build_bio_block(sections):
         {avatar_html}
       </div>
       <div class="hero-heading">
-        <h1>Matthijs Moerkerke</h1>
-        <div class="hero-subtitle">Neuroscientist</div>
+        <h1>{display_name}</h1>
+        <div class="hero-subtitle">{role}</div>
         <div class="hero-affiliation">
-          Ghent University — Spine, Head and Pain Research Unit, Department of Rehabilitation Sciences<br>
-          KU Leuven — Center for Developmental Psychiatry, Department of Neurosciences
+          {affiliation_html}
         </div>
       </div>
     </div>
@@ -316,13 +364,93 @@ def build_bio_block(sections):
   </div>
 
   <div class="hero-right">
-    <div><strong>Email</strong><br>matthijs.moerkerke@ugent.be</div>
-    <div><strong>LinkedIn</strong><br><a href="https://www.linkedin.com/in/matthijs-moerkerke/">linkedin.com/in/matthijs-moerkerke</a></div>
-    <div><strong>ORCID</strong><br><a href="https://orcid.org/0000-0002-7133-8418">orcid.org/0000-0002-7133-8418</a></div>
-    <div><strong>Website</strong><br><a href="https://matthijsmoerkerke.com">matthijsmoerkerke.com</a></div>
+    <div><strong>Email</strong><br>{email}</div>
+    <div><strong>LinkedIn</strong><br><a href="{linkedin}">{linkedin.replace("https://www.", "").replace("https://", "")}</a></div>
+    <div><strong>ORCID</strong><br><a href="{orcid}">{orcid.replace("https://", "")}</a></div>
+    <div><strong>Website</strong><br><a href="{website}">{website.replace("https://", "")}</a></div>
   </div>
 </div>
 """.strip()
+
+
+def build_card_section(title: str, cards: list[str]) -> str:
+    if not cards:
+        return ""
+
+    cards_html = "\n".join(cards)
+    return f"""
+<section class="cv-section">
+  <h2>{title}</h2>
+  <div class="card-grid">
+    {cards_html}
+  </div>
+</section>
+""".strip()
+
+
+def build_education_section(author_data):
+    cards = []
+    for item in author_data.get("education", []):
+        if not isinstance(item, dict):
+            continue
+
+        degree = item.get("degree", "")
+        institution = item.get("institution", "")
+        summary = item.get("summary", "")
+        button = item.get("button", {}) or {}
+        url = button.get("url", "")
+
+        link_html = ""
+        if url:
+            link_html = f'<div class="card-link"><a href="{url}">Dissertation link</a></div>'
+
+        cards.append(f"""
+<div class="info-card">
+  <div class="info-card-title">{degree}</div>
+  <div class="info-card-subtitle">{institution}</div>
+  <div class="info-card-body">{md_to_html(summary)}</div>
+  {link_html}
+</div>
+""".strip())
+
+    return build_card_section("Education", cards)
+
+
+def build_interests_section(author_data):
+    interests = author_data.get("interests", [])
+    if not interests:
+        return ""
+
+    pills = "\n".join(f'<span class="interest-pill">{item}</span>' for item in interests)
+    return f"""
+<section class="cv-section">
+  <h2>Interests</h2>
+  <div class="interest-pills">
+    {pills}
+  </div>
+</section>
+""".strip()
+
+
+def build_languages_section(author_data):
+    languages = author_data.get("languages", [])
+    if not languages:
+        return ""
+
+    cards = []
+    for item in languages:
+        if not isinstance(item, dict):
+            continue
+        name = item.get("name", "")
+        label = item.get("label", "")
+        cards.append(f"""
+<div class="info-card compact">
+  <div class="info-card-title">{name}</div>
+  <div class="info-card-subtitle">{label}</div>
+</div>
+""".strip())
+
+    return build_card_section("Languages", cards)
 
 
 def build_markdown_section(sections, sec_id: str, fallback_title: str) -> str:
@@ -376,16 +504,20 @@ def build_publications_section():
 
 def main():
     sections = get_site_sections()
+    author_data = read_author_data()
     template = TEMPLATE_FILE.read_text(encoding="utf-8")
     style = STYLE_FILE.read_text(encoding="utf-8")
 
     replacements = {
         "{{STYLE}}": style,
-        "{{BIO_BLOCK}}": build_bio_block(sections),
+        "{{BIO_BLOCK}}": build_bio_block(sections, author_data),
+        "{{EDUCATION_SECTION}}": build_education_section(author_data),
+        "{{INTERESTS_SECTION}}": build_interests_section(author_data),
         "{{TRAINING_SECTION}}": build_markdown_section(sections, "training", "Additional Training"),
         "{{TEACHING_SECTION}}": build_markdown_section(sections, "teaching", "Teaching & Mentoring"),
         "{{ENGAGEMENT_SECTION}}": build_markdown_section(sections, "engagement", "Scientific Engagement & Outreach"),
         "{{SKILLS_SECTION}}": build_markdown_section(sections, "skills", "Skills & Methods"),
+        "{{LANGUAGES_SECTION}}": build_languages_section(author_data),
         "{{AWARDS_SECTION}}": build_markdown_section(sections, "awards", "Awards & Grants"),
         "{{PRESENTATIONS_SECTION}}": build_markdown_section(sections, "presentations", "Summary of Presentations at Conferences"),
         "{{PUBLICATIONS_SECTION}}": build_publications_section(),
@@ -397,6 +529,7 @@ def main():
 
     OUTPUT_HTML.write_text(output, encoding="utf-8")
     print(f"Using homepage source: {SITE_INDEX}")
+    print(f"Using author data: {AUTHOR_DATA}")
     print(f"Using avatar directory: {AUTHOR_DIR}")
     print(f"Generated {OUTPUT_HTML}")
 
