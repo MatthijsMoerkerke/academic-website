@@ -1,9 +1,15 @@
 name: Build CV PDF
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    paths:
+      - 'content/_index.md'
+      - 'content/publications/**'
+      - 'data/scholar.yaml'
+      - 'scripts/build_cv.py'
+      - 'cv/**'
+      - '.github/workflows/build-cv.yml'
 
 permissions:
   contents: write
@@ -13,39 +19,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install Python packages
-        run: pip install -r requirements.txt
 
-      - name: Install Pandoc and wkhtmltopdf
+      - name: Install Python packages
+        run: |
+          pip install pyyaml markdown
+
+
+      - name: Install wkhtmltopdf
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc wkhtmltopdf
+          sudo apt-get install -y wkhtmltopdf
 
-      - name: Build CV markdown
-        run: python scripts/build_cv.py
+
+      - name: Build CV HTML
+        run: |
+          python scripts/build_cv.py
+
 
       - name: Generate PDF
         run: |
           mkdir -p static/uploads
-          pandoc cv/cv_generated.md \
-            -o static/uploads/CV_Matthijs_Moerkerke.pdf \
-            --standalone \
-            --css=cv/style.css \
-            --pdf-engine=wkhtmltopdf
+          wkhtmltopdf \
+            --enable-local-file-access \
+            cv/cv_generated.html \
+            static/uploads/CV_Matthijs_Moerkerke.pdf
 
-      - name: Commit updated PDF
+
+      - name: Commit updated CV
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add static/uploads/CV_Matthijs_Moerkerke.pdf cv/cv_generated.md
-          git diff --cached --quiet || git commit -m "Auto-update CV PDF"
-          git pull --rebase origin main
-          git push origin main
+
+          git add cv/cv_generated.html
+          git add static/uploads/CV_Matthijs_Moerkerke.pdf
+
+          if git diff --cached --quiet; then
+            echo "No CV changes"
+            exit 0
+          fi
+
+          git commit -m "Auto update CV"
+          git push
