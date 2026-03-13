@@ -3,17 +3,12 @@ import re
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+CONTENT_DIR = ROOT / "content"
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
 SCHOLAR_FILE = ROOT / "data" / "scholar.yaml"
 TEMPLATE_FILE = ROOT / "cv" / "template.md"
 PRESENTATIONS_FILE = ROOT / "cv" / "presentations.md"
 OUTPUT_MD = ROOT / "cv" / "cv_generated.md"
-
-SITE_INDEX_CANDIDATES = [
-    ROOT / "content" / "index.md",
-    ROOT / "content" / "_index.md",
-    ROOT / "content" / "home" / "index.md",
-]
 
 
 def read_front_matter(md_path: Path):
@@ -26,14 +21,36 @@ def read_front_matter(md_path: Path):
     return yaml.safe_load(parts[1])
 
 
+def looks_like_homepage_sections(data: dict) -> bool:
+    if not isinstance(data, dict):
+        return False
+
+    sections = data.get("sections")
+    if not isinstance(sections, list):
+        return False
+
+    ids = {
+        sec.get("id")
+        for sec in sections
+        if isinstance(sec, dict)
+    }
+
+    expected_ids = {
+        "bio",
+        "training",
+        "teaching",
+        "engagement",
+        "skills",
+        "awards",
+        "publications",
+    }
+    return len(ids.intersection(expected_ids)) >= 3
+
+
 def resolve_site_index_and_data():
     checked = []
 
-    for path in SITE_INDEX_CANDIDATES:
-        if not path.exists():
-            checked.append(f"{path} (missing)")
-            continue
-
+    for path in sorted(CONTENT_DIR.rglob("*.md")):
         try:
             data = read_front_matter(path)
         except Exception as exc:
@@ -41,18 +58,17 @@ def resolve_site_index_and_data():
             continue
 
         if not isinstance(data, dict):
-            checked.append(f"{path} (front matter is not a dict)")
+            checked.append(f"{path} (no usable front matter)")
             continue
 
-        sections = data.get("sections")
-        if isinstance(sections, list):
+        if looks_like_homepage_sections(data):
             return path, data
 
-        checked.append(f"{path} (no usable sections list)")
+        checked.append(f"{path} (not homepage sections file)")
 
     raise RuntimeError(
-        "Could not find a valid site landing file with a sections list. Checked:\n- "
-        + "\n- ".join(checked)
+        "Could not find the homepage file with landing-page sections. Checked:\n- "
+        + "\n- ".join(str(x) for x in checked[:50])
     )
 
 
@@ -60,8 +76,7 @@ SITE_INDEX, SITE_DATA = resolve_site_index_and_data()
 
 
 def read_site_sections():
-    data = SITE_DATA
-    sections = data.get("sections") or []
+    sections = SITE_DATA.get("sections") or []
     out = {}
 
     for sec in sections:
@@ -214,7 +229,9 @@ def build_bio_block():
 
 def build_profile_section(site_sections):
     bio = site_sections.get("bio", {})
-    bio_text = clean_markdown_block(bio.get("raw", {}).get("content", {}).get("text", ""))
+    bio_text = clean_markdown_block(
+        bio.get("raw", {}).get("content", {}).get("text", "")
+    )
     return f"## About\n\n{bio_text}"
 
 
@@ -230,7 +247,10 @@ def build_teaching_section(site_sections):
 
 def build_engagement_section(site_sections):
     sec = site_sections.get("engagement", {})
-    return section_markdown(sec.get("title", "Scientific Engagement & Outreach"), sec.get("text", ""))
+    return section_markdown(
+        sec.get("title", "Scientific Engagement & Outreach"),
+        sec.get("text", ""),
+    )
 
 
 def build_skills_section(site_sections):
