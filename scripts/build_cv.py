@@ -3,12 +3,30 @@ import re
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_INDEX = ROOT / "content" / "index.md"
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
 SCHOLAR_FILE = ROOT / "data" / "scholar.yaml"
 TEMPLATE_FILE = ROOT / "cv" / "template.md"
 PRESENTATIONS_FILE = ROOT / "cv" / "presentations.md"
 OUTPUT_MD = ROOT / "cv" / "cv_generated.md"
+
+SITE_INDEX_CANDIDATES = [
+    ROOT / "content" / "index.md",
+    ROOT / "content" / "_index.md",
+    ROOT / "content" / "home" / "index.md",
+]
+
+
+def resolve_site_index() -> Path:
+    for path in SITE_INDEX_CANDIDATES:
+        if path.exists():
+            return path
+    raise FileNotFoundError(
+        "Could not find site landing file. Checked: "
+        + ", ".join(str(p) for p in SITE_INDEX_CANDIDATES)
+    )
+
+
+SITE_INDEX = resolve_site_index()
 
 
 def read_front_matter(md_path: Path):
@@ -138,7 +156,6 @@ def clean_markdown_block(text: str) -> str:
 
     cleaned_lines = []
     for line in text.split("\n"):
-        # remove large accidental spacing inside lines
         line = re.sub(r"[ \t]{2,}", " ", line.rstrip())
         cleaned_lines.append(line)
 
@@ -261,6 +278,7 @@ def main():
         output = output.replace(key, value)
 
     OUTPUT_MD.write_text(output, encoding="utf-8")
+    print(f"Using site index: {SITE_INDEX}")
     print(f"Generated {OUTPUT_MD}")
 
 
