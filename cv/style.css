@@ -1,6 +1,6 @@
 @page {
   size: A4;
-  margin: 25mm 25mm 27mm 25mm;
+  margin: 32mm 30mm 32mm 30mm;
 }
 
 html, body {
@@ -23,14 +23,17 @@ body {
   background: #f3ebe1;
 }
 
-/* HERO */
+/* HERO (HEADER BLOCK) */
 
 .hero {
   display: table;
   width: 100%;
   margin-bottom: 24px;
-  padding-bottom: 18px;
-  border-bottom: 1.5px solid #ccb8a3;
+  padding: 20px 22px 18px 22px;
+  background: #d4c3b2;;
+  border: 1px solid #c7b39d;
+  border-radius: 12px;
+  box-sizing: border-box;
 }
 
 .hero-left,
@@ -47,7 +50,7 @@ body {
 .hero-right {
   width: 26%;
   font-size: 9.1pt;
-  color: #4b5563;
+  color: #3f4a59;
 }
 
 .hero-right strong {
@@ -94,12 +97,13 @@ h1 {
 
 .hero-affiliation {
   font-size: 10pt;
-  color: #334155;
+  color: #2f3f54;
   line-height: 1.35;
 }
 
 .hero-bio p {
   margin: 0 0 8px 0;
+  color: #1f2937;
 }
 
 /* SECTIONS */
@@ -149,7 +153,7 @@ em {
   color: #374151;
 }
 
-/* EDUCATION / LANGUAGES CARDS */
+/* EDUCATION CARDS */
 
 .card-grid {
   display: block;
@@ -214,7 +218,7 @@ em {
   line-height: 1.25;
 }
 
-/* METRICS */
+/* RESEARCH METRICS (smaller boxes) */
 
 .metrics-row {
   margin: 2px 0 12px 0;
@@ -222,10 +226,10 @@ em {
 
 .metric-box {
   display: inline-block;
-  width: 29%;
+  width: 30%;
   margin-right: 1.5%;
   vertical-align: top;
-  padding: 5px 7px;
+  padding: 4px 6px;
   background: #eadfd2;
   border: 1px solid #d4c2b0;
   border-radius: 6px;
@@ -237,15 +241,15 @@ em {
 }
 
 .metric-label {
-  font-size: 8pt;
+  font-size: 7.8pt;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: #6b5b4b;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .metric-value {
-  font-size: 12pt;
+  font-size: 11pt;
   font-weight: 800;
   color: #10213a;
 }
