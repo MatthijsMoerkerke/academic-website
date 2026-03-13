@@ -26,7 +26,8 @@ sections:
       My work aims to translate neurobiological insights into improved diagnostics, treatment strategies, and rehabilitation approaches for neurological and neurodevelopmental conditions.
 
       <p style="margin-top:20px;">
-      <a href="https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20250914"
+      <a class="cv-button"
+         href="https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20250914"
          target="_blank"
          rel="noopener"
          style="
