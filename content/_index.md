@@ -78,10 +78,6 @@ sections:
         Pediatric Pain Research Laboratory, Prof. Laura Simons  
         Supported by Faculty Travel Grant (KU Leuven) and FWO Travel Grant
   
-      - **Research stay – Stanford University, USA (2025)**  
-        Pediatric Pain Research Laboratory, Prof. Laura Simons  
-        Supported by Faculty Travel Grant (KU Leuven) and FWO Travel Grant
-
       - **Research stay – University of Oslo, Norway (2023)**  
         Oxytocin research laboratory, Prof. Daniel Quintana  
         Supported by FWO Travel Grant
