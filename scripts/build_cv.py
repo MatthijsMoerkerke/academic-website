@@ -17,17 +17,29 @@ OUTPUT_HTML = ROOT / "cv" / "cv_generated.html"
 
 
 def read_front_matter(path: Path) -> dict:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing file: {path}")
+
     text = path.read_text(encoding="utf-8")
+
+    if not text.startswith("---"):
+        raise RuntimeError(f"{path} does not start with YAML front matter")
+
     parts = text.split("---", 2)
     if len(parts) < 3:
-        return {}
+        raise RuntimeError(f"Could not parse front matter in {path}")
+
     data = yaml.safe_load(parts[1]) or {}
-    return data if isinstance(data, dict) else {}
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Front matter in {path} is not a dictionary")
+
+    return data
 
 
 def read_yaml(path: Path) -> dict:
     if not path.exists():
         return {}
+
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     return data if isinstance(data, dict) else {}
 
@@ -37,15 +49,18 @@ def clean_markdown_block(text: str) -> str:
         return ""
 
     text = text.replace("\r\n", "\n")
-    cleaned_lines = []
 
+    cleaned_lines = []
     for line in text.split("\n"):
         line = line.rstrip()
         line = re.sub(r"[ \t]{2,}", " ", line)
         cleaned_lines.append(line)
 
     text = "\n".join(cleaned_lines).strip()
+
+    # bare URLs clickable
     text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
+
     return text
 
 
@@ -53,21 +68,21 @@ def strip_cv_button_from_bio(text: str) -> str:
     if not text:
         return ""
 
+    # remove full button paragraph
     text = re.sub(
         r'(?is)<p[^>]*>\s*<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>\s*</p>',
         "",
         text,
     )
+
+    # remove standalone anchor
     text = re.sub(
         r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>',
         "",
         text,
     )
-    text = re.sub(
-        r'(?im)^\s*\[Download CV\]\([^)]+CV_Matthijs_Moerkerke\.pdf[^)]*\)\s*$',
-        "",
-        text,
-    )
+
+    # remove plain Download CV line if it survived
     text = re.sub(r"(?im)^\s*Download CV\s*$", "", text)
 
     return text.strip()
@@ -85,114 +100,37 @@ def md_to_html(text: str) -> str:
     )
 
 
-def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
-    pattern = (
-        rf"(?ms)^-\s*block:.*?\n"
-        rf"\s+id:\s*{re.escape(block_id)}\s*\n"
-        rf".*?"
-        rf"^\s+content:\s*\n"
-        rf".*?"
-        rf"^\s+title:\s*\"?(.*?)\"?\s*$"
-    )
-    match = re.search(pattern, site_text)
-    if not match:
-        return fallback
+def get_home_sections() -> dict:
+    fm = read_front_matter(SITE_INDEX)
 
-    title = match.group(1).strip()
-    return title if title else fallback
+    sections = fm.get("sections")
+    if not isinstance(sections, list):
+        raise RuntimeError(f"'sections' in {SITE_INDEX} is not a list")
 
+    result = {}
 
-def extract_text_block(site_text: str, block_id: str) -> str:
-    lines = site_text.splitlines()
-
-    block_start = None
-    for i, line in enumerate(lines):
-        if re.match(rf"^\s+id:\s*{re.escape(block_id)}\s*$", line):
-            block_start = i
-            break
-
-    if block_start is None:
-        return ""
-
-    text_line_index = None
-    text_indent = None
-
-    for i in range(block_start, len(lines)):
-        line = lines[i]
-        m = re.match(r"^(\s+)text:\s*\|\s*$", line)
-        if m:
-            text_line_index = i
-            text_indent = len(m.group(1))
-            break
-        if i > block_start and re.match(r"^\s*-\s*block:", line):
-            break
-
-    if text_line_index is None:
-        return ""
-
-    collected = []
-    for i in range(text_line_index + 1, len(lines)):
-        line = lines[i]
-
-        if line.strip() == "":
-            collected.append("")
+    for sec in sections:
+        if not isinstance(sec, dict):
             continue
 
-        indent = len(line) - len(line.lstrip(" "))
+        sec_id = sec.get("id")
+        content = sec.get("content", {}) or {}
 
-        if indent <= text_indent:
-            break
+        if not sec_id:
+            continue
 
-        collected.append(line)
+        text = content.get("text", "") or ""
+        title = content.get("title", "") or ""
 
-    if not collected:
-        return ""
+        if sec_id == "bio":
+            text = strip_cv_button_from_bio(text)
 
-    nonempty = [ln for ln in collected if ln.strip()]
-    min_indent = min(len(ln) - len(ln.lstrip(" ")) for ln in nonempty) if nonempty else 0
-    normalized = [
-        ln[min_indent:] if len(ln) >= min_indent else ln.lstrip()
-        for ln in collected
-    ]
+        result[sec_id] = {
+            "title": title,
+            "text": text,
+        }
 
-    return clean_markdown_block("\n".join(normalized).strip())
-
-
-def get_home_sections() -> dict:
-    site_text = SITE_INDEX.read_text(encoding="utf-8")
-
-    bio_text = strip_cv_button_from_bio(extract_text_block(site_text, "bio"))
-
-    return {
-        "bio": {
-            "title": "About",
-            "text": bio_text,
-        },
-        "training": {
-            "title": extract_block_title(site_text, "training", "Additional Training"),
-            "text": extract_text_block(site_text, "training"),
-        },
-        "teaching": {
-            "title": extract_block_title(site_text, "teaching", "Teaching & Mentoring"),
-            "text": extract_text_block(site_text, "teaching"),
-        },
-        "engagement": {
-            "title": extract_block_title(site_text, "engagement", "Scientific Engagement & Outreach"),
-            "text": extract_text_block(site_text, "engagement"),
-        },
-        "skills": {
-            "title": extract_block_title(site_text, "skills", "Skills & Methods"),
-            "text": extract_text_block(site_text, "skills"),
-        },
-        "awards": {
-            "title": extract_block_title(site_text, "awards", "Awards & Grants"),
-            "text": extract_text_block(site_text, "awards"),
-        },
-        "presentations": {
-            "title": extract_block_title(site_text, "presentations", "Presentations"),
-            "text": extract_text_block(site_text, "presentations"),
-        },
-    }
+    return result
 
 
 def read_scholar_metrics() -> dict:
@@ -208,50 +146,18 @@ def read_publication_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return None
+
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
+
     return yaml.safe_load(parts[1])
-
-
-def pub_type_label(pub_type: str) -> str:
-    mapping = {
-        "article-journal": "",
-        "preprint": "Preprint.",
-        "paper-conference": "Conference paper.",
-        "thesis": "PhD dissertation.",
-        "chapter": "Book chapter.",
-        "manuscript": "Manuscript.",
-    }
-    return mapping.get(pub_type, "")
 
 
 def format_authors(authors):
     if not authors:
         return "Unknown authors"
     return ", ".join(authors)
-
-
-def format_publication_html(front_matter: dict) -> str:
-    authors_text = format_authors(front_matter.get("authors", []))
-    date = str(front_matter.get("date", ""))
-    year = date[:4] if len(date) >= 4 else "n.d."
-    title = front_matter.get("title", "Untitled")
-    publication = front_matter.get("publication", "")
-    pub_types = front_matter.get("publication_types", [])
-    pub_type = pub_types[0] if pub_types else ""
-    label = pub_type_label(pub_type)
-    doi = front_matter.get("doi", "")
-
-    parts = [f"{authors_text} ({year}). <em>{title}</em>."]
-    if publication:
-        parts.append(f"{publication}.")
-    if label:
-        parts.append(label)
-    if doi:
-        parts.append(f'<a href="https://doi.org/{doi}">https://doi.org/{doi}</a>')
-
-    return "<li>" + " ".join(parts) + "</li>"
 
 
 def collect_publications():
@@ -262,16 +168,36 @@ def collect_publications():
     for folder in PUBLICATIONS_DIR.iterdir():
         if not folder.is_dir():
             continue
+
         index_file = folder / "index.md"
         if not index_file.exists():
             continue
+
         fm = read_publication_front_matter(index_file)
         if not fm:
             continue
+
         entries.append(fm)
 
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
     return entries
+
+
+def format_publication_html(front_matter: dict) -> str:
+    authors_text = format_authors(front_matter.get("authors", []))
+    date = str(front_matter.get("date", ""))
+    year = date[:4] if len(date) >= 4 else "n.d."
+    title = front_matter.get("title", "Untitled")
+    publication = front_matter.get("publication", "")
+    doi = front_matter.get("doi", "")
+
+    parts = [f"{authors_text} ({year}). <em>{title}</em>."]
+    if publication:
+        parts.append(f"{publication}.")
+    if doi:
+        parts.append(f'<a href="https://doi.org/{doi}">https://doi.org/{doi}</a>')
+
+    return "<li>" + " ".join(parts) + "</li>"
 
 
 def find_avatar_data_uri() -> str:
@@ -303,8 +229,10 @@ def find_avatar_data_uri() -> str:
     return ""
 
 
-def build_bio(sections, author):
-    bio_html = md_to_html(sections.get("bio", {}).get("text", ""))
+def build_bio(sections: dict, author: dict) -> str:
+    bio_text = sections.get("bio", {}).get("text", "")
+    bio_html = md_to_html(bio_text)
+
     avatar = find_avatar_data_uri()
 
     display_name = author.get("name", {}).get("display", "Matthijs Moerkerke")
@@ -346,7 +274,10 @@ def build_bio(sections, author):
         <div class="hero-affiliation">{affiliations}</div>
       </div>
     </div>
-    <div class="hero-bio">{bio_html}</div>
+
+    <div class="hero-bio">
+      {bio_html}
+    </div>
   </div>
 
   <div class="hero-right">
@@ -358,8 +289,9 @@ def build_bio(sections, author):
 """
 
 
-def build_markdown_section(sections, key, title):
+def build_markdown_section(sections: dict, key: str, fallback_title: str) -> str:
     sec = sections.get(key, {})
+    title = sec.get("title", "") or fallback_title
     html = md_to_html(sec.get("text", ""))
 
     if not html:
@@ -373,7 +305,7 @@ def build_markdown_section(sections, key, title):
 """
 
 
-def build_card_section(title, cards):
+def build_card_section(title: str, cards: list[str]) -> str:
     if not cards:
         return ""
 
@@ -387,7 +319,7 @@ def build_card_section(title, cards):
 """
 
 
-def build_education(author):
+def build_education(author: dict) -> str:
     cards = []
 
     for item in author.get("education", []):
@@ -416,7 +348,7 @@ def build_education(author):
     return build_card_section("Education", cards)
 
 
-def build_interests(author):
+def build_interests(author: dict) -> str:
     interests = author.get("interests", [])
     if not interests:
         return ""
@@ -433,17 +365,13 @@ def build_interests(author):
 """
 
 
-def build_publications():
+def build_publications() -> str:
     pubs = collect_publications()
     metrics = read_scholar_metrics()
 
     items = ""
     for p in pubs:
-        authors = ", ".join(p.get("authors", []))
-        year = str(p.get("date", ""))[:4]
-        title = p.get("title", "")
-        journal = p.get("publication", "")
-        items += f"<li>{authors} ({year}). <em>{title}</em>. {journal}</li>"
+        items += format_publication_html(p)
 
     return f"""
 <section class="cv-section">
