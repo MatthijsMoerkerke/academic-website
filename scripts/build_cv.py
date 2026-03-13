@@ -6,7 +6,7 @@ import markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_INDEX = ROOT / "content" / "_index.md"
-AUTHOR_DIR = ROOT / "content" / "authors" / "me"
+AUTHOR_DIR = ROOT / "content" / "authors" / "matthijs"
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
 SCHOLAR_FILE = ROOT / "data" / "scholar.yaml"
 TEMPLATE_FILE = ROOT / "cv" / "template.html"
@@ -34,7 +34,7 @@ def clean_markdown_block(text: str) -> str:
 
     text = "\n".join(cleaned_lines).strip()
 
-    # convert bare URL lines into clickable links
+    # Convert bare URL lines into clickable links
     text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
 
     return text
@@ -51,60 +51,86 @@ def md_to_html(text: str) -> str:
     )
 
 
-def extract_block_text(site_text: str, block_id: str) -> str:
-    pattern = (
-        rf"id:\s*{re.escape(block_id)}\s+"
-        rf"content:\s+"
-        rf"(?:username:\s*.*?\s+)?"
-        rf"(?:title:\s*.*?\s+)?"
-        rf"text:\s*\|\s*"
-        rf"(.*?)"
-        rf"(?=\n\s*#\s*----------------|\n\s*-\s*block:|\n---\s*$|\Z)"
-    )
-
-    match = re.search(pattern, site_text, flags=re.DOTALL)
-    if not match:
-        return ""
-
-    block = match.group(1).strip("\n")
-    lines = block.splitlines()
-
-    stripped = [ln.rstrip() for ln in lines]
-    nonempty = [ln for ln in stripped if ln.strip()]
-    if not nonempty:
-        return ""
-
-    indents = []
-    for ln in nonempty:
-        leading = len(ln) - len(ln.lstrip(" "))
-        indents.append(leading)
-
-    base_indent = min(indents) if indents else 0
-
-    cleaned = []
-    for ln in stripped:
-        if len(ln) >= base_indent:
-            cleaned.append(ln[base_indent:])
-        else:
-            cleaned.append(ln.lstrip())
-
-    return clean_markdown_block("\n".join(cleaned).strip())
-
-
 def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
     pattern = (
-        rf"id:\s*{re.escape(block_id)}\s+"
-        rf"content:\s+"
-        rf"(?:username:\s*.*?\s+)?"
-        rf"title:\s*\"?(.*?)\"?\s*"
+        rf"(?ms)^-\s*block:.*?\n"
+        rf"\s+id:\s*{re.escape(block_id)}\s*\n"
+        rf".*?"
+        rf"^\s+content:\s*\n"
+        rf".*?"
+        rf"^\s+title:\s*\"?(.*?)\"?\s*$"
     )
-
-    match = re.search(pattern, site_text, flags=re.DOTALL)
+    match = re.search(pattern, site_text)
     if not match:
         return fallback
-
     title = match.group(1).strip()
     return title if title else fallback
+
+
+def extract_text_block(site_text: str, block_id: str) -> str:
+    """
+    Extract only the lines that belong to:
+      text: |
+        ...
+    and stop before sibling keys like button:, headings:, design:, etc.
+    """
+    lines = site_text.splitlines()
+
+    # Find the block with id: <block_id>
+    block_start = None
+    for i, line in enumerate(lines):
+        if re.match(rf"^\s+id:\s*{re.escape(block_id)}\s*$", line):
+            block_start = i
+            break
+
+    if block_start is None:
+        return ""
+
+    # Find the "text: |" line after block_start
+    text_line_index = None
+    text_indent = None
+    for i in range(block_start, len(lines)):
+        line = lines[i]
+        m = re.match(r"^(\s+)text:\s*\|\s*$", line)
+        if m:
+            text_line_index = i
+            text_indent = len(m.group(1))
+            break
+
+        # stop if next top-level block starts before text was found
+        if i > block_start and re.match(r"^\s*-\s*block:", line):
+            break
+
+    if text_line_index is None:
+        return ""
+
+    # Collect only lines indented more than the text: line
+    collected = []
+    for i in range(text_line_index + 1, len(lines)):
+        line = lines[i]
+
+        # blank lines belong to the text block
+        if line.strip() == "":
+            collected.append("")
+            continue
+
+        indent = len(line) - len(line.lstrip(" "))
+
+        # text block content must be more indented than the text: line itself
+        if indent <= text_indent:
+            break
+
+        collected.append(line)
+
+    if not collected:
+        return ""
+
+    # remove common leading indentation
+    nonempty = [ln for ln in collected if ln.strip()]
+    min_indent = min(len(ln) - len(ln.lstrip(" ")) for ln in nonempty) if nonempty else 0
+    normalized = [ln[min_indent:] if len(ln) >= min_indent else ln.lstrip() for ln in collected]
+
+    return clean_markdown_block("\n".join(normalized).strip())
 
 
 def get_site_sections():
@@ -113,31 +139,31 @@ def get_site_sections():
     return {
         "bio": {
             "title": "About",
-            "text": extract_block_text(site_text, "bio"),
+            "text": extract_text_block(site_text, "bio"),
         },
         "training": {
             "title": extract_block_title(site_text, "training", "Additional Training"),
-            "text": extract_block_text(site_text, "training"),
+            "text": extract_text_block(site_text, "training"),
         },
         "teaching": {
             "title": extract_block_title(site_text, "teaching", "Teaching & Mentoring"),
-            "text": extract_block_text(site_text, "teaching"),
+            "text": extract_text_block(site_text, "teaching"),
         },
         "engagement": {
             "title": extract_block_title(site_text, "engagement", "Scientific Engagement & Outreach"),
-            "text": extract_block_text(site_text, "engagement"),
+            "text": extract_text_block(site_text, "engagement"),
         },
         "skills": {
             "title": extract_block_title(site_text, "skills", "Skills & Methods"),
-            "text": extract_block_text(site_text, "skills"),
+            "text": extract_text_block(site_text, "skills"),
         },
         "awards": {
             "title": extract_block_title(site_text, "awards", "Awards & Grants"),
-            "text": extract_block_text(site_text, "awards"),
+            "text": extract_text_block(site_text, "awards"),
         },
         "presentations": {
             "title": extract_block_title(site_text, "presentations", "Summary of Presentations at Conferences"),
-            "text": extract_block_text(site_text, "presentations"),
+            "text": extract_text_block(site_text, "presentations"),
         },
     }
 
@@ -233,11 +259,26 @@ def find_avatar_data_uri():
     if not AUTHOR_DIR.exists():
         return ""
 
-    for ext in ("png", "jpg", "jpeg", "webp"):
-        files = list(AUTHOR_DIR.glob(f"avatar*.{ext}"))
-        if files:
-            img_path = files[0]
-            mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext}"
+    # Prefer exact avatar filename first
+    preferred = [
+        AUTHOR_DIR / "avatar.jpg",
+        AUTHOR_DIR / "avatar.jpeg",
+        AUTHOR_DIR / "avatar.png",
+        AUTHOR_DIR / "avatar.webp",
+    ]
+
+    for img_path in preferred:
+        if img_path.exists():
+            suffix = img_path.suffix.lower()
+            if suffix in [".jpg", ".jpeg"]:
+                mime = "image/jpeg"
+            elif suffix == ".png":
+                mime = "image/png"
+            elif suffix == ".webp":
+                mime = "image/webp"
+            else:
+                continue
+
             encoded = base64.b64encode(img_path.read_bytes()).decode("ascii")
             return f"data:{mime};base64,{encoded}"
 
@@ -356,6 +397,7 @@ def main():
 
     OUTPUT_HTML.write_text(output, encoding="utf-8")
     print(f"Using homepage source: {SITE_INDEX}")
+    print(f"Using avatar directory: {AUTHOR_DIR}")
     print(f"Generated {OUTPUT_HTML}")
 
 
