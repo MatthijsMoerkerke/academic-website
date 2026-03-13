@@ -366,7 +366,6 @@ def main():
         "{{TEACHING}}": build_markdown_section(sections,"teaching","Teaching & Mentoring"),
         "{{ENGAGEMENT}}": build_markdown_section(sections,"engagement","Scientific Engagement & Outreach"),
         "{{SKILLS}}": build_markdown_section(sections,"skills","Skills & Methods"),
-        "{{LANGUAGES}}": build_languages(author),
         "{{AWARDS}}": build_markdown_section(sections,"awards","Awards & Grants"),
         "{{PRESENTATIONS}}": build_markdown_section(sections,"presentations","Presentations"),
         "{{PUBLICATIONS}}": build_publications()
