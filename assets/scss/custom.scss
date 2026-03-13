@@ -21,7 +21,20 @@
 }
 
 #education .card:hover,
+
+
 #interests .card:hover {
   transform: none !important;
   box-shadow: none !important;
+}
+
+/* CV button hover */
+
+.cv-button {
+  transition: all 0.2s ease;
+}
+
+.cv-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
 }
