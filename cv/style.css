@@ -222,13 +222,13 @@ em {
 
 .metric-box {
   display: inline-block;
-  width: 30.5%;
-  margin-right: 2%;
+  width: 29%;
+  margin-right: 1.5%;
   vertical-align: top;
-  padding: 7px 9px;
+  padding: 5px 7px;
   background: #eadfd2;
   border: 1px solid #d4c2b0;
-  border-radius: 7px;
+  border-radius: 6px;
   box-sizing: border-box;
 }
 
@@ -245,7 +245,7 @@ em {
 }
 
 .metric-value {
-  font-size: 14pt;
+  font-size: 12pt;
   font-weight: 800;
   color: #10213a;
 }
