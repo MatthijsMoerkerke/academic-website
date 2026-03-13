@@ -1,0 +1,15 @@
+/* Disable clickable appearance for education and interest cards */
+
+.card,
+.card-body,
+.card-simple,
+.skills-content .card,
+.interests-content .card {
+  cursor: default !important;
+}
+
+.card:hover,
+.card-simple:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
