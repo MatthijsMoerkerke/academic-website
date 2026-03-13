@@ -14,17 +14,10 @@ STYLE_FILE = ROOT / "cv" / "style.css"
 OUTPUT_HTML = ROOT / "cv" / "cv_generated.html"
 
 
-def read_front_matter(md_path: Path):
-    text = md_path.read_text(encoding="utf-8")
-    if not text.startswith("---"):
-        raise RuntimeError(f"{md_path} does not start with YAML front matter.")
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        raise RuntimeError(f"Could not parse front matter in {md_path}")
-    data = yaml.safe_load(parts[1])
-    if not isinstance(data, dict):
-        raise RuntimeError(f"Front matter in {md_path} is not a YAML mapping.")
-    return data
+def read_text_file(path: Path) -> str:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing file: {path}")
+    return path.read_text(encoding="utf-8")
 
 
 def clean_markdown_block(text: str) -> str:
@@ -33,15 +26,15 @@ def clean_markdown_block(text: str) -> str:
 
     text = text.replace("\r\n", "\n")
 
-    lines = []
+    cleaned_lines = []
     for line in text.split("\n"):
         line = line.rstrip()
         line = re.sub(r"[ \t]{2,}", " ", line)
-        lines.append(line)
+        cleaned_lines.append(line)
 
-    text = "\n".join(lines).strip()
+    text = "\n".join(cleaned_lines).strip()
 
-    # Make bare URL lines clickable in Markdown
+    # convert bare URL lines into clickable links
     text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
 
     return text
@@ -58,37 +51,101 @@ def md_to_html(text: str) -> str:
     )
 
 
+def extract_block_text(site_text: str, block_id: str) -> str:
+    pattern = (
+        rf"id:\s*{re.escape(block_id)}\s+"
+        rf"content:\s+"
+        rf"(?:username:\s*.*?\s+)?"
+        rf"(?:title:\s*.*?\s+)?"
+        rf"text:\s*\|\s*"
+        rf"(.*?)"
+        rf"(?=\n\s*#\s*----------------|\n\s*-\s*block:|\n---\s*$|\Z)"
+    )
+
+    match = re.search(pattern, site_text, flags=re.DOTALL)
+    if not match:
+        return ""
+
+    block = match.group(1).strip("\n")
+    lines = block.splitlines()
+
+    stripped = [ln.rstrip() for ln in lines]
+    nonempty = [ln for ln in stripped if ln.strip()]
+    if not nonempty:
+        return ""
+
+    indents = []
+    for ln in nonempty:
+        leading = len(ln) - len(ln.lstrip(" "))
+        indents.append(leading)
+
+    base_indent = min(indents) if indents else 0
+
+    cleaned = []
+    for ln in stripped:
+        if len(ln) >= base_indent:
+            cleaned.append(ln[base_indent:])
+        else:
+            cleaned.append(ln.lstrip())
+
+    return clean_markdown_block("\n".join(cleaned).strip())
+
+
+def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
+    pattern = (
+        rf"id:\s*{re.escape(block_id)}\s+"
+        rf"content:\s+"
+        rf"(?:username:\s*.*?\s+)?"
+        rf"title:\s*\"?(.*?)\"?\s*"
+    )
+
+    match = re.search(pattern, site_text, flags=re.DOTALL)
+    if not match:
+        return fallback
+
+    title = match.group(1).strip()
+    return title if title else fallback
+
+
 def get_site_sections():
-    data = read_front_matter(SITE_INDEX)
-    sections = data.get("sections")
-    if not isinstance(sections, list):
-        raise RuntimeError(
-            f"'sections' in {SITE_INDEX} is not a list. "
-            "Check that homepage blocks are properly indented under sections:."
-        )
-    return sections
+    site_text = read_text_file(SITE_INDEX)
 
-
-def get_section(sections, sec_id: str):
-    for sec in sections:
-        if isinstance(sec, dict) and sec.get("id") == sec_id:
-            return sec
-    return {}
-
-
-def get_section_title(sec: dict, fallback: str) -> str:
-    content = sec.get("content", {}) or {}
-    return content.get("title", fallback)
-
-
-def get_section_text(sec: dict) -> str:
-    content = sec.get("content", {}) or {}
-    return content.get("text", "") or ""
+    return {
+        "bio": {
+            "title": "About",
+            "text": extract_block_text(site_text, "bio"),
+        },
+        "training": {
+            "title": extract_block_title(site_text, "training", "Additional Training"),
+            "text": extract_block_text(site_text, "training"),
+        },
+        "teaching": {
+            "title": extract_block_title(site_text, "teaching", "Teaching & Mentoring"),
+            "text": extract_block_text(site_text, "teaching"),
+        },
+        "engagement": {
+            "title": extract_block_title(site_text, "engagement", "Scientific Engagement & Outreach"),
+            "text": extract_block_text(site_text, "engagement"),
+        },
+        "skills": {
+            "title": extract_block_title(site_text, "skills", "Skills & Methods"),
+            "text": extract_block_text(site_text, "skills"),
+        },
+        "awards": {
+            "title": extract_block_title(site_text, "awards", "Awards & Grants"),
+            "text": extract_block_text(site_text, "awards"),
+        },
+        "presentations": {
+            "title": extract_block_title(site_text, "presentations", "Summary of Presentations at Conferences"),
+            "text": extract_block_text(site_text, "presentations"),
+        },
+    }
 
 
 def read_scholar_metrics():
     if not SCHOLAR_FILE.exists():
         return {"citations": 0, "h_index": 0, "profile": ""}
+
     data = yaml.safe_load(SCHOLAR_FILE.read_text(encoding="utf-8")) or {}
     return {
         "citations": data.get("citations", 0),
@@ -101,9 +158,11 @@ def read_publication_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return None
+
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
+
     return yaml.safe_load(parts[1])
 
 
@@ -155,12 +214,15 @@ def collect_publications():
     for folder in PUBLICATIONS_DIR.iterdir():
         if not folder.is_dir():
             continue
+
         index_file = folder / "index.md"
         if not index_file.exists():
             continue
+
         fm = read_publication_front_matter(index_file)
         if not fm:
             continue
+
         entries.append(fm)
 
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
@@ -183,8 +245,7 @@ def find_avatar_data_uri():
 
 
 def build_bio_block(sections):
-    bio = get_section(sections, "bio")
-    bio_text = md_to_html(get_section_text(bio))
+    bio_text = md_to_html(sections.get("bio", {}).get("text", ""))
     avatar_src = find_avatar_data_uri()
 
     avatar_html = ""
@@ -224,11 +285,13 @@ def build_bio_block(sections):
 
 
 def build_markdown_section(sections, sec_id: str, fallback_title: str) -> str:
-    sec = get_section(sections, sec_id)
-    title = get_section_title(sec, fallback_title)
-    body = md_to_html(get_section_text(sec))
+    sec = sections.get(sec_id, {})
+    title = sec.get("title", fallback_title)
+    body = md_to_html(sec.get("text", ""))
+
     if not body:
         return ""
+
     return f"""
 <section class="cv-section">
   <h2>{title}</h2>
