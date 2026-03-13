@@ -137,6 +137,74 @@ li {
   margin-left: 20px;
 }
 
+/* Education / Languages cards */
+.card-grid {
+  display: block;
+  margin-top: 8px;
+}
+
+.info-card {
+  display: block;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  background: #eadfd2;
+  border: 1px solid #d2bfab;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.info-card.compact {
+  display: inline-block;
+  width: 30.5%;
+  margin-right: 2%;
+  vertical-align: top;
+}
+
+.info-card.compact:nth-child(3n) {
+  margin-right: 0;
+}
+
+.info-card-title {
+  font-size: 11.2pt;
+  font-weight: 700;
+  color: #10213a;
+  margin-bottom: 4px;
+}
+
+.info-card-subtitle {
+  font-size: 9.7pt;
+  font-weight: 600;
+  color: #5a4a3c;
+  margin-bottom: 6px;
+}
+
+.info-card-body p {
+  margin: 0 0 6px 0;
+}
+
+.card-link {
+  margin-top: 6px;
+  font-size: 9.3pt;
+}
+
+/* Interests as tags/pills */
+.interest-pills {
+  margin-top: 8px;
+}
+
+.interest-pill {
+  display: inline-block;
+  margin: 0 8px 8px 0;
+  padding: 7px 10px;
+  background: #eadfd2;
+  border: 1px solid #d2bfab;
+  border-radius: 999px;
+  color: #3b4b63;
+  font-size: 9.5pt;
+  line-height: 1.3;
+}
+
+/* Scholar metrics */
 .metrics-row {
   margin: 4px 0 14px 0;
 }
