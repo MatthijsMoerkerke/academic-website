@@ -11,52 +11,102 @@ PRESENTATIONS_FILE = ROOT / "cv" / "presentations.md"
 OUTPUT_MD = ROOT / "cv" / "cv_generated.md"
 
 
-def read_front_matter(md_path: Path):
-    if not md_path.exists():
-        raise FileNotFoundError(f"Missing file: {md_path}")
+def read_text_file(path: Path) -> str:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing file: {path}")
+    return path.read_text(encoding="utf-8")
 
-    text = md_path.read_text(encoding="utf-8")
 
-    if not text.startswith("---"):
-        raise RuntimeError(f"{md_path} does not start with YAML front matter ('---').")
+def normalize_text(text: str) -> str:
+    text = text.replace("\r\n", "\n")
+    text = re.sub(r"[ \t]+", " ", text)
+    return text
 
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        raise RuntimeError(f"Could not parse front matter in {md_path}")
 
-    data = yaml.safe_load(parts[1])
-    if not isinstance(data, dict):
-        raise RuntimeError(f"Front matter in {md_path} is not a YAML dictionary")
+def extract_block_text(site_text: str, block_id: str) -> str:
+    """
+    Extracts the markdown text: | block for a given section id from content/_index.md
+    using the pattern:
+      id: <block_id>
+      content:
+        title: ...
+        text: |
+          ...
+    """
+    pattern = (
+        rf"id:\s*{re.escape(block_id)}\s+"
+        rf"content:\s+"
+        rf"title:\s*.*?\s+"
+        rf"text:\s*\|\s*"
+        rf"(.*?)"
+        rf"(?=\n\s*#\s*----------------|\n\s*-\s*block:|\Z)"
+    )
 
-    return data
+    m = re.search(pattern, site_text, flags=re.DOTALL)
+    if not m:
+        return ""
+
+    block = m.group(1).strip("\n")
+    lines = block.splitlines()
+
+    # remove common leading indentation
+    stripped = [ln.rstrip() for ln in lines]
+    nonempty = [ln for ln in stripped if ln.strip()]
+    if not nonempty:
+        return ""
+
+    indents = []
+    for ln in nonempty:
+        leading = len(ln) - len(ln.lstrip(" "))
+        indents.append(leading)
+    base_indent = min(indents) if indents else 0
+
+    cleaned = []
+    for ln in stripped:
+        if len(ln) >= base_indent:
+            cleaned.append(ln[base_indent:])
+        else:
+            cleaned.append(ln.lstrip())
+
+    text = "\n".join(cleaned).strip()
+    return clean_markdown_block(text)
 
 
 def read_site_sections():
-    data = read_front_matter(SITE_INDEX)
-    sections = data.get("sections")
+    site_text = read_text_file(SITE_INDEX)
 
-    if not isinstance(sections, list):
-        raise RuntimeError(
-            f"'sections' in {SITE_INDEX} is not a list. "
-            f"Check that your homepage blocks are in the YAML front matter."
-        )
+    sections = {
+        "bio": {
+            "title": "About",
+            "text": extract_block_text(site_text, "bio"),
+        },
+        "training": {
+            "title": "Additional Training",
+            "text": extract_block_text(site_text, "training"),
+        },
+        "teaching": {
+            "title": "Teaching & Mentoring",
+            "text": extract_block_text(site_text, "teaching"),
+        },
+        "engagement": {
+            "title": "Scientific Engagement & Outreach",
+            "text": extract_block_text(site_text, "engagement"),
+        },
+        "skills": {
+            "title": "Skills & Methods",
+            "text": extract_block_text(site_text, "skills"),
+        },
+        "awards": {
+            "title": "Awards & Grants",
+            "text": extract_block_text(site_text, "awards"),
+        },
+        "presentations": {
+            "title": "Summary of Presentations at Conferences",
+            "text": extract_block_text(site_text, "presentations"),
+        },
+    }
 
-    out = {}
-
-    for sec in sections:
-        if not isinstance(sec, dict):
-            continue
-
-        sec_id = sec.get("id", "")
-        content = sec.get("content", {}) or {}
-
-        out[sec_id] = {
-            "title": content.get("title", ""),
-            "text": content.get("text", "") or "",
-            "raw": sec,
-        }
-
-    return out
+    return sections
 
 
 def read_scholar_metrics():
@@ -148,12 +198,6 @@ def collect_publications():
     return entries
 
 
-def load_presentations():
-    if not PRESENTATIONS_FILE.exists():
-        return ""
-    return PRESENTATIONS_FILE.read_text(encoding="utf-8").strip()
-
-
 def clean_markdown_block(text: str) -> str:
     if not text:
         return ""
@@ -162,10 +206,16 @@ def clean_markdown_block(text: str) -> str:
 
     cleaned_lines = []
     for line in text.split("\n"):
-        line = re.sub(r"[ \t]{2,}", " ", line.rstrip())
+        line = line.rstrip()
+        line = re.sub(r"[ \t]{2,}", " ", line)
         cleaned_lines.append(line)
 
-    return "\n".join(cleaned_lines).strip()
+    text = "\n".join(cleaned_lines).strip()
+
+    # keep list continuation indentation clean
+    text = re.sub(r"\n {6,}", "\n  ", text)
+
+    return text
 
 
 def section_markdown(title: str, body: str) -> str:
@@ -198,9 +248,7 @@ def build_bio_block():
 
 
 def build_profile_section(site_sections):
-    sec = site_sections.get("bio", {})
-    body = sec.get("raw", {}).get("content", {}).get("text", "")
-    return f"## About\n\n{clean_markdown_block(body)}"
+    return section_markdown("About", site_sections.get("bio", {}).get("text", ""))
 
 
 def build_training_section(site_sections):
@@ -228,11 +276,12 @@ def build_awards_section(site_sections):
     return section_markdown(sec.get("title", "Awards & Grants"), sec.get("text", ""))
 
 
-def build_presentations_section():
-    presentations = clean_markdown_block(load_presentations())
-    if not presentations:
-        return ""
-    return f"## Summary of Presentations at Conferences\n\n{presentations}"
+def build_presentations_section(site_sections):
+    sec = site_sections.get("presentations", {})
+    body = sec.get("text", "")
+    if not body and PRESENTATIONS_FILE.exists():
+        body = PRESENTATIONS_FILE.read_text(encoding="utf-8").strip()
+    return section_markdown(sec.get("title", "Summary of Presentations at Conferences"), body)
 
 
 def build_publications_section():
@@ -274,7 +323,7 @@ def main():
         "{{ENGAGEMENT_SECTION}}": build_engagement_section(site_sections),
         "{{SKILLS_SECTION}}": build_skills_section(site_sections),
         "{{AWARDS_SECTION}}": build_awards_section(site_sections),
-        "{{PRESENTATIONS_SECTION}}": build_presentations_section(),
+        "{{PRESENTATIONS_SECTION}}": build_presentations_section(site_sections),
         "{{PUBLICATIONS_SECTION}}": build_publications_section(),
     }
 
@@ -283,7 +332,7 @@ def main():
         output = output.replace(key, value)
 
     OUTPUT_MD.write_text(output, encoding="utf-8")
-    print(f"Using site index: {SITE_INDEX}")
+    print(f"Using homepage source: {SITE_INDEX}")
     print(f"Generated {OUTPUT_MD}")
 
 
