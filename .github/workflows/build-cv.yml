@@ -57,11 +57,17 @@ jobs:
             cv/cv_generated.html \
             static/uploads/CV_Matthijs_Moerkerke.pdf
 
-
       - name: Commit updated CV
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
+      
+          git stash push --include-untracked -m "cv-build-temp"
+      
+          git fetch origin main
+          git pull --rebase origin main
+      
+          git stash pop || true
       
           git add cv/cv_generated.html
           git add static/uploads/CV_Matthijs_Moerkerke.pdf
@@ -70,12 +76,6 @@ jobs:
             echo "No CV changes"
             exit 0
           fi
-      
-          git fetch origin main
-          git pull --rebase origin main
-      
-          git add cv/cv_generated.html
-          git add static/uploads/CV_Matthijs_Moerkerke.pdf
       
           git commit -m "Auto update CV" || echo "Nothing to commit"
           git push origin main
