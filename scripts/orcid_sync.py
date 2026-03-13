@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import yaml
 from slugify import slugify
@@ -43,29 +44,104 @@ def get_doi(work):
     ids = safe_get(work, "external-ids", "external-id") or []
     for i in ids:
         if i.get("external-id-type", "").lower() == "doi":
-            return i.get("external-id-value")
+            value = i.get("external-id-value") or ""
+            return normalize_doi(value)
     return ""
+
+
+def normalize_doi(doi: str) -> str:
+    doi = (doi or "").strip().lower()
+    doi = doi.replace("https://doi.org/", "").replace("http://doi.org/", "")
+    doi = doi.replace("doi:", "").strip()
+    return doi
+
+
+def normalize_title(title: str) -> str:
+    title = (title or "").strip().lower()
+    title = re.sub(r"\s+", " ", title)
+    title = re.sub(r"[^\w\s]", "", title)
+    return title.strip()
+
+
+def read_front_matter(index_path):
+    try:
+        with open(index_path, "r", encoding="utf-8") as f:
+            text = f.read()
+    except FileNotFoundError:
+        return None
+
+    if not text.startswith("---"):
+        return None
+
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return None
+
+    try:
+        data = yaml.safe_load(parts[1]) or {}
+    except yaml.YAMLError:
+        return None
+
+    return data if isinstance(data, dict) else None
+
+
+def collect_existing_publications():
+    existing_dois = set()
+    existing_titles = set()
+
+    if not os.path.exists(BASE_DIR):
+        return existing_dois, existing_titles
+
+    for folder_name in os.listdir(BASE_DIR):
+        folder = os.path.join(BASE_DIR, folder_name)
+        if not os.path.isdir(folder):
+            continue
+
+        index_path = os.path.join(folder, "index.md")
+        fm = read_front_matter(index_path)
+        if not fm:
+            continue
+
+        doi = normalize_doi(fm.get("doi", ""))
+        title = normalize_title(fm.get("title", ""))
+
+        if doi:
+            existing_dois.add(doi)
+        if title:
+            existing_titles.add(title)
+
+    return existing_dois, existing_titles
 
 
 def main():
     os.makedirs(BASE_DIR, exist_ok=True)
+
+    existing_dois, existing_titles = collect_existing_publications()
 
     works_data = fetch_json(WORKS_URL)
     groups = works_data.get("group", [])
 
     created = 0
     skipped = 0
+    skipped_by_doi = 0
+    skipped_by_title = 0
 
     for g in groups:
+        summaries = g.get("work-summary", [])
+        if not summaries:
+            skipped += 1
+            continue
 
-        summary = g["work-summary"][0]
+        summary = summaries[0]
         put_code = summary.get("put-code")
+        if not put_code:
+            skipped += 1
+            continue
 
         detail_url = f"https://pub.orcid.org/v3.0/{ORCID}/work/{put_code}"
         work = fetch_json(detail_url)
 
         title = safe_get(work, "title", "title", "value")
-
         if not title:
             skipped += 1
             continue
@@ -75,11 +151,29 @@ def main():
         doi = get_doi(work)
         authors = get_authors(work)
 
+        normalized_title = normalize_title(title)
+
+        # 1. Deduplicate by DOI first
+        if doi and doi in existing_dois:
+            skipped += 1
+            skipped_by_doi += 1
+            print("Skipped by DOI:", title)
+            continue
+
+        # 2. Then deduplicate by normalized title
+        if normalized_title and normalized_title in existing_titles:
+            skipped += 1
+            skipped_by_title += 1
+            print("Skipped by title:", title)
+            continue
+
         slug = slugify(title)
         folder = f"{BASE_DIR}/{slug}"
 
+        # 3. Final fallback: if folder already exists, skip
         if os.path.exists(folder):
             skipped += 1
+            print("Skipped existing folder:", slug)
             continue
 
         os.makedirs(folder)
@@ -95,12 +189,12 @@ def main():
             "draft": False,
         }
 
-        with open(f"{folder}/index.md", "w") as f:
+        with open(f"{folder}/index.md", "w", encoding="utf-8") as f:
             f.write("---\n")
-            yaml.safe_dump(frontmatter, f)
+            yaml.safe_dump(frontmatter, f, sort_keys=False, allow_unicode=True)
             f.write("---\n")
 
-        with open(f"{folder}/cite.bib", "w") as f:
+        with open(f"{folder}/cite.bib", "w", encoding="utf-8") as f:
             f.write(
                 f"""@article{{{slug},
   title = {{{title}}},
@@ -112,11 +206,19 @@ def main():
 """
             )
 
+        # Add new item to dedupe sets immediately
+        if doi:
+            existing_dois.add(doi)
+        if normalized_title:
+            existing_titles.add(normalized_title)
+
         created += 1
         print("Created:", slug)
 
     print("Created:", created)
     print("Skipped:", skipped)
+    print("Skipped by DOI:", skipped_by_doi)
+    print("Skipped by title:", skipped_by_title)
 
 
 if __name__ == "__main__":
