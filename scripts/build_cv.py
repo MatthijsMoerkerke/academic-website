@@ -77,7 +77,10 @@ def get_home_sections():
 
     fm = read_front_matter(SITE_INDEX)
 
-    sections = fm.get("sections", [])
+    sections = fm.get("sections")
+
+    if not isinstance(sections, list):
+        sections = []
 
     result = {}
 
