@@ -9,7 +9,7 @@ html, body {
   background: #f3ebe1;
   color: #1f2937;
   font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 10.5pt;
+  font-size: 10.3pt;
   line-height: 1.45;
 }
 
@@ -19,16 +19,18 @@ body {
 }
 
 .page {
-  padding: 24px 28px 32px 28px;
+  padding: 22px 26px 30px 26px;
   background: #f3ebe1;
 }
+
+/* HERO */
 
 .hero {
   display: table;
   width: 100%;
   margin-bottom: 24px;
-  padding: 0 0 18px 0;
-  border-bottom: 1.5px solid #cdbba8;
+  padding-bottom: 18px;
+  border-bottom: 1.5px solid #ccb8a3;
 }
 
 .hero-left,
@@ -38,62 +40,60 @@ body {
 }
 
 .hero-left {
-  width: 72%;
-  padding-right: 22px;
+  width: 74%;
+  padding-right: 20px;
 }
 
 .hero-right {
-  width: 28%;
-  font-size: 9.3pt;
+  width: 26%;
+  font-size: 9.1pt;
+  color: #4b5563;
 }
 
-.hero-right div {
-  margin-bottom: 12px;
+.hero-right strong {
+  color: #10213a;
 }
 
 .hero-top {
   display: table;
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
-.hero-avatar-wrap,
-.hero-heading {
+.hero-avatar {
+  display: table-cell;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 999px;
+  border: 2px solid #ccb8a3;
+  background: #e7dbcf;
+  margin-right: 16px;
+  vertical-align: middle;
+}
+
+.hero-title {
   display: table-cell;
   vertical-align: middle;
 }
 
-.hero-avatar-wrap {
-  width: 122px;
-  padding-right: 18px;
-}
-
-.hero-avatar {
-  width: 102px;
-  height: 102px;
-  object-fit: cover;
-  border-radius: 999px;
-  border: 2px solid #cdbba8;
-  background: #e8ddd0;
-}
-
 h1 {
   margin: 0 0 4px 0;
-  font-size: 25pt;
+  font-size: 24pt;
   line-height: 1.05;
   color: #10213a;
   font-weight: 800;
 }
 
 .hero-subtitle {
-  font-size: 13pt;
+  font-size: 12.5pt;
   font-weight: 700;
-  color: #3b4b63;
+  color: #4a607c;
   margin-bottom: 7px;
 }
 
 .hero-affiliation {
-  font-size: 10.2pt;
+  font-size: 10pt;
   color: #334155;
   line-height: 1.35;
 }
@@ -102,22 +102,24 @@ h1 {
   margin: 0 0 8px 0;
 }
 
+/* SECTIONS */
+
 .cv-section {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 h2 {
   margin: 0 0 10px 0;
   padding-bottom: 4px;
-  font-size: 14.5pt;
+  font-size: 14pt;
   color: #10213a;
-  border-bottom: 1px solid #cdbba8;
+  border-bottom: 1px solid #ccb8a3;
 }
 
 h3 {
-  margin: 12px 0 6px 0;
-  font-size: 11.2pt;
-  color: #25364f;
+  margin: 10px 0 5px 0;
+  font-size: 11.1pt;
+  color: #24364f;
 }
 
 p {
@@ -125,7 +127,7 @@ p {
 }
 
 ul, ol {
-  margin: 6px 0 10px 20px;
+  margin: 6px 0 10px 18px;
   padding: 0;
 }
 
@@ -133,118 +135,8 @@ li {
   margin-bottom: 5px;
 }
 
-.section-body ul {
-  margin-left: 20px;
-}
-
-/* Education / Languages cards */
-.card-grid {
-  display: block;
-  margin-top: 8px;
-}
-
-.info-card {
-  display: block;
-  margin-bottom: 12px;
-  padding: 12px 14px;
-  background: #eadfd2;
-  border: 1px solid #d2bfab;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-
-.info-card.compact {
-  display: inline-block;
-  width: 30.5%;
-  margin-right: 2%;
-  vertical-align: top;
-}
-
-.info-card.compact:nth-child(3n) {
-  margin-right: 0;
-}
-
-.info-card-title {
-  font-size: 11.2pt;
-  font-weight: 700;
-  color: #10213a;
-  margin-bottom: 4px;
-}
-
-.info-card-subtitle {
-  font-size: 9.7pt;
-  font-weight: 600;
-  color: #5a4a3c;
-  margin-bottom: 6px;
-}
-
-.info-card-body p {
-  margin: 0 0 6px 0;
-}
-
-.card-link {
-  margin-top: 6px;
-  font-size: 9.3pt;
-}
-
-/* Interests as tags/pills */
-.interest-pills {
-  margin-top: 8px;
-}
-
-.interest-pill {
-  display: inline-block;
-  margin: 0 8px 8px 0;
-  padding: 7px 10px;
-  background: #eadfd2;
-  border: 1px solid #d2bfab;
-  border-radius: 999px;
-  color: #3b4b63;
-  font-size: 9.5pt;
-  line-height: 1.3;
-}
-
-/* Scholar metrics */
-.metrics-row {
-  margin: 4px 0 14px 0;
-}
-
-.metric-box {
-  display: inline-block;
-  width: 30.5%;
-  margin-right: 2%;
-  vertical-align: top;
-  padding: 9px 11px;
-  background: #eadfd2;
-  border: 1px solid #d2bfab;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-.metric-box:last-child {
-  margin-right: 0;
-}
-
-.metric-label {
-  font-size: 8.6pt;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #5a4a3c;
-  margin-bottom: 3px;
-}
-
-.metric-value {
-  font-size: 16pt;
-  font-weight: 800;
-  color: #10213a;
-}
-
-.pub-list {
-  margin-top: 0;
-}
-
 a {
-  color: #2f4f7f;
+  color: #355c8a;
   text-decoration: none;
   word-break: break-word;
 }
@@ -257,8 +149,121 @@ em {
   color: #374151;
 }
 
+/* EDUCATION / LANGUAGES CARDS */
+
+.card-grid {
+  display: block;
+  margin-top: 8px;
+}
+
+.info-card {
+  display: block;
+  margin-bottom: 10px;
+  padding: 11px 13px;
+  background: #eadfd2;
+  border: 1px solid #d4c2b0;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.info-card.compact {
+  display: inline-block;
+  width: 31%;
+  margin-right: 2.5%;
+  vertical-align: top;
+}
+
+.info-card.compact:nth-child(3n) {
+  margin-right: 0;
+}
+
+.card-title {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #10213a;
+  margin-bottom: 3px;
+}
+
+.card-inst {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #6b5b4b;
+  margin-bottom: 6px;
+}
+
+.card-link {
+  margin-top: 6px;
+  font-size: 9.1pt;
+}
+
+/* INTEREST PILLS */
+
+.interest-row {
+  margin-top: 8px;
+}
+
+.interest-pill {
+  display: inline-block;
+  margin: 0 7px 7px 0;
+  padding: 7px 10px;
+  background: #eadfd2;
+  border: 1px solid #d4c2b0;
+  border-radius: 999px;
+  color: #3d4f67;
+  font-size: 9.4pt;
+  line-height: 1.25;
+}
+
+/* METRICS */
+
+.metrics-row {
+  margin: 2px 0 12px 0;
+}
+
+.metric-box {
+  display: inline-block;
+  width: 30.5%;
+  margin-right: 2%;
+  vertical-align: top;
+  padding: 7px 9px;
+  background: #eadfd2;
+  border: 1px solid #d4c2b0;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+
+.metric-box:last-child {
+  margin-right: 0;
+}
+
+.metric-label {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b5b4b;
+  margin-bottom: 2px;
+}
+
+.metric-value {
+  font-size: 14pt;
+  font-weight: 800;
+  color: #10213a;
+}
+
+/* PUBLICATIONS */
+
+.pub-list {
+  margin-top: 0;
+}
+
+.pub-list li {
+  margin-bottom: 7px;
+}
+
+/* GENERAL */
+
 hr {
   border: none;
-  border-top: 1px solid #d8c8b6;
+  border-top: 1px solid #d9c8b6;
   margin: 14px 0;
 }
