@@ -5,35 +5,39 @@ on:
     - cron: "0 3 * * 1"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
-      - name: Install importer
-        run: pip install academic
-
-      - name: Fetch ORCID works
+      - name: Install Python packages
         run: |
-          curl -H "Accept: application/json" \
-          https://pub.orcid.org/v3.0/0000-0002-7133-8418/works \
-          > works.json
+          pip install requests pyyaml python-slugify
 
-      - name: Convert to BibTeX
-        run: |
-          academic import --bibtex works.json
+      - name: Run ORCID sync
+        run: python scripts/orcid_sync.py
 
       - name: Commit updates
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Update publications from ORCID" || echo "No changes"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add content/publications
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "Update publications from ORCID"
           git push
