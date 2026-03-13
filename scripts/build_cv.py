@@ -16,19 +16,6 @@ SITE_INDEX_CANDIDATES = [
 ]
 
 
-def resolve_site_index() -> Path:
-    for path in SITE_INDEX_CANDIDATES:
-        if path.exists():
-            return path
-    raise FileNotFoundError(
-        "Could not find site landing file. Checked: "
-        + ", ".join(str(p) for p in SITE_INDEX_CANDIDATES)
-    )
-
-
-SITE_INDEX = resolve_site_index()
-
-
 def read_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
     if not text.startswith("---"):
@@ -39,17 +26,51 @@ def read_front_matter(md_path: Path):
     return yaml.safe_load(parts[1])
 
 
-def read_site_sections():
-    data = read_front_matter(SITE_INDEX)
-    if not data:
-        return {}
+def resolve_site_index_and_data():
+    checked = []
 
-    sections = data.get("sections", [])
+    for path in SITE_INDEX_CANDIDATES:
+        if not path.exists():
+            checked.append(f"{path} (missing)")
+            continue
+
+        try:
+            data = read_front_matter(path)
+        except Exception as exc:
+            checked.append(f"{path} (parse error: {exc})")
+            continue
+
+        if not isinstance(data, dict):
+            checked.append(f"{path} (front matter is not a dict)")
+            continue
+
+        sections = data.get("sections")
+        if isinstance(sections, list):
+            return path, data
+
+        checked.append(f"{path} (no usable sections list)")
+
+    raise RuntimeError(
+        "Could not find a valid site landing file with a sections list. Checked:\n- "
+        + "\n- ".join(checked)
+    )
+
+
+SITE_INDEX, SITE_DATA = resolve_site_index_and_data()
+
+
+def read_site_sections():
+    data = SITE_DATA
+    sections = data.get("sections") or []
     out = {}
 
     for sec in sections:
+        if not isinstance(sec, dict):
+            continue
+
         sec_id = sec.get("id", "")
         content = sec.get("content", {}) or {}
+
         out[sec_id] = {
             "title": content.get("title", ""),
             "text": content.get("text", "") or "",
