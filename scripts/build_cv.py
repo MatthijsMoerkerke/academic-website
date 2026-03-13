@@ -356,20 +356,20 @@ def main():
 
     style = STYLE_FILE.read_text()
 
-    replacements = {
+replacements = {
 
-        "{{STYLE}}": style,
-        "{{BIO}}": build_bio(sections, author),
-        "{{EDUCATION}}": build_education(author),
-        "{{INTERESTS}}": build_interests(author),
-        "{{TRAINING}}": build_markdown_section(sections,"training","Additional Training"),
-        "{{TEACHING}}": build_markdown_section(sections,"teaching","Teaching & Mentoring"),
-        "{{ENGAGEMENT}}": build_markdown_section(sections,"engagement","Scientific Engagement & Outreach"),
-        "{{SKILLS}}": build_markdown_section(sections,"skills","Skills & Methods"),
-        "{{AWARDS}}": build_markdown_section(sections,"awards","Awards & Grants"),
-        "{{PRESENTATIONS}}": build_markdown_section(sections,"presentations","Presentations"),
-        "{{PUBLICATIONS}}": build_publications()
-    }
+    "{{STYLE}}": style,
+    "{{BIO}}": build_bio(sections, author),
+    "{{EDUCATION}}": build_education(author),
+    "{{INTERESTS}}": build_interests(author),
+    "{{TRAINING}}": build_markdown_section(sections, "training", "Additional Training"),
+    "{{TEACHING}}": build_markdown_section(sections, "teaching", "Teaching & Mentoring"),
+    "{{ENGAGEMENT}}": build_markdown_section(sections, "engagement", "Scientific Engagement & Outreach"),
+    "{{SKILLS}}": build_markdown_section(sections, "skills", "Skills & Methods"),
+    "{{AWARDS}}": build_markdown_section(sections, "awards", "Awards & Grants"),
+    "{{PRESENTATIONS}}": build_markdown_section(sections, "presentations", "Presentations"),
+    "{{PUBLICATIONS}}": build_publications()
+}
 
     out = template
 
