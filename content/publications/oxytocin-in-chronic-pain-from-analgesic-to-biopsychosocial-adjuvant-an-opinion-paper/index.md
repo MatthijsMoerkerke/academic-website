@@ -8,7 +8,7 @@ authors:
 - Jessica Van Oosterwijck
 date: '2025-01-01'
 publication_types:
-- article-journal
+- preprint
 publication: 'preprint'
 doi: 10.20944/preprints202510.0247.v1
 featured: false
