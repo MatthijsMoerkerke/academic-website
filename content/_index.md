@@ -27,8 +27,8 @@ sections:
 
     button:
       text: Download CV
-      url: uploads/CV_Matthijs_Moerkerke.pdf?v=20250913
-
+      url: "https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20250913"
+  
     headings:
       about: About
 
