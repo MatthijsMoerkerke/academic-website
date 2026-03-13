@@ -16,23 +16,10 @@ STYLE_FILE = ROOT / "cv" / "style.css"
 OUTPUT_HTML = ROOT / "cv" / "cv_generated.html"
 
 
-def read_front_matter(path: Path) -> dict:
+def read_text_file(path: Path) -> str:
     if not path.exists():
         raise FileNotFoundError(f"Missing file: {path}")
-
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---"):
-        raise RuntimeError(f"{path} does not start with YAML front matter")
-
-    parts = text.split("---", 2)
-    if len(parts) < 3:
-        raise RuntimeError(f"Could not parse front matter in {path}")
-
-    data = yaml.safe_load(parts[1]) or {}
-    if not isinstance(data, dict):
-        raise RuntimeError(f"Front matter in {path} is not a mapping")
-
-    return data
+    return path.read_text(encoding="utf-8")
 
 
 def read_yaml(path: Path) -> dict:
@@ -47,13 +34,14 @@ def clean_markdown_block(text: str) -> str:
         return ""
 
     text = text.replace("\r\n", "\n")
-    lines = []
+
+    cleaned_lines = []
     for line in text.split("\n"):
         line = line.rstrip()
         line = re.sub(r"[ \t]{2,}", " ", line)
-        lines.append(line)
+        cleaned_lines.append(line)
 
-    text = "\n".join(lines).strip()
+    text = "\n".join(cleaned_lines).strip()
 
     # bare URLs clickable
     text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
@@ -65,21 +53,28 @@ def strip_cv_button_from_bio(text: str) -> str:
     if not text:
         return ""
 
-    # Remove full HTML button paragraph / anchor
+    # remove HTML button paragraph
     text = re.sub(
-        r'(?is)<p[^>]*>.*?<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>.*?</p>',
+        r'(?is)<p[^>]*>\s*<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>\s*</p>',
         "",
         text,
     )
 
-    # Remove standalone anchor if present
+    # remove standalone HTML anchor
     text = re.sub(
         r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>',
         "",
         text,
     )
 
-    # Remove literal "Download CV" line if it survived
+    # remove plain markdown link if present
+    text = re.sub(
+        r'(?im)^\s*\[Download CV\]\([^)]+CV_Matthijs_Moerkerke\.pdf[^)]*\)\s*$',
+        "",
+        text,
+    )
+
+    # remove plain leftover line
     text = re.sub(r"(?im)^\s*Download CV\s*$", "", text)
 
     return text.strip()
@@ -96,29 +91,115 @@ def md_to_html(text: str) -> str:
     )
 
 
-def get_homepage_sections() -> dict:
-    fm = read_front_matter(SITE_INDEX)
-    sections = fm.get("sections", [])
-    if not isinstance(sections, list):
-        raise RuntimeError(f"'sections' in {SITE_INDEX} is not a list")
+def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
+    pattern = (
+        rf"(?ms)^-\s*block:.*?\n"
+        rf"\s+id:\s*{re.escape(block_id)}\s*\n"
+        rf".*?"
+        rf"^\s+content:\s*\n"
+        rf".*?"
+        rf"^\s+title:\s*\"?(.*?)\"?\s*$"
+    )
+    match = re.search(pattern, site_text)
+    if not match:
+        return fallback
+    title = match.group(1).strip()
+    return title if title else fallback
 
-    out = {}
-    for sec in sections:
-        if not isinstance(sec, dict):
+
+def extract_text_block(site_text: str, block_id: str) -> str:
+    """
+    Extract only the indented lines belonging to:
+      text: |
+        ...
+    and stop before sibling keys like button:, headings:, design:, etc.
+    """
+    lines = site_text.splitlines()
+
+    block_start = None
+    for i, line in enumerate(lines):
+        if re.match(rf"^\s+id:\s*{re.escape(block_id)}\s*$", line):
+            block_start = i
+            break
+
+    if block_start is None:
+        return ""
+
+    text_line_index = None
+    text_indent = None
+    for i in range(block_start, len(lines)):
+        line = lines[i]
+        m = re.match(r"^(\s+)text:\s*\|\s*$", line)
+        if m:
+            text_line_index = i
+            text_indent = len(m.group(1))
+            break
+        if i > block_start and re.match(r"^\s*-\s*block:", line):
+            break
+
+    if text_line_index is None:
+        return ""
+
+    collected = []
+    for i in range(text_line_index + 1, len(lines)):
+        line = lines[i]
+
+        if line.strip() == "":
+            collected.append("")
             continue
-        sec_id = sec.get("id", "")
-        content = sec.get("content", {}) or {}
-        out[sec_id] = {
-            "title": content.get("title", ""),
-            "text": content.get("text", "") or "",
-            "raw": sec,
-        }
 
-    # remove download button HTML from bio
-    if "bio" in out:
-        out["bio"]["text"] = strip_cv_button_from_bio(out["bio"].get("text", ""))
+        indent = len(line) - len(line.lstrip(" "))
 
-    return out
+        if indent <= text_indent:
+            break
+
+        collected.append(line)
+
+    if not collected:
+        return ""
+
+    nonempty = [ln for ln in collected if ln.strip()]
+    min_indent = min(len(ln) - len(ln.lstrip(" ")) for ln in nonempty) if nonempty else 0
+    normalized = [ln[min_indent:] if len(ln) >= min_indent else ln.lstrip() for ln in collected]
+
+    return clean_markdown_block("\n".join(normalized).strip())
+
+
+def get_homepage_sections() -> dict:
+    site_text = read_text_file(SITE_INDEX)
+
+    bio_text = strip_cv_button_from_bio(extract_text_block(site_text, "bio"))
+
+    return {
+        "bio": {
+            "title": "About",
+            "text": bio_text,
+        },
+        "training": {
+            "title": extract_block_title(site_text, "training", "Additional Training"),
+            "text": extract_text_block(site_text, "training"),
+        },
+        "teaching": {
+            "title": extract_block_title(site_text, "teaching", "Teaching & Mentoring"),
+            "text": extract_text_block(site_text, "teaching"),
+        },
+        "engagement": {
+            "title": extract_block_title(site_text, "engagement", "Scientific Engagement & Outreach"),
+            "text": extract_text_block(site_text, "engagement"),
+        },
+        "skills": {
+            "title": extract_block_title(site_text, "skills", "Skills & Methods"),
+            "text": extract_text_block(site_text, "skills"),
+        },
+        "awards": {
+            "title": extract_block_title(site_text, "awards", "Awards & Grants"),
+            "text": extract_text_block(site_text, "awards"),
+        },
+        "presentations": {
+            "title": extract_block_title(site_text, "presentations", "Summary of Presentations at Conferences"),
+            "text": extract_text_block(site_text, "presentations"),
+        },
+    }
 
 
 def read_scholar_metrics():
@@ -134,9 +215,11 @@ def read_publication_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return None
+
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
+
     return yaml.safe_load(parts[1])
 
 
