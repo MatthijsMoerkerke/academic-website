@@ -128,16 +128,17 @@ sections:
     text: |
       **Scientific collaboration & service**
 
-      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing                 international networking events (2023–present)
-          https://paininmotion.be/
-  
-      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-            science initiatives (2025–present)
-          https://amore-project.org/
-      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and              global participant engagement (2025–present)
-          https://www.painscienceinmotion.com/
+      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing international networking events (2023–present)  
+        https://paininmotion.be/
+
+      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-science initiatives (2025–present)  
+        https://amore-project.org/
+
+      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)  
+        https://www.painscienceinmotion.com/
 
       - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
-  
+
       **Scientific outreach in mainstream media**
 
       - **EOS Wetenschap** — Oxytocin nasal spray may improve social bonding in children with autism  
@@ -161,14 +162,13 @@ sections:
 
       **Memberships**
 
-      - International Association for the Study of Pain (IASP)  
-      - International Society for Autism Research (INSAR)  
-      - Belgian Association for Psychological Sciences (BAPS)  
-      - Leuven Brain Institute (LBI)  
-      - KU Leuven Child & Youth Institute (L-C&Y)  
-      - Leuven Autism Research (LAuRes)  
+      - International Association for the Study of Pain (IASP)
+      - International Society for Autism Research (INSAR)
+      - Belgian Association for Psychological Sciences (BAPS)
+      - Leuven Brain Institute (LBI)
+      - KU Leuven Child & Youth Institute (L-C&Y)
+      - Leuven Autism Research (LAuRes)
       - Alliantieonderzoeksgroep UGent–VUB Motor Mind
-
 
 # ---------------- SKILLS ----------------
 
