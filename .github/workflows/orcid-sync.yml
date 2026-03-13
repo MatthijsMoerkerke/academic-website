@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install requests pyyaml
+        pip install requests pyyaml python-slugify
 
     - name: Fetch ORCID publications
       run: |
