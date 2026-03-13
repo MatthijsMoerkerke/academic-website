@@ -1,37 +1,33 @@
-/* Disable clickable appearance for education and interest cards */
+/* ---------------------------------------------------
+DISABLE HOVER EFFECT FOR EDUCATION + INTEREST CARDS
+--------------------------------------------------- */
 
-.card,
-.card-body,
-.card-simple,
-.skills-content .card,
-.interests-content .card {
+section#education .card,
+section#education .card-simple,
+section#interests .card,
+section#interests .card-simple {
+
+  cursor: default !important;
+  transition: none !important;
+}
+
+section#education .card:hover,
+section#education .card-simple:hover,
+section#interests .card:hover,
+section#interests .card-simple:hover {
+
+  transform: none !important;
+  box-shadow: none !important;
   cursor: default !important;
 }
 
-.card:hover,
-.card-simple:hover {
-  transform: none !important;
-  box-shadow: none !important;
-}
-/* Disable hover effect for Education and Interest cards */
 
-#education .card,
-#interests .card {
-  cursor: default !important;
-}
-
-#education .card:hover,
-
-
-#interests .card:hover {
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* CV button hover */
+/* ---------------------------------------------------
+CV DOWNLOAD BUTTON HOVER
+--------------------------------------------------- */
 
 .cv-button {
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
 }
 
 .cv-button:hover {
