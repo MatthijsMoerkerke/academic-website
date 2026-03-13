@@ -43,9 +43,6 @@ links:
     url: mailto:matthijs.moerkerke@ugent.be
     label: Email
 
-  - icon: brands/linkedin
-    url: https://www.linkedin.com/in/matthijs-moerkerke/
-
   - icon: academicons/orcid
     url: https://orcid.org/0000-0002-7133-8418
     
@@ -54,6 +51,9 @@ links:
 
   - icon: academicons/researchgate
     url: https://www.researchgate.net/profile/Matthijs-Moerkerke
+
+  - icon: brands/linkedin
+    url: https://www.linkedin.com/in/matthijs-moerkerke/
     
 social:
   - icon: google-scholar
