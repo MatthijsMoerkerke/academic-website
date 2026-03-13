@@ -1,35 +1,47 @@
-name: Sync ORCID Publications
+name: Sync ORCID publications
 
 on:
-  schedule:
-    - cron: "0 0 * * 1"
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"
+
+permissions:
+  contents: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
 
-    - name: Install Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Install dependencies
-      run: |
-        pip install requests pyyaml python-slugify
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml python-slugify
 
-    - name: Fetch ORCID publications
-      run: |
-        python scripts/orcid_sync.py
+      - name: Fetch ORCID publications
+        run: python scripts/orcid_sync.py
 
-    - name: Commit updates
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "actions@github.com"
-        git add .
-        git commit -m "Update publications from ORCID" || echo "No updates"
-        git push
+      - name: Commit updates
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git add content/publications
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git commit -m "Update publications from ORCID"
+          git push origin main
