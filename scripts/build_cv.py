@@ -247,21 +247,98 @@ def build_bio(sections: dict, author: dict) -> str:
     email = "matthijs.moerkerke@ugent.be"
     linkedin = ""
     orcid = ""
+    scholar = ""
+    researchgate = ""
 
     for link in author.get("links", []):
         if not isinstance(link, dict):
             continue
+
         url = link.get("url", "")
+
         if url.startswith("mailto:"):
             email = url.replace("mailto:", "")
-        elif "linkedin" in url:
+        elif "linkedin.com" in url:
             linkedin = url
-        elif "orcid" in url:
+        elif "orcid.org" in url:
             orcid = url
+        elif "scholar.google" in url:
+            scholar = url
+        elif "researchgate.net" in url:
+            researchgate = url
 
     avatar_html = ""
     if avatar:
         avatar_html = f'<img class="hero-avatar" src="{avatar}" alt="{display_name}">'
+
+    contact_rows = []
+
+    if email:
+        contact_rows.append(
+            f'''
+<div class="contact-item">
+  <span class="contact-icon">✉</span>
+  <div class="contact-text">
+    <div class="contact-label">Email</div>
+    <div>{email}</div>
+  </div>
+</div>
+'''
+        )
+
+    if linkedin:
+        contact_rows.append(
+            f'''
+<div class="contact-item">
+  <span class="contact-icon">in</span>
+  <div class="contact-text">
+    <div class="contact-label">LinkedIn</div>
+    <div><a href="{linkedin}">{linkedin.replace("https://www.", "").replace("https://", "")}</a></div>
+  </div>
+</div>
+'''
+        )
+
+    if orcid:
+        contact_rows.append(
+            f'''
+<div class="contact-item">
+  <span class="contact-icon">iD</span>
+  <div class="contact-text">
+    <div class="contact-label">ORCID</div>
+    <div><a href="{orcid}">{orcid.replace("https://", "")}</a></div>
+  </div>
+</div>
+'''
+        )
+
+    if scholar:
+        contact_rows.append(
+            f'''
+<div class="contact-item">
+  <span class="contact-icon">GS</span>
+  <div class="contact-text">
+    <div class="contact-label">Scholar</div>
+    <div><a href="{scholar}">Google Scholar profile</a></div>
+  </div>
+</div>
+'''
+        )
+
+    if researchgate:
+        contact_rows.append(
+            f'''
+<div class="contact-item">
+  <span class="contact-icon">RG</span>
+  <div class="contact-text">
+    <div class="contact-label">ResearchGate</div>
+    <div><a href="{researchgate}">ResearchGate profile</a></div>
+  </div>
+</div>
+'''
+        )
+
+    contacts_html = "\n".join(contact_rows)
 
     return f"""
 <div class="hero">
@@ -278,9 +355,7 @@ def build_bio(sections: dict, author: dict) -> str:
   </div>
 
   <div class="hero-right">
-    <strong>Email</strong><br>{email}<br><br>
-    <strong>LinkedIn</strong><br>{linkedin}<br><br>
-    <strong>ORCID</strong><br>{orcid}
+    {contacts_html}
   </div>
 </div>
 """
