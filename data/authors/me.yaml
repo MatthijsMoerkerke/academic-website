@@ -52,6 +52,9 @@ links:
   - icon: academicons/google-scholar
     url: https://scholar.google.be/citations?user=Dv9Rx2MAAAAJ&hl=en
 
+  - icon: academicons/researchgate
+    url: https://www.researchgate.net/profile/Matthijs-Moerkerke
+    
 social:
   - icon: google-scholar
     icon_pack: ai
