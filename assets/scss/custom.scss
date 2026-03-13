@@ -13,3 +13,15 @@
   transform: none !important;
   box-shadow: none !important;
 }
+/* Disable hover effect for Education and Interest cards */
+
+#education .card,
+#interests .card {
+  cursor: default !important;
+}
+
+#education .card:hover,
+#interests .card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
