@@ -3,7 +3,7 @@ import re
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTENT_DIR = ROOT / "content"
+SITE_INDEX = ROOT / "content" / "_index.md"
 PUBLICATIONS_DIR = ROOT / "content" / "publications"
 SCHOLAR_FILE = ROOT / "data" / "scholar.yaml"
 TEMPLATE_FILE = ROOT / "cv" / "template.md"
@@ -12,71 +12,35 @@ OUTPUT_MD = ROOT / "cv" / "cv_generated.md"
 
 
 def read_front_matter(md_path: Path):
+    if not md_path.exists():
+        raise FileNotFoundError(f"Missing file: {md_path}")
+
     text = md_path.read_text(encoding="utf-8")
+
     if not text.startswith("---"):
-        return None
+        raise RuntimeError(f"{md_path} does not start with YAML front matter ('---').")
+
     parts = text.split("---", 2)
     if len(parts) < 3:
-        return None
-    return yaml.safe_load(parts[1])
+        raise RuntimeError(f"Could not parse front matter in {md_path}")
 
-
-def looks_like_homepage_sections(data: dict) -> bool:
+    data = yaml.safe_load(parts[1])
     if not isinstance(data, dict):
-        return False
+        raise RuntimeError(f"Front matter in {md_path} is not a YAML dictionary")
 
-    sections = data.get("sections")
-    if not isinstance(sections, list):
-        return False
-
-    ids = {
-        sec.get("id")
-        for sec in sections
-        if isinstance(sec, dict)
-    }
-
-    expected_ids = {
-        "bio",
-        "training",
-        "teaching",
-        "engagement",
-        "skills",
-        "awards",
-        "publications",
-    }
-    return len(ids.intersection(expected_ids)) >= 3
-
-
-def resolve_site_index_and_data():
-    checked = []
-
-    for path in sorted(CONTENT_DIR.rglob("*.md")):
-        try:
-            data = read_front_matter(path)
-        except Exception as exc:
-            checked.append(f"{path} (parse error: {exc})")
-            continue
-
-        if not isinstance(data, dict):
-            checked.append(f"{path} (no usable front matter)")
-            continue
-
-        if looks_like_homepage_sections(data):
-            return path, data
-
-        checked.append(f"{path} (not homepage sections file)")
-
-    raise RuntimeError(
-        "Could not find the homepage file with landing-page sections. Checked:\n- "
-        + "\n- ".join(str(x) for x in checked[:50])
-    )
-
-
-SITE_INDEX, SITE_DATA = resolve_site_index_and_data()
+    return data
 
 
 def read_site_sections():
-    sections = SITE_DATA.get("sections") or []
+    data = read_front_matter(SITE_INDEX)
+    sections = data.get("sections")
+
+    if not isinstance(sections, list):
+        raise RuntimeError(
+            f"'sections' in {SITE_INDEX} is not a list. "
+            f"Check that your homepage blocks are in the YAML front matter."
+        )
+
     out = {}
 
     for sec in sections:
@@ -111,9 +75,11 @@ def read_publication_front_matter(md_path: Path):
     text = md_path.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return None
+
     parts = text.split("---", 2)
     if len(parts) < 3:
         return None
+
     return yaml.safe_load(parts[1])
 
 
@@ -155,6 +121,7 @@ def format_publication(front_matter: dict) -> str:
         line += f" {label}"
     if doi:
         line += f" https://doi.org/{doi}"
+
     return line
 
 
@@ -166,12 +133,15 @@ def collect_publications():
     for folder in PUBLICATIONS_DIR.iterdir():
         if not folder.is_dir():
             continue
+
         index_file = folder / "index.md"
         if not index_file.exists():
             continue
+
         fm = read_publication_front_matter(index_file)
         if not fm:
             continue
+
         entries.append(fm)
 
     entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
@@ -228,11 +198,9 @@ def build_bio_block():
 
 
 def build_profile_section(site_sections):
-    bio = site_sections.get("bio", {})
-    bio_text = clean_markdown_block(
-        bio.get("raw", {}).get("content", {}).get("text", "")
-    )
-    return f"## About\n\n{bio_text}"
+    sec = site_sections.get("bio", {})
+    body = sec.get("raw", {}).get("content", {}).get("text", "")
+    return f"## About\n\n{clean_markdown_block(body)}"
 
 
 def build_training_section(site_sections):
@@ -247,10 +215,7 @@ def build_teaching_section(site_sections):
 
 def build_engagement_section(site_sections):
     sec = site_sections.get("engagement", {})
-    return section_markdown(
-        sec.get("title", "Scientific Engagement & Outreach"),
-        sec.get("text", ""),
-    )
+    return section_markdown(sec.get("title", "Scientific Engagement & Outreach"), sec.get("text", ""))
 
 
 def build_skills_section(site_sections):
@@ -264,8 +229,7 @@ def build_awards_section(site_sections):
 
 
 def build_presentations_section():
-    presentations = load_presentations()
-    presentations = clean_markdown_block(presentations)
+    presentations = clean_markdown_block(load_presentations())
     if not presentations:
         return ""
     return f"## Summary of Presentations at Conferences\n\n{presentations}"
