@@ -193,8 +193,10 @@ def main():
             skipped_by_title += 1
             print("Skipped by title:", title)
             continue
-
-        slug = slugify(title)
+        
+        title_slug = slugify(title)
+        short_title = "-".join(title_slug.split("-")[:6]) if title_slug else "publication"
+        slug = f"{year}-{short_title}"
         folder = f"{BASE_DIR}/{slug}"
 
         if os.path.exists(folder):
