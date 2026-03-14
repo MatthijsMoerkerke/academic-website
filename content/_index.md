@@ -215,12 +215,15 @@ sections:
       - MATLAB
 
       **Programming skills**
+  
       Programming scripts for fMRI and behavioural experiments in MATLAB and Presentation (Neurobehavioral Systems)
 
       **Laboratory skills**
+  
       Animal experiments, organ dissection, tissue embedding, microscopic evaluation, and histological analysis.
       
       **Clinical skills:**
+  
       Placing infuses, drawing blood, intramuscular and subdermal injections, ECG and EEG recordings, and CPR training.
 
 
