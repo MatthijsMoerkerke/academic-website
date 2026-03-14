@@ -81,19 +81,19 @@ sections:
   
       - **Research stay – University of Oslo, Norway (2023)**  
         Oxytocin research laboratory, Prof. Daniel Quintana  
-         <small> Supported by Faculty Travel Grant (KU Leuven) and FWO Travel Grant.</small>
+         <small> Supported by FWO Travel Grant.</small>
 
       - **PhD in Neuroscience Certificate (2022)**
 
       - **Oxytocin Conference and Workshop – invited talk (2022)**  
         Ettore Majorana Foundation, Erice, Italy  
-        Supported by FWO Travel Grant
+        <small> Supported by FWO Travel Grant.</small>
 
       - **Regulatory Medical Writing Training Programme (2021)**
 
       - **FreeSurfer MRI Analysis Course (2019)**  
         Martinos Center for Biomedical Imaging, MIT-Harvard, Boston, USA  
-        Supported by FWO Travel Grant
+        <small> Supported by FWO Travel Grant.</small>
 
       - **Good Clinical Practice Certificate (GCP) (2019)**
 
