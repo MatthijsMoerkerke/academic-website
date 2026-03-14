@@ -19,34 +19,10 @@ def safe_get(obj, *keys):
     return obj
 
 
-def fetch_json(url):
-    r = requests.get(url, headers=HEADERS, timeout=30)
+def fetch_json(url, headers=None):
+    r = requests.get(url, headers=headers or HEADERS, timeout=30)
     r.raise_for_status()
     return r.json()
-
-
-def get_authors(work):
-    contributors = safe_get(work, "contributors", "contributor") or []
-    authors = []
-
-    for c in contributors:
-        name = safe_get(c, "credit-name", "value")
-        if name:
-            authors.append(name)
-
-    if not authors:
-        authors = ["Matthijs Moerkerke"]
-
-    return authors
-
-
-def get_doi(work):
-    ids = safe_get(work, "external-ids", "external-id") or []
-    for i in ids:
-        if i.get("external-id-type", "").lower() == "doi":
-            value = i.get("external-id-value") or ""
-            return normalize_doi(value)
-    return ""
 
 
 def normalize_doi(doi: str) -> str:
@@ -61,6 +37,59 @@ def normalize_title(title: str) -> str:
     title = re.sub(r"\s+", " ", title)
     title = re.sub(r"[^\w\s]", "", title)
     return title.strip()
+
+
+def get_crossref_authors(doi):
+    if not doi:
+        return []
+
+    url = f"https://api.crossref.org/works/{doi}"
+
+    try:
+        data = fetch_json(url, headers={"Accept": "application/json"})
+        authors = []
+        for a in data.get("message", {}).get("author", []):
+            given = (a.get("given") or "").strip()
+            family = (a.get("family") or "").strip()
+            name = f"{given} {family}".strip()
+
+            if not name:
+                name = (a.get("name") or "").strip()
+
+            if name:
+                authors.append(name)
+
+        return authors
+    except Exception as e:
+        print(f"Could not fetch Crossref authors for DOI {doi}: {e}")
+        return []
+
+
+def get_authors(work, doi=""):
+    contributors = safe_get(work, "contributors", "contributor") or []
+    authors = []
+
+    for c in contributors:
+        name = safe_get(c, "credit-name", "value")
+        if name:
+            authors.append(name)
+
+    if not authors and doi:
+        authors = get_crossref_authors(doi)
+
+    if not authors:
+        authors = ["Matthijs Moerkerke"]
+
+    return authors
+
+
+def get_doi(work):
+    ids = safe_get(work, "external-ids", "external-id") or []
+    for i in ids:
+        if i.get("external-id-type", "").lower() == "doi":
+            value = i.get("external-id-value") or ""
+            return normalize_doi(value)
+    return ""
 
 
 def read_front_matter(index_path):
@@ -149,18 +178,16 @@ def main():
         year = safe_get(work, "publication-date", "year", "value") or "2024"
         journal = safe_get(work, "journal-title", "value") or ""
         doi = get_doi(work)
-        authors = get_authors(work)
+        authors = get_authors(work, doi)
 
         normalized_title = normalize_title(title)
 
-        # 1. Deduplicate by DOI first
         if doi and doi in existing_dois:
             skipped += 1
             skipped_by_doi += 1
             print("Skipped by DOI:", title)
             continue
 
-        # 2. Then deduplicate by normalized title
         if normalized_title and normalized_title in existing_titles:
             skipped += 1
             skipped_by_title += 1
@@ -170,7 +197,6 @@ def main():
         slug = slugify(title)
         folder = f"{BASE_DIR}/{slug}"
 
-        # 3. Final fallback: if folder already exists, skip
         if os.path.exists(folder):
             skipped += 1
             print("Skipped existing folder:", slug)
@@ -206,7 +232,6 @@ def main():
 """
             )
 
-        # Add new item to dedupe sets immediately
         if doi:
             existing_dois.add(doi)
         if normalized_title:
