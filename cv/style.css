@@ -1,6 +1,6 @@
 @page {
   size: A4;
-  margin: 32mm 30mm 32mm 30mm;
+  margin: 36mm 34mm 36mm 34mm;
 }
 
 html, body {
@@ -67,8 +67,8 @@ body {
 
 .hero-avatar {
   display: table-cell;
-  width: 96px;
-  height: 96px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 999px;
   border: 2px solid #ccb8a3;
