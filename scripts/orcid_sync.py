@@ -48,6 +48,7 @@ def get_crossref_authors(doi):
     try:
         data = fetch_json(url, headers={"Accept": "application/json"})
         authors = []
+
         for a in data.get("message", {}).get("author", []):
             given = (a.get("given") or "").strip()
             family = (a.get("family") or "").strip()
@@ -60,6 +61,7 @@ def get_crossref_authors(doi):
                 authors.append(name)
 
         return authors
+
     except Exception as e:
         print(f"Could not fetch Crossref authors for DOI {doi}: {e}")
         return []
@@ -74,8 +76,11 @@ def get_authors(work, doi=""):
         if name:
             authors.append(name)
 
-    if not authors and doi:
-        authors = get_crossref_authors(doi)
+    # If ORCID returns no authors or only one author, try Crossref
+    if len(authors) <= 1 and doi:
+        crossref_authors = get_crossref_authors(doi)
+        if crossref_authors:
+            authors = crossref_authors
 
     if not authors:
         authors = ["Matthijs Moerkerke"]
@@ -123,11 +128,13 @@ def collect_existing_publications():
 
     for folder_name in os.listdir(BASE_DIR):
         folder = os.path.join(BASE_DIR, folder_name)
+
         if not os.path.isdir(folder):
             continue
 
         index_path = os.path.join(folder, "index.md")
         fm = read_front_matter(index_path)
+
         if not fm:
             continue
 
@@ -136,6 +143,7 @@ def collect_existing_publications():
 
         if doi:
             existing_dois.add(doi)
+
         if title:
             existing_titles.add(title)
 
@@ -157,12 +165,14 @@ def main():
 
     for g in groups:
         summaries = g.get("work-summary", [])
+
         if not summaries:
             skipped += 1
             continue
 
         summary = summaries[0]
         put_code = summary.get("put-code")
+
         if not put_code:
             skipped += 1
             continue
@@ -171,6 +181,7 @@ def main():
         work = fetch_json(detail_url)
 
         title = safe_get(work, "title", "title", "value")
+
         if not title:
             skipped += 1
             continue
@@ -182,18 +193,20 @@ def main():
 
         normalized_title = normalize_title(title)
 
+        # Deduplicate by DOI
         if doi and doi in existing_dois:
             skipped += 1
             skipped_by_doi += 1
             print("Skipped by DOI:", title)
             continue
 
+        # Deduplicate by normalized title
         if normalized_title and normalized_title in existing_titles:
             skipped += 1
             skipped_by_title += 1
             print("Skipped by title:", title)
             continue
-        
+
         title_slug = slugify(title)
         short_title = "-".join(title_slug.split("-")[:6]) if title_slug else "publication"
         slug = f"{year}-{short_title}"
@@ -234,8 +247,10 @@ def main():
 """
             )
 
+        # Update dedupe sets
         if doi:
             existing_dois.add(doi)
+
         if normalized_title:
             existing_titles.add(normalized_title)
 
