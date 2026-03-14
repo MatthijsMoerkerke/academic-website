@@ -2,7 +2,7 @@ name: Sync ORCID, update Scholar, and deploy
 
 on:
   schedule:
-    - cron: "0 3,15 * * *"
+    - cron: "0 */3 * * *"
   workflow_dispatch:
 
 permissions:
