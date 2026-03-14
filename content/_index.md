@@ -85,14 +85,14 @@ sections:
 
       - **PhD in Neuroscience Certificate (2022)**
 
-      - **Oxytocin Conference and Workshop – invited talk**  
-        Ettore Majorana Foundation, Erice, Italy (2022)  
+      - **Oxytocin Conference and Workshop – invited talk (2022)**  
+        Ettore Majorana Foundation, Erice, Italy  
         Supported by FWO Travel Grant
 
       - **Regulatory Medical Writing Training Programme (2021)**
 
-      - **FreeSurfer MRI Analysis Course**  
-        Martinos Center for Biomedical Imaging, MIT-Harvard, Boston, USA (2019)  
+      - **FreeSurfer MRI Analysis Course (2019)**  
+        Martinos Center for Biomedical Imaging, MIT-Harvard, Boston, USA  
         Supported by FWO Travel Grant
 
       - **Good Clinical Practice Certificate (GCP) (2019)**
@@ -140,13 +140,13 @@ sections:
     text: |
       **Scientific collaboration & service**
 
-      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing international networking events (2023–present)  
+      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing                 international networking events (2023–present)  
         https://paininmotion.be/
 
-      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-science initiatives (2025–present)  
+      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-          science initiatives (2025–present)  
         https://amore-project.org/
 
-      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)  
+      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and             global participant engagement (2025–present)  
         https://www.painscienceinmotion.com/
 
       - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
@@ -199,7 +199,8 @@ sections:
       **Medical imaging proficiencies**
 
       Scanning, pre-processing and analysis of images taken with **Magnetic Resonance Imaging (MRI)**  
-      (functional, structural and diffusion weighted MRI) and **electroencephalography (EEG)** including stress physiology measures (heart rate, respiration rate         and skin conductance).
+      (functional, structural and diffusion weighted MRI) and **electroencephalography (EEG),**
+      including stress physiology measures (heart rate, respiration rate and skin conductance).
       Software experience includes:
       - Letswave 6
       - SPM 8–12
@@ -214,32 +215,13 @@ sections:
       - MATLAB
 
       **Programming skills**
-
-      Programming scripts for fMRI and behavioural experiments in:
-
-      - MATLAB
-      - Presentation (Neurobehavioral Systems)
-
-      **Neurocognitive expertise**
-
-      - Experimental design and paradigm development
-      - Cognitive and diagnostic testing
+      Programming scripts for fMRI and behavioural experiments in MATLAB and Presentation (Neurobehavioral Systems)
 
       **Laboratory skills**
-
-      - Animal experiments
-      - Organ dissection
-      - Tissue embedding
-      - Microscopic evaluation
-      - Histological analysis
-
-      **Clinical skills**
-
-      - Placing infuses
-      - Drawing blood
-      - Intramuscular and subdermal injections
-      - ECG and EEG recordings
-      - CPR training
+      Animal experiments, organ dissection, tissue embedding, microscopic evaluation, and histological analysis.
+      
+      **Clinical skills:**
+      Placing infuses, drawing blood, intramuscular and subdermal injections, ECG and EEG recordings, and CPR training.
 
 
 # ---------------- AWARDS ----------------
