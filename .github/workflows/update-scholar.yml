@@ -1,8 +1,6 @@
 name: Update Scholar Metrics and Deploy
 
 on:
-  schedule:
-    - cron: '0 6 * * 1'
   workflow_dispatch:
 
 permissions:
