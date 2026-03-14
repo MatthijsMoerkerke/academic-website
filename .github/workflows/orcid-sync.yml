@@ -24,10 +24,15 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests pyyaml python-slugify scholarly
+          pip install requests pyyaml python-slugify scholarly markdown
+
+      - name: Install wkhtmltopdf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wkhtmltopdf
 
       - name: Sync ORCID publications
         run: python scripts/orcid_sync.py
@@ -36,12 +41,20 @@ jobs:
         run: python scripts/update_scholar.py
         continue-on-error: true
 
+      - name: Generate CV HTML
+        run: python scripts/build_cv.py
+
+      - name: Generate CV PDF
+        run: |
+          mkdir -p static/uploads
+          wkhtmltopdf --enable-local-file-access cv/cv_generated.html static/uploads/CV_Matthijs_Moerkerke.pdf
+
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add content/publications data/scholar.yaml
-          git diff --cached --quiet || git commit -m "Auto-update publications and scholar metrics"
+          git add content/publications data/scholar.yaml cv/cv_generated.html static/uploads/CV_Matthijs_Moerkerke.pdf
+          git diff --cached --quiet || git commit -m "Auto-update publications, scholar metrics, and CV"
           git push
 
       - name: Trigger Hugo deploy workflow
