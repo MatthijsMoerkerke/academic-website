@@ -43,6 +43,7 @@ jobs:
 
       - name: Update Scholar metrics
         run: python scripts/update_scholar.py
+        continue-on-error: true
 
       - name: Commit updates
         run: |
