@@ -201,18 +201,14 @@ sections:
       Scanning, pre-processing and analysis of images taken with **Magnetic Resonance Imaging (MRI)**  
       (functional, structural and diffusion weighted MRI) and **electroencephalography (EEG),**
       including stress physiology measures (heart rate, respiration rate and skin conductance).
-      Software experience includes:
-      - Letswave 6
-      - SPM 8–12
-      - CAT12
-      - FreeSurfer
+      Software experience includes SPM12, Letswave 6, CAT12, CONN, Freesurfer.
+  
 
       **Statistical skills**
 
-      - RStudio  
-      - JAMOVI  
-      - SPSS  
-      - MATLAB
+      Statistical analysis of behavioural, clinical, and neuroimaging datasets using **RStudio, JAMOVI, SPSS,
+      and MATLAB**, including data preprocessing, visualization, regression analyses, mixed-effects modelling,
+      and hypothesis-driven statistical testing.
 
       **Programming skills**
   
