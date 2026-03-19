@@ -30,7 +30,6 @@ sections:
            href="https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20250914"
            target="_blank"
            rel="noopener"
-           onclick="gtag('event', 'cv_download');"
            style="
              display:inline-block;
              padding:10px 18px;
