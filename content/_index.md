@@ -230,15 +230,15 @@ sections:
   content:
     title: Awards & Grants
     text: |
-      **Fulbright Postdoctoral Research Award Nominee 2026 (Belgium–USA)**  
+      **Fulbright Postdoctoral Research Award Nominee 2026 (Belgium–USA) 2026**  
       Nominated for a research stay at Stanford University to develop predictive modelling and machine-learning approaches for multimodal physiological data in          chronic pain research.
 
-      **PhD Dissertation Award 2024**  
+      **INSAR PhD Dissertation Award 2024**  
       Awarded by the International Society for Autism Research (INSAR), presented at the Annual Meeting in Melbourne, Australia.  
       https://www.autism-insar.org/page/RecognitionAwards
 
-      **Belgium’s Got Talent Prize 2023**  
-      Awarded by the Belgian College of Neuropsychopharmacology and Biological Psychiatry for best PhD thesis.  
+      **BCNBP “Belgium’s Got Talent” PhD Thesis Prize 2023**  
+      Awarded by the Belgian College of Neuropsychopharmacology and Biological Psychiatry (BCNBP) for best PhD thesis.  
       https://www.bcnbp.org/belgiums-got-talent
 
       **Thérèse Vandereecken Prize for Clinical Medicine 2023**  
