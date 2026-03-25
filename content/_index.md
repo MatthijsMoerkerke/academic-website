@@ -166,11 +166,12 @@ sections:
         https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain
 
       **Public science events**
-
-      - Day of Science — public science outreach (yearly neuroscience workshops)
-      - Brain Awareness Week — neuroscience outreach events
-      - Child KU Leuven — workshops for elementary school students
-      - Autisme Beurs — public engagement on autism research
+  
+      - UGent Research Day — jury member for poster presentations (2026)
+      - Day of Science (Dag van de Wetenschap) — public science outreach (yearly neuroscience workshops since 2017)
+      - Brain Awareness Week — neuroscience outreach events (2017)
+      - Child University KU Leuven — workshops for elementary school children (2016-2018)
+      - Autisme Beurs — public engagement on autism research (2017)
 
       **Memberships**
 
