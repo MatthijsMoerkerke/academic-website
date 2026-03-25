@@ -231,7 +231,7 @@ sections:
   content:
     title: Awards & Grants
     text: |
-      **Fulbright Postdoctoral Research Award Nominee 2026 (Belgium–USA) 2026**  
+      **Fulbright Postdoctoral Research Award Nominee (Belgium–USA) 2026**  
       Nominated for a research stay at Stanford University to develop predictive modelling and machine-learning approaches for multimodal physiological data in          chronic pain research.
 
       **INSAR PhD Dissertation Award 2024**  
