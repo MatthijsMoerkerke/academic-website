@@ -113,8 +113,8 @@ sections:
     text: |
       **University teaching**
   
-      - Lecturer for *Neurosciences* (BA Rehabilitation Sciences, Ghent University)
-      - Lecturer for *Evidence-Based Medicine & Statistics 3* (BA Rehabilitation Sciences, Ghent University) — responsible for theoretical lectures and coordination of practical seminars.
+      - Lecturer for *Neurosciences* (2nd BA Rehabilitation Sciences, Ghent University)
+      - Lecturer for *Evidence-Based Medicine & Statistics* (3rd BA Rehabilitation Sciences, Ghent University) — responsible for theoretical lectures and coordination of practical seminars.
       - Leading curricular reform and supervising eight PhD teaching assistants.
 
       **Graduate and undergraduate supervision**
