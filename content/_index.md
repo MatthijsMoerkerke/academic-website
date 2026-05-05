@@ -232,8 +232,8 @@ sections:
   content:
     title: Awards & Grants
     text: |
-      **Fulbright Postdoctoral Research Award Nominee (Belgium–USA) 2026**  
-      Nominated for a research stay at Stanford University to develop predictive modelling and machine-learning approaches for multimodal physiological data in          chronic pain research.
+      **Fulbright Postdoctoral Research Award (Belgium–USA) 2026**  
+      Awarded for an 8 month research stay at Stanford University (CA, USA).
 
       **INSAR PhD Dissertation Award 2024**  
       Awarded by the International Society for Autism Research (INSAR), presented at the Annual Meeting in Melbourne, Australia.  
