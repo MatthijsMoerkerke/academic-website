@@ -177,6 +177,7 @@ sections:
       **Memberships**
 
       - International Association for the Study of Pain (IASP)
+      - Pain Science in Motion (PiM)
       - International Society for Autism Research (INSAR)
       - Belgian Association for Psychological Sciences (BAPS)
       - Leuven Brain Institute (LBI)
