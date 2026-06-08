@@ -76,11 +76,11 @@ sections:
     title: Additional Training
     text: |
       - **Research stay – Stanford University, USA (2025)**  
-        Pediatric Pain Research Laboratory, Prof. Laura Simons  
+        Biobehavioral Pediatric Pain Lab, Prof. Laura Simons  
          <small> Supported by Faculty Travel Grant (UGent) and FWO Travel Grant.</small>
   
       - **Research stay – University of Oslo, Norway (2023)**  
-        Oxytocin research laboratory, Prof. Daniel Quintana  
+        Oxytocin research Lab, Prof. Daniel Quintana  
          <small> Supported by FWO Travel Grant.</small>
 
       - **PhD in Neuroscience Certificate (2022)**
