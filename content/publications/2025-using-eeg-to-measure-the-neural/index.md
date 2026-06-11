@@ -15,7 +15,7 @@ authors:
 - Daniel S. Quintana
 date: '2025-01-01'
 publication_types:
-- article-journal
+- preprint
 publication: ''
 doi: 10.1101/2025.08.25.25334355
 featured: false
