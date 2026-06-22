@@ -15,7 +15,7 @@ authors:
 - Gunnar Naulaers
 - Kaat Alaerts
 - Bart Boets
-date: '2026-01-01'
+date: '2026-08-01'
 publication_types:
 - article-journal
 publication: Progress in Neurobiology
