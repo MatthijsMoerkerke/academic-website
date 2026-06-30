@@ -123,7 +123,7 @@ sections:
       - Promoter of **25 MSc theses** (Rehabilitation Sciences, Biomedical Sciences and Medicine)
       - Co-promoter of **12 MSc theses**
       - Daily supervisor of **24 bachelor and master students**
-      - Jury member for **10 MSc defenses**
+      - Jury member for **14 MSc defenses**
       - Jury member for **1 PhD defense**
 
       **Mentoring**
