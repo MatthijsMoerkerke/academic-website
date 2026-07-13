@@ -15,7 +15,7 @@ authors:
 date: '2026-01-01'
 publication_types:
 - article-journal
-publication: PEDIATRIC RESEARCH
+publication: Pediatric Research
 doi: 10.1038/s41390-025-04613-w
 featured: false
 draft: false
