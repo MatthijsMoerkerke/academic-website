@@ -13,9 +13,10 @@ authors:
 - Ole A. Andreassen
 - Daniel S. Quintana
 date: '2026-06-01'
+- article-journal
+publication: "Psychophysiology"
 publication_types:
-- article
-publication: ''
+- ["article-journal"]
 doi: 10.1111/psyp.70334
 featured: false
 draft: false
