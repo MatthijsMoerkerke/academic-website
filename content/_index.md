@@ -35,7 +35,7 @@ sections:
              padding:10px 18px;
              background:#F4F8FC;
              color:black;
-             border-radius:6px;
+             border-radius:12px;
              text-decoration:none;
              font-weight:500;">
           Download CV
