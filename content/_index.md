@@ -34,7 +34,7 @@ sections:
              display:inline-block;
              padding:10px 18px;
              background:#c1d4f5;
-             color:white;
+             color:black;
              border-radius:12px;
              text-decoration:none;
              font-weight:500;">
