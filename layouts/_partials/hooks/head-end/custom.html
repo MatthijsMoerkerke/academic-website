@@ -20,15 +20,21 @@
 }
 
 /* Interest tags */
-.bg-primary-50:hover {
+.bg-primary-50:hover,
+.dark .bg-primary-50:hover {
   background-color: inherit !important;
   color: inherit !important;
   border-color: inherit !important;
 }
 
-.dark .bg-primary-50:hover {
-  background-color: inherit !important;
+/* Disable text color changes on hover */
+.bg-primary-50:hover *,
+.dark .bg-primary-50:hover * {
   color: inherit !important;
+}
+
+/* Disable border color changes on hover */
+span[class*="bg-primary-50"]:hover {
   border-color: inherit !important;
 }
 </style>
