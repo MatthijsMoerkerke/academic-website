@@ -33,7 +33,7 @@ sections:
            style="
              display:inline-block;
              padding:10px 18px;
-             background:#F4F8FC;
+             background:#2F6690;
              color:black;
              border-radius:12px;
              text-decoration:none;
