@@ -44,7 +44,7 @@ body {
 .hero-left,
 .hero-right {
   display: table-cell;
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 
 .hero-left {
