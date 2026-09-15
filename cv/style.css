@@ -22,6 +22,10 @@ body {
   padding: 22px 26px 30px 26px;
   background: #ffffff;
 }
+.page + .page {
+  page-break-before: always;
+  break-before: page;
+}
 
 /* HERO (HEADER BLOCK) */
 
