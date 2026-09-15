@@ -1,0 +1,10 @@
+/* Remove hover effects */
+.card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Use normal cursor instead of hand */
+.card {
+  cursor: default !important;
+}
