@@ -33,8 +33,8 @@ sections:
            style="
              display:inline-block;
              padding:10px 18px;
-             background:#5D422F;
-             color:white;
+             background:#F4F8FC;
+             color:black;
              border-radius:6px;
              text-decoration:none;
              font-weight:500;">
