@@ -137,7 +137,7 @@ sections:
 - block: markdown
   id: engagement
   content:
-    title: Scientific Engagement
+    title: Scientific Engagement & Outreach
     text: |
       **Scientific collaboration & service**
 
