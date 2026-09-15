@@ -17,14 +17,9 @@ sections:
     username: me
 
     text: |
-      I am a **postdoctoral researcher at Ghent University** (Belgium) and voluntary research fellow at KU Leuven (Belgium).
-
-      My research focuses on **neurophysiology, pain science, and neuroendocrine mechanisms**, with particular interest in the role of **oxytocin**.
-
-      I investigate how stress physiology, neuroendocrine signaling, and brain mechanisms interact with behavior and clinical outcomes, combining neuroimaging, physiological recordings, and clinical trial methodologies.
-
-      My work aims to translate neurobiological insights into improved diagnostics, treatment strategies, and rehabilitation approaches for neurological and neurodevelopmental conditions.
-
+      I am a **postdoctoral researcher** at Ghent University (Belgium) and voluntary research fellow at KU Leuven (Belgium).
+      My research interests include oxytocin, pain science, neuroimaging and neuroendocrine mechanisms.
+  
       <p style="margin-top:20px;">
         <a class="cv-button"
            href="https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20250914"
