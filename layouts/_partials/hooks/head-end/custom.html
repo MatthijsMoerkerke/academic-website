@@ -19,18 +19,23 @@
   color: inherit !important;
 }
 
+/* Interest boxes: disable transition */
+span[class~="cursor-default"] {
+  transition: none !important;
+}
+
 /* Interest boxes: light mode */
-span.cursor-default:hover {
+html:not(.dark) span[class~="hover:bg-primary-100"]:hover {
   background-color: rgb(var(--color-primary-50)) !important;
   color: rgb(var(--color-primary-800)) !important;
   border-color: rgb(var(--color-primary-200) / 0.5) !important;
 }
 
 /* Interest boxes: dark mode */
-.dark span.cursor-default:hover {
+html.dark span[class~="dark:hover:bg-primary-500"]:hover,
+.dark span[class~="dark:hover:bg-primary-500"]:hover {
   background-color: rgb(31 41 55) !important;
   color: rgb(var(--color-primary-200)) !important;
   border-color: rgb(var(--color-primary-800) / 0.5) !important;
 }
-`
 </style>
