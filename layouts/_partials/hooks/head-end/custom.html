@@ -9,7 +9,7 @@
 </script>
 
 <style>
-/* Education cards */
+/* Education boxes */
 .group:hover {
   box-shadow: none !important;
   border-color: transparent !important;
@@ -19,22 +19,18 @@
   color: inherit !important;
 }
 
-/* Interest tags */
-.bg-primary-50:hover,
-.dark .bg-primary-50:hover {
-  background-color: inherit !important;
-  color: inherit !important;
-  border-color: inherit !important;
+/* Interest boxes: light mode */
+span.cursor-default:hover {
+  background-color: rgb(var(--color-primary-50)) !important;
+  color: rgb(var(--color-primary-800)) !important;
+  border-color: rgb(var(--color-primary-200) / 0.5) !important;
 }
 
-/* Disable text color changes on hover */
-.bg-primary-50:hover *,
-.dark .bg-primary-50:hover * {
-  color: inherit !important;
+/* Interest boxes: dark mode */
+.dark span.cursor-default:hover {
+  background-color: rgb(31 41 55) !important;
+  color: rgb(var(--color-primary-200)) !important;
+  border-color: rgb(var(--color-primary-800) / 0.5) !important;
 }
-
-/* Disable border color changes on hover */
-span[class*="bg-primary-50"]:hover {
-  border-color: inherit !important;
-}
+`
 </style>
