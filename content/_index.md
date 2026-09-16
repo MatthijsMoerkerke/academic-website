@@ -136,13 +136,13 @@ sections:
     text: |
       **Scientific collaboration & service**
 
-      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing                 international networking events (2023–present)  
+      - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing international networking events (2023–present)  
         <a href="https://paininmotion.be/">Pain in Motion website</a>
 
-      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-          science initiatives (2025–present)  
+      - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-science initiatives (2025–present)  
         <a href="https://amore-project.org/">AMORE website</a>
 
-      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and             global participant engagement (2025–present)  
+      - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)  
         <a href="https://www.painscienceinmotion.com/">Conference website</a>
 
       - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
