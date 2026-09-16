@@ -270,35 +270,23 @@ def build_bio(sections: dict, author: dict) -> str:
     avatar_html = ""
     if avatar:
         avatar_html = f'<img class="hero-avatar" src="{avatar}" alt="{display_name}">'
+    
+    linkedin_display = (
+        linkedin
+        .replace("https://www.", "")
+        .replace("https://", "")
+        .rstrip("/")
+    )
 
-    contact_rows = []
+    contact_html = f"""
+    <div class="hero-contact">
+      <strong>Contact:</strong>
+      {email}{email}</a>
+      <span class="contact-separator">|</span>
+      {linkedin}{linkedin_display}</a>
+    </div>
+    """
 
-    if email:
-        contact_rows.append(
-            f"<div class='contact-line'><strong>Email</strong><br>{email}</div>"
-        )
-
-    if linkedin:
-        contact_rows.append(
-            f"<div class='contact-line'><strong>LinkedIn</strong><br><a href='{linkedin}'>{linkedin.replace('https://www.', '').replace('https://', '')}</a></div>"
-        )
-
-    if orcid:
-        contact_rows.append(
-            f"<div class='contact-line'><strong>ORCID</strong><br><a href='{orcid}'>{orcid.replace('https://', '')}</a></div>"
-        )
-
-    if scholar:
-        contact_rows.append(
-            f"<div class='contact-line'><strong>Google Scholar</strong><br><a href='{scholar}'>Scholar profile</a></div>"
-        )
-
-    if researchgate:
-        contact_rows.append(
-            f"<div class='contact-line'><strong>ResearchGate</strong><br><a href='{researchgate}'>ResearchGate profile</a></div>"
-        )
-
-    contacts_html = "<h3>Contact</h3>" + "\n".join(contact_rows)
 
     return f"""
 <div class="hero">
@@ -311,11 +299,10 @@ def build_bio(sections: dict, author: dict) -> str:
         <div class="hero-affiliation">{affiliations}</div>
       </div>
     </div>
-    <div class="hero-bio">{bio_html}</div>
-  </div>
 
-  <div class="hero-right">
-    {contacts_html}
+    <div class="hero-bio">{bio_html}</div>
+
+    {contact_html}
   </div>
 </div>
 """
