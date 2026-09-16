@@ -1,8 +1,10 @@
 from pathlib import Path
 import base64
+import html
 import re
-import yaml
+
 import markdown
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,9 +30,31 @@ def read_yaml(path: Path) -> dict:
     if not path.exists():
         return {}
 
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    data = yaml.safe_load(
+        path.read_text(encoding="utf-8")
+    ) or {}
 
     return data if isinstance(data, dict) else {}
+
+
+def make_link(url: str, label: str) -> str:
+    """
+    Create a valid HTML hyperlink.
+
+    Both the URL and the visible label are escaped to avoid
+    malformed HTML when they contain characters such as &.
+    """
+    if not url:
+        return html.escape(str(label))
+
+    safe_url = html.escape(str(url), quote=True)
+    safe_label = html.escape(str(label))
+
+    return (
+        f'{safe_url}'
+        f'{safe_label}'
+        f'</a>'
+    )
 
 
 def clean_markdown_block(text: str) -> str:
@@ -48,7 +72,7 @@ def clean_markdown_block(text: str) -> str:
 
     text = "\n".join(cleaned_lines).strip()
 
-    # Make bare URLs clickable.
+    # Convert bare URLs on separate lines into Markdown links.
     text = re.sub(
         r"(?m)^(https?://\S+)\s*$",
         r"<\1>",
@@ -66,7 +90,11 @@ def md_to_html(text: str) -> str:
 
     return markdown.markdown(
         text,
-        extensions=["extra", "sane_lists", "nl2br"],
+        extensions=[
+            "extra",
+            "sane_lists",
+            "nl2br",
+        ],
         output_format="html5",
     )
 
@@ -75,12 +103,12 @@ def strip_cv_button_from_bio(text: str) -> str:
     if not text:
         return ""
 
-    # Remove a complete paragraph containing the CV button.
+    # Remove a complete HTML paragraph containing the CV button.
     text = re.sub(
         (
             r'(?is)<p[^>]*>.*?'
-            r'<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>'
-            r'.*?</a>.*?</p>'
+            r'<a[^>]*href="[^"]*CV_Matthijs_Moerkerke'
+            r'\.pdf[^"]*"[^>]*>.*?</a>.*?</p>'
         ),
         "",
         text,
@@ -89,8 +117,8 @@ def strip_cv_button_from_bio(text: str) -> str:
     # Remove a standalone CV link.
     text = re.sub(
         (
-            r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>'
-            r'.*?</a>'
+            r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke'
+            r'\.pdf[^"]*"[^>]*>.*?</a>'
         ),
         "",
         text,
@@ -117,7 +145,7 @@ def extract_block_title(
         rf".*?"
         rf"^\s+content:\s*\n"
         rf".*?"
-        rf"^\s+title:\s*\"?(.*?)\"?\s*$"
+        rf'^\s+title:\s*"?(.*?)"?\s*$'
     )
 
     match = re.search(pattern, site_text)
@@ -142,17 +170,16 @@ def extract_text_block(
 
     Stop before sibling keys such as button, headings or design.
     """
-
     lines = site_text.splitlines()
 
     block_start = None
 
-    for i, line in enumerate(lines):
+    for index, line in enumerate(lines):
         if re.match(
             rf"^\s+id:\s*{re.escape(block_id)}\s*$",
             line,
         ):
-            block_start = i
+            block_start = index
             break
 
     if block_start is None:
@@ -161,8 +188,8 @@ def extract_text_block(
     text_line_index = None
     text_indent = None
 
-    for i in range(block_start, len(lines)):
-        line = lines[i]
+    for index in range(block_start, len(lines)):
+        line = lines[index]
 
         match = re.match(
             r"^(\s+)text:\s*\|\s*$",
@@ -170,12 +197,12 @@ def extract_text_block(
         )
 
         if match:
-            text_line_index = i
+            text_line_index = index
             text_indent = len(match.group(1))
             break
 
         if (
-            i > block_start
+            index > block_start
             and re.match(r"^\s*-\s*block:", line)
         ):
             break
@@ -185,8 +212,8 @@ def extract_text_block(
 
     collected = []
 
-    for i in range(text_line_index + 1, len(lines)):
-        line = lines[i]
+    for index in range(text_line_index + 1, len(lines)):
+        line = lines[index]
 
         if line.strip() == "":
             collected.append("")
@@ -372,7 +399,7 @@ def build_bio(
     )
 
     affiliations = "<br>".join(
-        item.get("name", "")
+        html.escape(str(item.get("name", "")))
         for item in author.get("affiliations", [])
         if (
             isinstance(item, dict)
@@ -404,16 +431,14 @@ def build_bio(
     if avatar:
         avatar_html = (
             f'<img class="hero-avatar" '
-            f'src="{avatar}" '
-            f'alt="{display_name}">'
+            f'src="{html.escape(avatar, quote=True)}" '
+            f'alt="{html.escape(display_name, quote=True)}">'
         )
 
-    email_html = ""
-
-    if email:
-        email_html = (
-            f'{email}{email}</a>'
-        )
+    email_html = make_link(
+        f"mailto:{email}",
+        email,
+    )
 
     linkedin_html = ""
 
@@ -428,18 +453,14 @@ def build_bio(
         )
 
         linkedin_html = (
-            f'<span class="contact-separator">|</span> '
-            f'{linkedin}{linkedin_display}</a>'
+            '<span class="contact-separator">|</span>'
+            + make_link(
+                linkedin,
+                linkedin_display,
+            )
         )
 
     contact_html = f"""
-<div class="hero-contact">
-  <strong>Contact:</strong>
-  {email_html}
-  {linkedin_html}
-</div>
-"""
-    
 <div class="hero-contact">
   <strong>Contact:</strong>
   {email_html}
@@ -454,10 +475,10 @@ def build_bio(
       {avatar_html}
 
       <div class="hero-title">
-        <h1>{display_name}</h1>
+        <h1>{html.escape(display_name)}</h1>
 
         <div class="hero-subtitle">
-          {role}
+          {html.escape(str(role))}
         </div>
 
         <div class="hero-affiliation">
@@ -497,7 +518,7 @@ def build_markdown_section(
 
     return f"""
 <section class="cv-section">
-  <h2>{title}</h2>
+  <h2>{html.escape(str(title))}</h2>
   {section_html}
 </section>
 """
@@ -512,7 +533,7 @@ def build_card_section(
 
     return f"""
 <section class="cv-section">
-  <h2>{title}</h2>
+  <h2>{html.escape(title)}</h2>
 
   <div class="card-grid">
     {''.join(cards)}
@@ -528,14 +549,22 @@ def build_education(author: dict) -> str:
         if not isinstance(item, dict):
             continue
 
-        degree = item.get("degree", "")
-        institution = item.get("institution", "")
+        degree = html.escape(
+            str(item.get("degree", ""))
+        )
+
+        institution = html.escape(
+            str(item.get("institution", ""))
+        )
+
         summary = item.get("summary", "")
 
         button = item.get("button", {}) or {}
 
         if isinstance(button, dict):
-            url = button.get("url", "")
+            url = str(
+                button.get("url", "")
+            ).strip()
         else:
             url = ""
 
@@ -543,11 +572,12 @@ def build_education(author: dict) -> str:
 
         if url:
             link_html = (
-                f'<div class="card-link">'
-                f'{url}'
-                f'Dissertation link'
-                f'</a>'
-                f'</div>'
+                '<div class="card-link">'
+                + make_link(
+                    url,
+                    "Dissertation link",
+                )
+                + "</div>"
             )
 
         cards.append(
@@ -583,7 +613,11 @@ def build_interests(author: dict) -> str:
         return ""
 
     pills = "".join(
-        f'<span class="interest-pill">{item}</span>'
+        (
+            '<span class="interest-pill">'
+            + html.escape(str(item))
+            + "</span>"
+        )
         for item in interests
     )
 
@@ -673,7 +707,10 @@ def format_authors(authors) -> str:
     if not authors:
         return "Unknown authors"
 
-    return ", ".join(authors)
+    return ", ".join(
+        html.escape(str(author))
+        for author in authors
+    )
 
 
 def format_publication_html(
@@ -693,14 +730,22 @@ def format_publication_html(
         else "n.d."
     )
 
-    title = front_matter.get(
-        "title",
-        "Untitled",
+    title = html.escape(
+        str(
+            front_matter.get(
+                "title",
+                "Untitled",
+            )
+        )
     )
 
-    publication = front_matter.get(
-        "publication",
-        "",
+    publication = html.escape(
+        str(
+            front_matter.get(
+                "publication",
+                "",
+            )
+        )
     )
 
     doi = str(
@@ -713,8 +758,14 @@ def format_publication_html(
         1,
     )
 
+    doi = doi.replace(
+        "http://doi.org/",
+        "",
+        1,
+    )
+
     parts = [
-        f"{authors_text} ({year}). "
+        f"{authors_text} ({html.escape(year)}). "
         f"<em>{title}</em>."
     ]
 
@@ -724,12 +775,16 @@ def format_publication_html(
         )
 
     if doi:
-        doi_url = f"https://doi.org/{doi}"
+        doi_url = (
+            "https://doi.org/"
+            + doi
+        )
 
         parts.append(
-            f'{doi_url}'
-            f'{doi_url}'
-            f'</a>'
+            make_link(
+                doi_url,
+                doi_url,
+            )
         )
 
     return (
@@ -795,13 +850,8 @@ def main():
     sections = get_home_sections()
     author = read_yaml(AUTHOR_DATA)
 
-    template = TEMPLATE_FILE.read_text(
-        encoding="utf-8"
-    )
-
-    style = STYLE_FILE.read_text(
-        encoding="utf-8"
-    )
+    template = read_text(TEMPLATE_FILE)
+    style = read_text(STYLE_FILE)
 
     replacements = {
         "{{STYLE}}": style,
