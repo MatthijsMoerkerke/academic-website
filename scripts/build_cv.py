@@ -408,13 +408,11 @@ def build_bio(
             f'alt="{display_name}">'
         )
 
-    email_html = email
+    email_html = ""
 
     if email:
         email_html = (
-            f'{email}'
-            f'{email}'
-            f'</a>'
+            f'{email}{email}</a>'
         )
 
     linkedin_html = ""
@@ -431,10 +429,9 @@ def build_bio(
 
         linkedin_html = (
             f'<span class="contact-separator">|</span>'
-            f'{linkedin}'
-            f'{linkedin_display}'
-            f'</a>'
+            f'{linkedin}{linkedin_display}</a>'
         )
+``
 
     contact_html = f"""
 <div class="hero-contact">
