@@ -25,25 +25,32 @@ span[class~="cursor-default"] {
 }
 
 /* Interest boxes: light mode */
+html:not(.dark) span[class*="hover:bg-primary-100"],
 html:not(.dark) span[class*="hover:bg-primary-100"]:hover {
   background-color: rgb(var(--color-primary-50)) !important;
   color: rgb(var(--color-primary-800)) !important;
   border-color: rgb(var(--color-primary-200) / 0.5) !important;
   box-shadow: none !important;
   transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 /* Interest boxes: dark mode */
+html.dark span[class*="dark:hover:bg-primary-500"],
 html.dark span[class*="dark:hover:bg-primary-500"]:hover,
+.dark span[class*="dark:hover:bg-primary-500"],
 .dark span[class*="dark:hover:bg-primary-500"]:hover {
-  background-color: rgb(31 41 55) !important; /* zelfde als dark:bg-gray-800 */
-  color: rgb(var(--color-primary-200)) !important; /* zelfde als dark:text-primary-200 */
-  border-color: rgb(var(--color-primary-800) / 0.5) !important; /* zelfde als dark:border-primary-800/50 */
+  background-color: rgb(31 41 55) !important;
+  color: rgb(var(--color-primary-200)) !important;
+  border-color: rgb(var(--color-primary-800) / 0.5) !important;
   box-shadow: none !important;
   transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
-  
-/* Remove all animation on interest pills */
+
+/* Remove all animation */
 span[class*="hover:bg-primary"] {
   transition: none !important;
 }
