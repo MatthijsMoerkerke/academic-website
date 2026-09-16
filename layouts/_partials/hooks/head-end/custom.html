@@ -26,17 +26,18 @@ span[class~="cursor-default"] {
 
 /* Interest boxes: light mode */
 html:not(.dark) span[class~="hover:bg-primary-100"]:hover {
-  background-color: rgb(var(--color-primary-50)) !important;
-  color: rgb(var(--color-primary-800)) !important;
-  border-color: rgb(var(--color-primary-200) / 0.5) !important;
+  background-color: inherit !important;
+  color: inherit !important;
+  border-color: inherit !important;
+  box-shadow: none !important;
 }
 
 /* Interest boxes: dark mode */
 html.dark span[class~="dark:hover:bg-primary-500"]:hover,
-.dark spa*[class~="dark:hover:bg-primary-500"]:hover {
-  background*color: transparent !important;
-  c*lor: inherit !important;
-  border*color: inherit !important;
-  box*shadow: none !important;
+.dark span[class~="dark:hover:bg-primary-500"]:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+  border-color: inherit !important;
+  box-shadow: none !important;
 }
 </style>
