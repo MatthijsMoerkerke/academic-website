@@ -38,32 +38,17 @@ def read_yaml(path: Path) -> dict:
 
 
 def make_link(url: str, label: str) -> str:
+    """Create a valid HTML hyperlink."""
     if not url:
         return html.escape(str(label))
 
     safe_url = html.escape(str(url), quote=True)
     safe_label = html.escape(str(label))
 
-    return f'{safe_url}{safe_label}</a>'
-    
-    """
-    Create a valid HTML hyperlink.
+    opening_tag = chr(60) + 'a href="' + safe_url + '"' + chr(62)
+    closing_tag = chr(60) + "/a" + chr(62)
 
-    Both the URL and the visible label are escaped to avoid
-    malformed HTML when they contain characters such as &.
-    """
-    if not url:
-        return html.escape(str(label))
-
-    safe_url = html.escape(str(url), quote=True)
-    safe_label = html.escape(str(label))
-
-    return (
-        f'{safe_url}'
-        f'{safe_label}'
-        f'</a>'
-    )
-
+    return opening_tag + safe_label + closing_tag
 
 def clean_markdown_block(text: str) -> str:
     if not text:
