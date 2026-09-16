@@ -27,9 +27,17 @@ body {
   padding: 22px 26px 30px 26px;
   background: #ffffff;
 }
+
 .page + .page {
   page-break-before: always;
   break-before: page;
+}
+
+.page + .page h2 {
+  font-size: 20pt;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #12355B;
 }
 
 /* HERO (HEADER BLOCK) */
@@ -53,14 +61,12 @@ body {
 }
 
 .hero-left {
-  width: 82%;
+  width: 100%;
   padding-right: 20px;
 }
 
 .hero-right {
-  width: 18%;
-  font-size: 9.1pt;
-  color: #4B5563;
+  display: none;
 }
 
 .hero-right strong {
@@ -71,6 +77,14 @@ body {
   display: table;
   width: 100%;
   margin-bottom: 12px;
+}
+
+.hero-contact {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #D6E3F0;
+  font-size: 9pt;
+  color: #4B5563;
 }
 
 .hero-avatar {
