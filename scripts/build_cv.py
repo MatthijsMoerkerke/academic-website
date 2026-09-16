@@ -38,6 +38,14 @@ def read_yaml(path: Path) -> dict:
 
 
 def make_link(url: str, label: str) -> str:
+    if not url:
+        return html.escape(str(label))
+
+    safe_url = html.escape(str(url), quote=True)
+    safe_label = html.escape(str(label))
+
+    return f'{safe_url}{safe_label}</a>'
+    
     """
     Create a valid HTML hyperlink.
 
