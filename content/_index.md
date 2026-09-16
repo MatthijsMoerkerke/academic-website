@@ -22,7 +22,7 @@ sections:
   
       <p style="margin-top:20px;">
         <a class="cv-button"
-           href="https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20250914"
+           href="https://matthijsmoerkerke.com/uploads/CV_Matthijs_Moerkerke.pdf?v=20260916"
            target="_blank"
            rel="noopener"
            style="
