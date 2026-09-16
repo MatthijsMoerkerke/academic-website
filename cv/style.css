@@ -49,15 +49,10 @@ body {
   box-sizing: border-box;
 }
 
-.hero-left,
-.hero-right {
-  display: table-cell;
-  vertical-align: bottom;
-}
-
 .hero-left {
+  display: block;
   width: 100%;
-  padding-right: 20px;
+  padding-right: 0;
 }
 
 .hero-right {
@@ -75,11 +70,28 @@ body {
 }
 
 .hero-contact {
-  margin-top: 12px;
+  display: block;
+  width: 100%;
+  margin-top: 14px;
   padding-top: 10px;
   border-top: 1px solid #D6E3F0;
   font-size: 9pt;
   color: #4B5563;
+  box-sizing: border-box;
+}
+
+.hero-contact strong {
+  color: #12355B;
+}
+
+.hero-contact a {
+  color: #2F6690;
+  text-decoration: none;
+}
+
+.contact-separator {
+  margin: 0 8px;
+  color: #94A3B8;
 }
 
 .hero-avatar {
