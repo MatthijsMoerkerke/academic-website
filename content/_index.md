@@ -150,24 +150,16 @@ sections:
       **Scientific outreach in mainstream media**
 
       - **EOS Wetenschap** — Oxytocin nasal spray may improve social bonding in children with autism  
-        <a href="https://www.eoswetenschap.eu/psyche-brein/oxytocine-neusspray-verbetert-mogelijk-sociale-banden-bij-kinderen-met-autisme" target="_blank" rel="noopener noreferrer">
-EOS article
-</a>
+        <a href="https://www.eoswetenschap.eu/psyche-brein/oxytocine-neusspray-verbetert-mogelijk-sociale-banden-bij-kinderen-met-autisme" target="_blank" rel="noopener noreferrer"> EOS article </a>
 
       - **ACAMH Podcast** — Oxytocin administration, neural sensitivity and autism  
-        <a href="https://acamhlearn.org/Learning/Oxytocin_Administration_Neural_Sensitivity_and_Autism/a843e835-992f-4982-9cdd-4b30738c4f8f" target="_blank" rel="noopener noreferrer">
-ACAMH podcast
-</a>
+        <a href="https://acamhlearn.org/Learning/Oxytocin_Administration_Neural_Sensitivity_and_Autism/a843e835-992f-4982-9cdd-4b30738c4f8f" target="_blank" rel="noopener noreferrer"> ACAMH podcast </a>
 
       - **KU Leuven Blog** — De invloed van oxytocine-neusspray op kinderen met autisme  
-        <a href="https://www.kuleuven.be/child-youth/nl/blog/posts/de-invloed-van-oxytocine-neusspray-op-kinderen-met-autisme" target="_blank" rel="noopener noreferrer">
-KU Leuven blog post
-</a>
+        <a href="https://www.kuleuven.be/child-youth/nl/blog/posts/de-invloed-van-oxytocine-neusspray-op-kinderen-met-autisme" target="_blank" rel="noopener noreferrer"> KU Leuven blog post </a>
 
       - **Pain in Motion Blog** — The role of oxytocin in chronic pain  
-        <a href="https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain" target="_blank" rel="noopener noreferrer">
-Pain in Motion blog post
-</a>
+        <a href="https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain" target="_blank" rel="noopener noreferrer"> Pain in Motion blog post </a>
 
       **Public science events**
   
