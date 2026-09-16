@@ -137,29 +137,29 @@ sections:
       **Scientific collaboration & service**
 
       - **Steering-group member**, Pain in Motion (PIM) international research consortium — facilitating cross-university scientific exchange and organizing international networking events (2023–present)  
-        <a href="https://paininmotion.be/">Pain in Motion website</a>
+        [Pain in Motion website](https://paininmotion.be/)
 
       - **Expert panel member**, Active Monitoring of Oxytocin Research Evidence (AMORE), University of Oslo — contributing to global consensus-building and open-science initiatives (2025–present)  
-        <a href="https://amore-project.org/">AMORE website</a>
+        [AMORE website](https://amore-project.org/)
 
       - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)  
-        <a href="https://www.painscienceinmotion.com/">Conference website</a>
+        [PSIM Conference website](https://www.painscienceinmotion.com/)
 
       - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
 
       **Scientific outreach in mainstream media**
 
       - **EOS Wetenschap** — Oxytocin nasal spray may improve social bonding in children with autism  
-        <a href="https://www.eoswetenschap.eu/psyche-brein/oxytocine-neusspray-verbetert-mogelijk-sociale-banden-bij-kinderen-met-autisme" target="_blank" rel="noopener noreferrer"> EOS article </a>
+        [EOS article]([https://www.painscienceinmotion.com/](https://www.eoswetenschap.eu/psyche-brein/oxytocine-neusspray-verbetert-mogelijk-sociale-banden-bij-kinderen-met-autisme))
 
       - **ACAMH Podcast** — Oxytocin administration, neural sensitivity and autism  
-        <a href="https://acamhlearn.org/Learning/Oxytocin_Administration_Neural_Sensitivity_and_Autism/a843e835-992f-4982-9cdd-4b30738c4f8f" target="_blank" rel="noopener noreferrer"> ACAMH podcast </a>
+        [ACAMH podcast](https://acamhlearn.org/Learning/Oxytocin_Administration_Neural_Sensitivity_and_Autism/a843e835-992f-4982-9cdd-4b30738c4f8f) 
 
       - **KU Leuven Blog** — De invloed van oxytocine-neusspray op kinderen met autisme  
-        <a href="https://www.kuleuven.be/child-youth/nl/blog/posts/de-invloed-van-oxytocine-neusspray-op-kinderen-met-autisme" target="_blank" rel="noopener noreferrer"> KU Leuven blog post </a>
+        [KU Leuven blog post](https://www.kuleuven.be/child-youth/nl/blog/posts/de-invloed-van-oxytocine-neusspray-op-kinderen-met-autisme)
 
       - **Pain in Motion Blog** — The role of oxytocin in chronic pain  
-        <a href="https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain" target="_blank" rel="noopener noreferrer"> Pain in Motion blog post </a>
+        [Pain in Motion blog post](https://paininmotion.be/blog/detail/role-oxytocin-chronic-pain)
 
       **Public science events**
   
