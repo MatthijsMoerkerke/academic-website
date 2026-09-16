@@ -234,7 +234,7 @@ sections:
 
       **INSAR PhD Dissertation Award 2024**  
       Awarded by the International Society for Autism Research (INSAR), presented at the Annual Meeting in Melbourne, Australia.  
-      [INSAR website](htpts://www.autism-insar.org/page/RecognitionAwards)
+      [INSAR website](https://www.autism-insar.org/page/RecognitionAwards)
 
       **BCNBP “Belgium’s Got Talent” PhD Thesis Prize 2023**  
       Awarded by the Belgian College of Neuropsychopharmacology and Biological Psychiatry (BCNBP) for best PhD thesis.  
