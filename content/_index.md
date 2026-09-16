@@ -230,18 +230,18 @@ sections:
     text: |
       **Fulbright Postdoctoral Research Award (Belgium–USA) 2026**  
       Awarded for an 8 month research stay at Stanford University (CA, USA).
-      https://www.fulbright.be/grantees/
+      [Fulbright website](https://www.fulbright.be/grantees/)
 
       **INSAR PhD Dissertation Award 2024**  
       Awarded by the International Society for Autism Research (INSAR), presented at the Annual Meeting in Melbourne, Australia.  
-      https://www.autism-insar.org/page/RecognitionAwards
+      [INSAR website](htpts://www.autism-insar.org/page/RecognitionAwards)
 
       **BCNBP “Belgium’s Got Talent” PhD Thesis Prize 2023**  
       Awarded by the Belgian College of Neuropsychopharmacology and Biological Psychiatry (BCNBP) for best PhD thesis.  
-      https://www.bcnbp.org/belgiums-got-talent
+      [BCNBP website](https://www.bcnbp.org/belgiums-got-talent)
 
       **Thérèse Vandereecken Prize for Clinical Medicine 2023**  
-      Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism, awared to Prof.         Alaerts (PhD copromotor)
+      Royal Academy of Medicine of Belgium recognising research on oxytocin’s neural, biological and behavioural effects in children with autism, awared to Prof. Alaerts (PhD copromotor)
 
       **KU Leuven Postdoctoral Research Grant 2023**  
       Postdoctoral Mandate (PDM) awarded to continue doctoral research for one year after PhD defence.
