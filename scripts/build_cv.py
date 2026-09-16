@@ -4,6 +4,7 @@ import re
 import yaml
 import markdown
 
+
 ROOT = Path(__file__).resolve().parents[1]
 
 SITE_INDEX = ROOT / "content" / "_index.md"
@@ -19,13 +20,16 @@ OUTPUT_HTML = ROOT / "cv" / "cv_generated.html"
 def read_text(path: Path) -> str:
     if not path.exists():
         raise FileNotFoundError(f"Missing file: {path}")
+
     return path.read_text(encoding="utf-8")
 
 
 def read_yaml(path: Path) -> dict:
     if not path.exists():
         return {}
+
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
     return data if isinstance(data, dict) else {}
 
 
@@ -36,6 +40,7 @@ def clean_markdown_block(text: str) -> str:
     text = text.replace("\r\n", "\n")
 
     cleaned_lines = []
+
     for line in text.split("\n"):
         line = line.rstrip()
         line = re.sub(r"[ \t]{2,}", " ", line)
@@ -43,14 +48,19 @@ def clean_markdown_block(text: str) -> str:
 
     text = "\n".join(cleaned_lines).strip()
 
-    # bare URLs clickable
-    text = re.sub(r"(?m)^(https?://\S+)\s*$", r"<\1>", text)
+    # Make bare URLs clickable.
+    text = re.sub(
+        r"(?m)^(https?://\S+)\s*$",
+        r"<\1>",
+        text,
+    )
 
     return text
 
 
 def md_to_html(text: str) -> str:
     text = clean_markdown_block(text)
+
     if not text:
         return ""
 
@@ -65,27 +75,42 @@ def strip_cv_button_from_bio(text: str) -> str:
     if not text:
         return ""
 
-    # remove full HTML button paragraph
+    # Remove a complete paragraph containing the CV button.
     text = re.sub(
-        r'(?is)<p[^>]*>.*?<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>.*?</p>',
+        (
+            r'(?is)<p[^>]*>.*?'
+            r'<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>'
+            r'.*?</a>.*?</p>'
+        ),
         "",
         text,
     )
 
-    # remove standalone anchor
+    # Remove a standalone CV link.
     text = re.sub(
-        r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>.*?</a>',
+        (
+            r'(?is)<a[^>]*href="[^"]*CV_Matthijs_Moerkerke\.pdf[^"]*"[^>]*>'
+            r'.*?</a>'
+        ),
         "",
         text,
     )
 
-    # remove plain text fallback
-    text = re.sub(r"(?im)^\s*Download CV\s*$", "", text)
+    # Remove a plain-text fallback.
+    text = re.sub(
+        r"(?im)^\s*Download CV\s*$",
+        "",
+        text,
+    )
 
     return text.strip()
 
 
-def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
+def extract_block_title(
+    site_text: str,
+    block_id: str,
+    fallback: str,
+) -> str:
     pattern = (
         rf"(?ms)^-\s*block:.*?\n"
         rf"\s+id:\s*{re.escape(block_id)}\s*\n"
@@ -94,26 +119,39 @@ def extract_block_title(site_text: str, block_id: str, fallback: str) -> str:
         rf".*?"
         rf"^\s+title:\s*\"?(.*?)\"?\s*$"
     )
+
     match = re.search(pattern, site_text)
+
     if not match:
         return fallback
 
     title = match.group(1).strip()
+
     return title if title else fallback
 
 
-def extract_text_block(site_text: str, block_id: str) -> str:
+def extract_text_block(
+    site_text: str,
+    block_id: str,
+) -> str:
     """
     Extract only the lines belonging to:
+
       text: |
         ...
-    and stop before sibling keys such as button:, headings:, design:, etc.
+
+    Stop before sibling keys such as button, headings or design.
     """
+
     lines = site_text.splitlines()
 
     block_start = None
+
     for i, line in enumerate(lines):
-        if re.match(rf"^\s+id:\s*{re.escape(block_id)}\s*$", line):
+        if re.match(
+            rf"^\s+id:\s*{re.escape(block_id)}\s*$",
+            line,
+        ):
             block_start = i
             break
 
@@ -125,18 +163,28 @@ def extract_text_block(site_text: str, block_id: str) -> str:
 
     for i in range(block_start, len(lines)):
         line = lines[i]
-        m = re.match(r"^(\s+)text:\s*\|\s*$", line)
-        if m:
+
+        match = re.match(
+            r"^(\s+)text:\s*\|\s*$",
+            line,
+        )
+
+        if match:
             text_line_index = i
-            text_indent = len(m.group(1))
+            text_indent = len(match.group(1))
             break
-        if i > block_start and re.match(r"^\s*-\s*block:", line):
+
+        if (
+            i > block_start
+            and re.match(r"^\s*-\s*block:", line)
+        ):
             break
 
     if text_line_index is None:
         return ""
 
     collected = []
+
     for i in range(text_line_index + 1, len(lines)):
         line = lines[i]
 
@@ -154,21 +202,38 @@ def extract_text_block(site_text: str, block_id: str) -> str:
     if not collected:
         return ""
 
-    nonempty = [ln for ln in collected if ln.strip()]
-    min_indent = min(len(ln) - len(ln.lstrip(" ")) for ln in nonempty) if nonempty else 0
-
-    normalized = [
-        ln[min_indent:] if len(ln) >= min_indent else ln.lstrip()
-        for ln in collected
+    nonempty = [
+        line
+        for line in collected
+        if line.strip()
     ]
 
-    return clean_markdown_block("\n".join(normalized).strip())
+    if nonempty:
+        min_indent = min(
+            len(line) - len(line.lstrip(" "))
+            for line in nonempty
+        )
+    else:
+        min_indent = 0
+
+    normalized = [
+        line[min_indent:]
+        if len(line) >= min_indent
+        else line.lstrip()
+        for line in collected
+    ]
+
+    return clean_markdown_block(
+        "\n".join(normalized).strip()
+    )
 
 
 def get_home_sections() -> dict:
     site_text = read_text(SITE_INDEX)
 
-    bio_text = strip_cv_button_from_bio(extract_text_block(site_text, "bio"))
+    bio_text = strip_cv_button_from_bio(
+        extract_text_block(site_text, "bio")
+    )
 
     return {
         "bio": {
@@ -176,28 +241,70 @@ def get_home_sections() -> dict:
             "text": bio_text,
         },
         "training": {
-            "title": extract_block_title(site_text, "training", "Additional Training"),
-            "text": extract_text_block(site_text, "training"),
+            "title": extract_block_title(
+                site_text,
+                "training",
+                "Additional Training",
+            ),
+            "text": extract_text_block(
+                site_text,
+                "training",
+            ),
         },
         "teaching": {
-            "title": extract_block_title(site_text, "teaching", "Teaching & Mentoring"),
-            "text": extract_text_block(site_text, "teaching"),
+            "title": extract_block_title(
+                site_text,
+                "teaching",
+                "Teaching & Mentoring",
+            ),
+            "text": extract_text_block(
+                site_text,
+                "teaching",
+            ),
         },
         "engagement": {
-            "title": extract_block_title(site_text, "engagement", "Scientific Engagement & Outreach"),
-            "text": extract_text_block(site_text, "engagement"),
+            "title": extract_block_title(
+                site_text,
+                "engagement",
+                "Scientific Engagement & Outreach",
+            ),
+            "text": extract_text_block(
+                site_text,
+                "engagement",
+            ),
         },
         "skills": {
-            "title": extract_block_title(site_text, "skills", "Skills & Methods"),
-            "text": extract_text_block(site_text, "skills"),
+            "title": extract_block_title(
+                site_text,
+                "skills",
+                "Skills & Methods",
+            ),
+            "text": extract_text_block(
+                site_text,
+                "skills",
+            ),
         },
         "awards": {
-            "title": extract_block_title(site_text, "awards", "Awards & Grants"),
-            "text": extract_text_block(site_text, "awards"),
+            "title": extract_block_title(
+                site_text,
+                "awards",
+                "Awards & Grants",
+            ),
+            "text": extract_text_block(
+                site_text,
+                "awards",
+            ),
         },
         "presentations": {
-            "title": extract_block_title(site_text, "presentations", "Presentations"),
-            "text": extract_text_block(site_text, "presentations"),
+            "title": extract_block_title(
+                site_text,
+                "presentations",
+                "Presentations",
+            ),
+            "text": extract_text_block(
+                site_text,
+                "presentations",
+            ),
         },
     }
 
@@ -214,93 +321,151 @@ def find_avatar_data_uri() -> str:
     ]
 
     for img_path in preferred:
-        if img_path.exists():
-            suffix = img_path.suffix.lower()
-            if suffix in [".jpg", ".jpeg"]:
-                mime = "image/jpeg"
-            elif suffix == ".png":
-                mime = "image/png"
-            elif suffix == ".webp":
-                mime = "image/webp"
-            else:
-                continue
+        if not img_path.exists():
+            continue
 
-            encoded = base64.b64encode(img_path.read_bytes()).decode("ascii")
-            return f"data:{mime};base64,{encoded}"
+        suffix = img_path.suffix.lower()
+
+        if suffix in [".jpg", ".jpeg"]:
+            mime = "image/jpeg"
+        elif suffix == ".png":
+            mime = "image/png"
+        elif suffix == ".webp":
+            mime = "image/webp"
+        else:
+            continue
+
+        encoded = base64.b64encode(
+            img_path.read_bytes()
+        ).decode("ascii")
+
+        return f"data:{mime};base64,{encoded}"
 
     return ""
 
 
-def build_bio(sections: dict, author: dict) -> str:
-    bio_html = md_to_html(sections.get("bio", {}).get("text", ""))
+def build_bio(
+    sections: dict,
+    author: dict,
+) -> str:
+    bio_html = md_to_html(
+        sections.get("bio", {}).get("text", "")
+    )
+
     avatar = find_avatar_data_uri()
 
-    display_name = author.get("name", {}).get("display", "Matthijs Moerkerke")
-    role = author.get("role", "Neuroscientist")
+    name_data = author.get("name", {})
+
+    if isinstance(name_data, dict):
+        display_name = name_data.get(
+            "display",
+            "Matthijs Moerkerke",
+        )
+    else:
+        display_name = str(
+            name_data or "Matthijs Moerkerke"
+        )
+
+    role = author.get(
+        "role",
+        "Neuroscientist",
+    )
 
     affiliations = "<br>".join(
-        a.get("name", "")
-        for a in author.get("affiliations", [])
-        if isinstance(a, dict) and a.get("name")
+        item.get("name", "")
+        for item in author.get("affiliations", [])
+        if (
+            isinstance(item, dict)
+            and item.get("name")
+        )
     )
 
     email = "matthijs.moerkerke@ugent.be"
     linkedin = ""
-    orcid = ""
-    scholar = ""
-    researchgate = ""
 
     for link in author.get("links", []):
         if not isinstance(link, dict):
             continue
 
-        url = link.get("url", "")
+        url = str(link.get("url", "")).strip()
 
         if url.startswith("mailto:"):
-            email = url.replace("mailto:", "")
+            email = url.replace(
+                "mailto:",
+                "",
+                1,
+            ).strip()
+
         elif "linkedin.com" in url:
             linkedin = url
-        elif "orcid.org" in url:
-            orcid = url
-        elif "scholar.google" in url:
-            scholar = url
-        elif "researchgate.net" in url:
-            researchgate = url
 
     avatar_html = ""
+
     if avatar:
-        avatar_html = f'<img class="hero-avatar" src="{avatar}" alt="{display_name}">'
-    
-    linkedin_display = (
-        linkedin
-        .replace("https://www.", "")
-        .replace("https://", "")
-        .rstrip("/")
-    )
+        avatar_html = (
+            f'<img class="hero-avatar" '
+            f'src="{avatar}" '
+            f'alt="{display_name}">'
+        )
+
+    email_html = email
+
+    if email:
+        email_html = (
+            f'{email}'
+            f'{email}'
+            f'</a>'
+        )
+
+    linkedin_html = ""
+
+    if linkedin:
+        linkedin_display = (
+            linkedin
+            .replace("https://www.", "")
+            .replace("http://www.", "")
+            .replace("https://", "")
+            .replace("http://", "")
+            .rstrip("/")
+        )
+
+        linkedin_html = (
+            f'<span class="contact-separator">|</span>'
+            f'{linkedin}'
+            f'{linkedin_display}'
+            f'</a>'
+        )
 
     contact_html = f"""
-    <div class="hero-contact">
-      <strong>Contact:</strong>
-      {email}{email}</a>
-      <span class="contact-separator">|</span>
-      {linkedin}{linkedin_display}</a>
-    </div>
-    """
-
+<div class="hero-contact">
+  <strong>Contact:</strong>
+  {email_html}
+  {linkedin_html}
+</div>
+"""
 
     return f"""
 <div class="hero">
   <div class="hero-left">
     <div class="hero-top">
       {avatar_html}
+
       <div class="hero-title">
         <h1>{display_name}</h1>
-        <div class="hero-subtitle">{role}</div>
-        <div class="hero-affiliation">{affiliations}</div>
+
+        <div class="hero-subtitle">
+          {role}
+        </div>
+
+        <div class="hero-affiliation">
+          {affiliations}
+        </div>
       </div>
     </div>
 
-    <div class="hero-bio">{bio_html}</div>
+    <div class="hero-bio">
+      {bio_html}
+    </div>
 
     {contact_html}
   </div>
@@ -308,29 +473,44 @@ def build_bio(sections: dict, author: dict) -> str:
 """
 
 
-def build_markdown_section(sections: dict, key: str, fallback_title: str) -> str:
-    sec = sections.get(key, {})
-    title = sec.get("title", "") or fallback_title
-    html = md_to_html(sec.get("text", ""))
+def build_markdown_section(
+    sections: dict,
+    key: str,
+    fallback_title: str,
+) -> str:
+    section = sections.get(key, {})
 
-    if not html:
+    title = (
+        section.get("title", "")
+        or fallback_title
+    )
+
+    section_html = md_to_html(
+        section.get("text", "")
+    )
+
+    if not section_html:
         return ""
 
     return f"""
 <section class="cv-section">
   <h2>{title}</h2>
-  {html}
+  {section_html}
 </section>
 """
 
 
-def build_card_section(title: str, cards: list[str]) -> str:
+def build_card_section(
+    title: str,
+    cards: list[str],
+) -> str:
     if not cards:
         return ""
 
     return f"""
 <section class="cv-section">
   <h2>{title}</h2>
+
   <div class="card-grid">
     {''.join(cards)}
   </div>
@@ -348,35 +528,66 @@ def build_education(author: dict) -> str:
         degree = item.get("degree", "")
         institution = item.get("institution", "")
         summary = item.get("summary", "")
+
         button = item.get("button", {}) or {}
-        url = button.get("url", "")
+
+        if isinstance(button, dict):
+            url = button.get("url", "")
+        else:
+            url = ""
 
         link_html = ""
-        if url:
-            link_html = f'<div class="card-link"><a href="{url}">Dissertation link</a></div>'
 
-        cards.append(f"""
+        if url:
+            link_html = (
+                f'<div class="card-link">'
+                f'{url}'
+                f'Dissertation link'
+                f'</a>'
+                f'</div>'
+            )
+
+        cards.append(
+            f"""
 <div class="info-card">
-  <div class="card-title">{degree}</div>
-  <div class="card-inst">{institution}</div>
-  <div>{md_to_html(summary)}</div>
+  <div class="card-title">
+    {degree}
+  </div>
+
+  <div class="card-inst">
+    {institution}
+  </div>
+
+  <div>
+    {md_to_html(summary)}
+  </div>
+
   {link_html}
 </div>
-""")
+"""
+        )
 
-    return build_card_section("Education", cards)
+    return build_card_section(
+        "Education",
+        cards,
+    )
 
 
 def build_interests(author: dict) -> str:
     interests = author.get("interests", [])
+
     if not interests:
         return ""
 
-    pills = "".join(f'<span class="interest-pill">{item}</span>' for item in interests)
+    pills = "".join(
+        f'<span class="interest-pill">{item}</span>'
+        for item in interests
+    )
 
     return f"""
 <section class="cv-section">
   <h2>Research Interests</h2>
+
   <div class="interest-row">
     {pills}
   </div>
@@ -384,20 +595,27 @@ def build_interests(author: dict) -> str:
 """
 
 
-def read_publication_front_matter(md_path: Path):
-    text = md_path.read_text(encoding="utf-8")
+def read_publication_front_matter(
+    md_path: Path,
+):
+    text = md_path.read_text(
+        encoding="utf-8"
+    )
+
     if not text.startswith("---"):
         return None
 
     parts = text.split("---", 2)
+
     if len(parts) < 3:
         return None
 
     return yaml.safe_load(parts[1])
 
 
-def collect_publications():
+def collect_publications() -> list:
     entries = []
+
     if not PUBLICATIONS_DIR.exists():
         return entries
 
@@ -406,56 +624,126 @@ def collect_publications():
             continue
 
         index_file = folder / "index.md"
+
         if not index_file.exists():
             continue
 
-        fm = read_publication_front_matter(index_file)
-        if not fm:
+        front_matter = read_publication_front_matter(
+            index_file
+        )
+
+        if not front_matter:
             continue
 
-        entries.append(fm)
+        entries.append(front_matter)
 
-    entries.sort(key=lambda x: str(x.get("date", "")), reverse=True)
+    entries.sort(
+        key=lambda item: str(
+            item.get("date", "")
+        ),
+        reverse=True,
+    )
+
     return entries
 
 
 def read_scholar_metrics() -> dict:
     data = read_yaml(SCHOLAR_FILE)
+
     return {
-        "citations": data.get("citations", 0),
-        "h_index": data.get("h_index", 0),
-        "profile": data.get("profile", ""),
+        "citations": data.get(
+            "citations",
+            0,
+        ),
+        "h_index": data.get(
+            "h_index",
+            0,
+        ),
+        "profile": data.get(
+            "profile",
+            "",
+        ),
     }
 
 
-def format_authors(authors):
+def format_authors(authors) -> str:
     if not authors:
         return "Unknown authors"
+
     return ", ".join(authors)
 
 
-def format_publication_html(front_matter: dict) -> str:
-    authors_text = format_authors(front_matter.get("authors", []))
-    date = str(front_matter.get("date", ""))
-    year = date[:4] if len(date) >= 4 else "n.d."
-    title = front_matter.get("title", "Untitled")
-    publication = front_matter.get("publication", "")
-    doi = front_matter.get("doi", "")
+def format_publication_html(
+    front_matter: dict,
+) -> str:
+    authors_text = format_authors(
+        front_matter.get("authors", [])
+    )
 
-    parts = [f"{authors_text} ({year}). <em>{title}</em>."]
+    date = str(
+        front_matter.get("date", "")
+    )
+
+    year = (
+        date[:4]
+        if len(date) >= 4
+        else "n.d."
+    )
+
+    title = front_matter.get(
+        "title",
+        "Untitled",
+    )
+
+    publication = front_matter.get(
+        "publication",
+        "",
+    )
+
+    doi = str(
+        front_matter.get("doi", "")
+    ).strip()
+
+    doi = doi.replace(
+        "https://doi.org/",
+        "",
+        1,
+    )
+
+    parts = [
+        f"{authors_text} ({year}). "
+        f"<em>{title}</em>."
+    ]
+
     if publication:
-        parts.append(f"{publication}.")
-    if doi:
-        parts.append(f'<a href="https://doi.org/{doi}">https://doi.org/{doi}</a>')
+        parts.append(
+            f"{publication}."
+        )
 
-    return "<li>" + " ".join(parts) + "</li>"
+    if doi:
+        doi_url = f"https://doi.org/{doi}"
+
+        parts.append(
+            f'{doi_url}'
+            f'{doi_url}'
+            f'</a>'
+        )
+
+    return (
+        "<li>"
+        + " ".join(parts)
+        + "</li>"
+    )
 
 
 def build_publications() -> str:
-    pubs = collect_publications()
+    publications = collect_publications()
     metrics = read_scholar_metrics()
 
-    items = "".join(format_publication_html(p) for p in pubs)
+    items = "".join(
+        format_publication_html(publication)
+        for publication in publications
+    )
 
     return f"""
 <section class="cv-section">
@@ -463,18 +751,33 @@ def build_publications() -> str:
 
   <div class="metrics-row">
     <div class="metric-box">
-      <div class="metric-label">Publications</div>
-      <div class="metric-value">{len(pubs)}</div>
+      <div class="metric-label">
+        Publications
+      </div>
+
+      <div class="metric-value">
+        {len(publications)}
+      </div>
     </div>
 
     <div class="metric-box">
-      <div class="metric-label">Citations</div>
-      <div class="metric-value">{metrics.get('citations', 0)}</div>
+      <div class="metric-label">
+        Citations
+      </div>
+
+      <div class="metric-value">
+        {metrics.get('citations', 0)}
+      </div>
     </div>
 
     <div class="metric-box">
-      <div class="metric-label">h-index</div>
-      <div class="metric-value">{metrics.get('h_index', 0)}</div>
+      <div class="metric-label">
+        h-index
+      </div>
+
+      <div class="metric-value">
+        {metrics.get('h_index', 0)}
+      </div>
     </div>
   </div>
 
@@ -488,28 +791,73 @@ def build_publications() -> str:
 def main():
     sections = get_home_sections()
     author = read_yaml(AUTHOR_DATA)
-    template = TEMPLATE_FILE.read_text(encoding="utf-8")
-    style = STYLE_FILE.read_text(encoding="utf-8")
+
+    template = TEMPLATE_FILE.read_text(
+        encoding="utf-8"
+    )
+
+    style = STYLE_FILE.read_text(
+        encoding="utf-8"
+    )
 
     replacements = {
         "{{STYLE}}": style,
-        "{{BIO}}": build_bio(sections, author),
-        "{{EDUCATION}}": build_education(author),
-        "{{INTERESTS}}": build_interests(author),
-        "{{TRAINING}}": build_markdown_section(sections, "training", "Additional Training"),
-        "{{TEACHING}}": build_markdown_section(sections, "teaching", "Teaching & Mentoring"),
-        "{{ENGAGEMENT}}": build_markdown_section(sections, "engagement", "Scientific Engagement & Outreach"),
-        "{{SKILLS}}": build_markdown_section(sections, "skills", "Skills & Methods"),
-        "{{AWARDS}}": build_markdown_section(sections, "awards", "Awards & Grants"),
-        "{{PRESENTATIONS}}": build_markdown_section(sections, "presentations", "Presentations"),
+        "{{BIO}}": build_bio(
+            sections,
+            author,
+        ),
+        "{{EDUCATION}}": build_education(
+            author
+        ),
+        "{{INTERESTS}}": build_interests(
+            author
+        ),
+        "{{TRAINING}}": build_markdown_section(
+            sections,
+            "training",
+            "Additional Training",
+        ),
+        "{{TEACHING}}": build_markdown_section(
+            sections,
+            "teaching",
+            "Teaching & Mentoring",
+        ),
+        "{{ENGAGEMENT}}": build_markdown_section(
+            sections,
+            "engagement",
+            "Scientific Engagement & Outreach",
+        ),
+        "{{SKILLS}}": build_markdown_section(
+            sections,
+            "skills",
+            "Skills & Methods",
+        ),
+        "{{AWARDS}}": build_markdown_section(
+            sections,
+            "awards",
+            "Awards & Grants",
+        ),
+        "{{PRESENTATIONS}}": build_markdown_section(
+            sections,
+            "presentations",
+            "Presentations",
+        ),
         "{{PUBLICATIONS}}": build_publications(),
     }
 
-    out = template
-    for key, value in replacements.items():
-        out = out.replace(key, value)
+    output = template
 
-    OUTPUT_HTML.write_text(out, encoding="utf-8")
+    for key, value in replacements.items():
+        output = output.replace(
+            key,
+            value,
+        )
+
+    OUTPUT_HTML.write_text(
+        output,
+        encoding="utf-8",
+    )
+
     print("CV generated.")
 
 
