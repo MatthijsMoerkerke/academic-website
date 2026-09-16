@@ -40,13 +40,10 @@ html.dark span[class~="dark:hover:bg-primary-500"]:hover,
   border-color: inherit !important;
   box-shadow: none !important;
 }
-  
-/* Disable hover styling on interest pills */
-span[class*="hover:bg-primary"],
+/* Force interest pills to look identical on hover */
 span[class*="hover:bg-primary"]:hover {
-  color: inherit !important;
-  border-color: inherit !important;
-  box-shadow: none !important;
-  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  background-image: none !important;
 }  
 </style>
