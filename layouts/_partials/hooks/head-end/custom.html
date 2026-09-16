@@ -25,28 +25,26 @@ span[class~="cursor-default"] {
 }
 
 /* Interest boxes: light mode */
-html:not(.dark) span[class~="hover:bg-primary-100"]:hover {
-  background-color: inherit !important;
-  color: inherit !important;
-  border-color: inherit !important;
+html:not(.dark) span[class*="hover:bg-primary-100"]:hover {
+  background-color: rgb(var(--color-primary-50)) !important;
+  color: rgb(var(--color-primary-800)) !important;
+  border-color: rgb(var(--color-primary-200) / 0.5) !important;
   box-shadow: none !important;
+  transform: none !important;
 }
 
 /* Interest boxes: dark mode */
-html.dark span[class~="dark:hover:bg-primary-500"]:hover,
-.dark span[class~="dark:hover:bg-primary-500"]:hover {
-  background-color: inherit !important;
-  color: inherit !important;
-  border-color: inherit !important;
-  box-shadow: none !important;
-}
-  
-/* Disable hover styling on interest pills */
-span[class*="hover:bg-primary"],
-span[class*="hover:bg-primary"]:hover {
-  color: inherit !important;
-  border-color: inherit !important;
+html.dark span[class*="dark:hover:bg-primary-500"]:hover,
+.dark span[class*="dark:hover:bg-primary-500"]:hover {
+  background-color: rgb(31 41 55) !important; /* zelfde als dark:bg-gray-800 */
+  color: rgb(var(--color-primary-200)) !important; /* zelfde als dark:text-primary-200 */
+  border-color: rgb(var(--color-primary-800) / 0.5) !important; /* zelfde als dark:border-primary-800/50 */
   box-shadow: none !important;
   transform: none !important;
+}
+  
+/* Remove all animation on interest pills */
+span[class*="hover:bg-primary"] {
+  transition: none !important;
 }
 </style>
