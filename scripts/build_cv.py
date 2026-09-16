@@ -428,12 +428,18 @@ def build_bio(
         )
 
         linkedin_html = (
-            f'<span class="contact-separator">|</span>'
+            f'<span class="contact-separator">|</span> '
             f'{linkedin}{linkedin_display}</a>'
         )
-``
 
     contact_html = f"""
+<div class="hero-contact">
+  <strong>Contact:</strong>
+  {email_html}
+  {linkedin_html}
+</div>
+"""
+    
 <div class="hero-contact">
   <strong>Contact:</strong>
   {email_html}
