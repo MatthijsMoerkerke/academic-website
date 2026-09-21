@@ -228,7 +228,7 @@ sections:
   content:
     title: Awards & Grants
     text: |
-      **Fulbright Postdoctoral Research Award (Belgium–USA) 2026**  
+      **Fulbright Postdoctoral Research Award 2026**  
       Awarded for an 8 month research stay at Stanford University (CA, USA).
       [Fulbright website](https://www.fulbright.be/grantees/)
 
