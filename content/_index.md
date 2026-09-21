@@ -232,6 +232,9 @@ sections:
       Awarded for an 8 month research stay at Stanford University (CA, USA).
       [Fulbright website](https://www.fulbright.be/grantees/)
 
+      **MARBEL Best Poster Award (3rd place) 2026**  
+      Awarded for the poster *Pain and the brain: examining the link between conditioned pain modulation and structural gray matter properties* at the Annual      Meeting of the Belgian Magnetic Resonance Imaging Research Community (MaRBEL), Ghent, Belgium.
+
       **INSAR PhD Dissertation Award 2024**  
       Awarded by the International Society for Autism Research (INSAR), presented at the Annual Meeting in Melbourne, Australia.  
       [INSAR website](https://www.autism-insar.org/page/RecognitionAwards)
