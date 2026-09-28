@@ -27,7 +27,9 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests pyyaml python-slugify scholarly markdown
+          pip install requests pyyaml python-slugify markdown
+          pip install "bibtexparser==1.4.1"
+          pip install scholarly
 
       - name: Install wkhtmltopdf
         run: |
