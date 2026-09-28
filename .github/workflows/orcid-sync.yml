@@ -39,7 +39,6 @@ jobs:
 
       - name: Update Scholar metrics
         run: python scripts/update_scholar.py
-        continue-on-error: true
 
       - name: Generate CV HTML
         run: python scripts/build_cv.py
