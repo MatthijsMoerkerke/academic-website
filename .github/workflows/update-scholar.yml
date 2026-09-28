@@ -44,7 +44,10 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install scholarly pyyaml
+          python -m pip install --upgrade pip
+          pip install pyyaml
+          pip install "bibtexparser==1.4.1"
+          pip install scholarly
 
       - name: Update scholar metrics
         run: python scripts/update_scholar.py
