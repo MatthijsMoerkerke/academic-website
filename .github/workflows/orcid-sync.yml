@@ -27,9 +27,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests pyyaml python-slugify markdown
-          pip install "bibtexparser==1.4.1"
-          pip install scholarly
+          python -m pip install requests beautifulsoup4 pyyaml python-slugify markdown
 
       - name: Install wkhtmltopdf
         run: |
@@ -41,6 +39,12 @@ jobs:
 
       - name: Update Scholar metrics
         run: python scripts/update_scholar.py
+        continue-on-error: true
+
+      - name: Show Scholar metrics
+        run: |
+          echo "Contents of data/scholar.yaml:"
+          cat data/scholar.yaml
 
       - name: Generate CV HTML
         run: python scripts/build_cv.py
@@ -48,15 +52,27 @@ jobs:
       - name: Generate CV PDF
         run: |
           mkdir -p static/uploads
-          wkhtmltopdf --enable-local-file-access cv/cv_generated.html static/uploads/CV_Matthijs_Moerkerke.pdf
+          wkhtmltopdf \
+            --enable-local-file-access \
+            cv/cv_generated.html \
+            static/uploads/CV_Matthijs_Moerkerke.pdf
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add content/publications data/scholar.yaml cv/cv_generated.html static/uploads/CV_Matthijs_Moerkerke.pdf
-          git diff --cached --quiet || git commit -m "Auto-update publications, scholar metrics, and CV"
-          git push
+
+          git add content/publications
+          git add data/scholar.yaml
+          git add cv/cv_generated.html
+          git add static/uploads/CV_Matthijs_Moerkerke.pdf
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update publications, Scholar metrics, and CV"
+            git push
+          fi
 
       - name: Trigger Hugo deploy workflow
         if: success()
