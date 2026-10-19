@@ -19,72 +19,73 @@ defaults:
 jobs:
   update-build-deploy:
     runs-on: ubuntu-latest
+
     env:
       DART_SASS_VERSION: 1.97.3
       GO_VERSION: 1.26.0
       HUGO_VERSION: 0.156.0
       NODE_VERSION: 24.13.1
-      TZ: Europe/Oslo
+      TZ: Europe/Brussels
 
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyyaml
-          pip install "bibtexparser==1.4.1"
-          pip install scholarly
+          python -m pip install requests beautifulsoup4 pyyaml
 
-      - name: Update scholar metrics
+      - name: Update Scholar metrics
         run: python scripts/update_scholar.py
 
-      - name: Show updated scholar file
+      - name: Show updated Scholar file
         run: |
           echo "Contents of data/scholar.yaml:"
           cat data/scholar.yaml
 
-      - name: Commit updated scholar data
+      - name: Commit updated Scholar data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add data/scholar.yaml
+
           if git diff --cached --quiet; then
-            echo "No scholar changes to commit"
+            echo "No Scholar changes to commit"
           else
             git commit -m "Update Google Scholar metrics"
             git push
           fi
 
-      - name: Setup Go
+      - name: Set up Go
         uses: actions/setup-go@v6
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Setup Pages
+      - name: Set up GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
 
-      - name: Create directory for user-specific executable files
+      - name: Create local executable directory
         run: mkdir -p "${HOME}/.local"
 
       - name: Install Dart Sass
@@ -121,7 +122,7 @@ jobs:
       - name: Configure Git
         run: git config core.quotepath false
 
-      - name: Cache restore
+      - name: Restore Hugo cache
         id: cache-restore
         uses: actions/cache/restore@v5
         with:
@@ -130,7 +131,7 @@ jobs:
           restore-keys: |
             scholar-hugo-
 
-      - name: Build the site
+      - name: Build website
         run: |
           hugo build \
             --gc \
@@ -138,14 +139,13 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
 
-      - name: Cache save
-        id: cache-save
+      - name: Save Hugo cache
         uses: actions/cache/save@v5
         with:
           path: ${{ runner.temp }}/hugo_cache
           key: ${{ steps.cache-restore.outputs.cache-primary-key }}
 
-      - name: Upload artifact
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
