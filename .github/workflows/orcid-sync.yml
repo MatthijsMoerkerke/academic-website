@@ -1,13 +1,17 @@
-name: Sync ORCID and Scholar
+name: Sync ORCID Publications
 
 on:
   schedule:
-    - cron: "15 5 * * *"
+    - cron: "15 6 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
   actions: write
+
+concurrency:
+  group: orcid-cv-sync
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -37,15 +41,6 @@ jobs:
       - name: Sync ORCID publications
         run: python scripts/orcid_sync.py
 
-      - name: Update Scholar metrics
-        run: python scripts/update_scholar.py
-        continue-on-error: true
-
-      - name: Show Scholar metrics
-        run: |
-          echo "Contents of data/scholar.yaml:"
-          cat data/scholar.yaml
-
       - name: Generate CV HTML
         run: python scripts/build_cv.py
 
@@ -63,19 +58,17 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add content/publications
-          git add data/scholar.yaml
           git add cv/cv_generated.html
           git add static/uploads/CV_Matthijs_Moerkerke.pdf
 
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No ORCID or CV changes to commit"
           else
-            git commit -m "Auto-update publications, Scholar metrics, and CV"
+            git commit -m "Auto-update ORCID publications and CV"
             git push
           fi
 
       - name: Trigger Hugo deploy workflow
-        if: success()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run hugo.yml
