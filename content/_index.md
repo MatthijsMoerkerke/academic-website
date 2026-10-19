@@ -125,6 +125,7 @@ sections:
 
       - Mentor for junior researchers in pain science and stress physiology
       - Backup ombudsman for the *Postgraduate Studies in Advanced Medical Imaging* programme at KU Leuven (2017–2023)
+      - Tutoring anatomy and biology to bachelor students via 'Bijleshuis' (2020-2024)
 
 
 # ---------------- SCIENTIFIC ENGAGEMENT ----------------
