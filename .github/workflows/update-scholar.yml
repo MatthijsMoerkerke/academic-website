@@ -1,6 +1,8 @@
 name: Update Scholar Metrics and Deploy
 
 on:
+  schedule:
+    - cron: "15 5 * * *"
   workflow_dispatch:
 
 permissions:
@@ -46,7 +48,12 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install requests beautifulsoup4 pyyaml
+          python -m pip install requests beautifulsoup4 pyyaml python-slugify markdown
+
+      - name: Install wkhtmltopdf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wkhtmltopdf
 
       - name: Update Scholar metrics
         run: python scripts/update_scholar.py
@@ -56,17 +63,30 @@ jobs:
           echo "Contents of data/scholar.yaml:"
           cat data/scholar.yaml
 
-      - name: Commit updated Scholar data
+      - name: Generate CV HTML
+        run: python scripts/build_cv.py
+
+      - name: Generate CV PDF
+        run: |
+          mkdir -p static/uploads
+          wkhtmltopdf \
+            --enable-local-file-access \
+            cv/cv_generated.html \
+            static/uploads/CV_Matthijs_Moerkerke.pdf
+
+      - name: Commit Scholar and CV changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add data/scholar.yaml
+          git add cv/cv_generated.html
+          git add static/uploads/CV_Matthijs_Moerkerke.pdf
 
           if git diff --cached --quiet; then
-            echo "No Scholar changes to commit"
+            echo "No Scholar or CV changes to commit"
           else
-            git commit -m "Update Google Scholar metrics"
+            git commit -m "Update Google Scholar metrics and CV"
             git push
           fi
 
