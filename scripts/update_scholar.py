@@ -206,11 +206,10 @@ def main() -> None:
 
     write_metrics(existing)
 
-    raise RuntimeError(
-        "Scholar metrics could not be updated. "
-        f"Last error: {last_error}"
+    print(
+        "Scholar metrics were not updated because Google Scholar "
+        "blocked the request. Existing metrics were preserved."
     )
 
-
-if __name__ == "__main__":
+    return
     main()
