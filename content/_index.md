@@ -108,9 +108,10 @@ sections:
     text: |
       **University teaching**
   
-      - Lecturer for *Neurosciences* (2nd BA Rehabilitation Sciences, Ghent University)
       - Lecturer for *Evidence-Based Medicine & Statistics* (3rd BA Rehabilitation Sciences, Ghent University) — responsible for theoretical lectures and coordination of practical seminars.
       - Leading curricular reform and supervising eight PhD teaching assistants.
+      - Guest-lecturer for *Neurosciences* (2nd BA Rehabilitation Sciences, Ghent University)
+
 
       **Graduate and undergraduate supervision**
 
@@ -145,9 +146,11 @@ sections:
 
       - **Scientific program & award manager**, Pain Science in Motion Conference 2026 — responsible for program development, international communications, and global participant engagement (2025–present)  
         [PSIM Conference website](https://www.painscienceinmotion.com/)
+  
+      - **Freelance work at JABCO**, organizing scientific symposia and webinars
 
       - **Ad hoc grant reviewer**, Foundation for Prader-Willi Research (USA) — oxytocin research grant review (2026)
-
+  
       **Scientific outreach in mainstream media**
 
       - **EOS Wetenschap** — Oxytocin nasal spray may improve social bonding in children with autism  
