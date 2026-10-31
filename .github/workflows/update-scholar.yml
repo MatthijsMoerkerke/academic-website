@@ -20,7 +20,7 @@ defaults:
 
 jobs:
   update-build-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env:
       DART_SASS_VERSION: 1.97.3
